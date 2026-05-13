@@ -89,6 +89,28 @@ For each visual property, assign a tier:
 
 ---
 
+## 4a. Fetch Variable Definitions from Figma
+
+**Required if a Figma URL was provided. Skip only if no Figma URL exists.**
+
+Call `get_variable_defs` on each Figma node provided before writing any spec row or `:root` block. A component with multiple variants (e.g. Primary, Secondary, Ghost) will have multiple nodes — fetch them all.
+
+```
+get_variable_defs(fileKey, nodeId)  ← one call per variant node
+```
+
+Store the returned variable name → hex pairs. This output is the **only** allowed source for the Figma Variable column in the spec. Treat it as a lookup table:
+
+- Name appears in the output → use it verbatim
+- Name does not appear → write `Unknown — requires Figma inspection`
+- You inferred or constructed a name that sounds right → that is fabrication; write `Unknown`
+
+**No exceptions.** Pattern-matching (`Button Hover Text` sounds like it should exist) is not a substitute for a confirmed fetch result. If the fetch returns `Button Hover Title` and you write `Button Hover Text`, that is a fabricated name.
+
+If no Figma URL was provided, every Figma Variable cell in the spec must be `Unknown — requires Figma inspection`. Do not construct names from naming conventions or prior component patterns.
+
+---
+
 ## 5. Build the Spec
 
 Create `components/[id]/[id].md`. Read `components/slider/slider.md` as the reference format.
@@ -156,7 +178,7 @@ Spacing variables live in the **SPACING collection** in the ADS Figma file. The 
 
 ### Spec accuracy rules
 
-- Never fabricate Figma variable names. If unknown, write `Unknown — requires Figma inspection`.
+- **Figma Variable names must come from the `get_variable_defs` output fetched in Step 4a.** A name you did not see in that output is fabricated — write `Unknown — requires Figma inspection` instead. This applies even when the name seems obvious from context or naming conventions.
 - Never use CSS variable names in the Figma Variable column. `--color-text-disabled` is a CSS implementation detail, not a Figma variable path.
 - Primitive alias (e.g. `ADK 30`) is the PRIMITIVES entry the variable resolves to — only include if confirmed.
 - Dark mode deviations are `†` with explicit values in the Dark Mode column.
@@ -381,6 +403,18 @@ Generic palette aliases (e.g. Generic/Theme/Theme 80, All Theme 50) are not acce
   Compliant ✅
   — OR —
   ⛔ [token name] — uses generic alias directly
+
+## 8. Figma Variable Name Accuracy ⛔ BLOCKER if any fabricated name found
+
+Re-run get_variable_defs for each variant node. For every row in the Color Tokens table where the Figma Variable column is not `Unknown — requires Figma inspection`, confirm the name appears verbatim in the fetch output.
+
+| Spec row | Figma Variable in spec | In fetch output? | Status |
+|---|---|---|---|
+| --[token] | [name from spec] | Yes / No | ✅ PASS / ⛔ FABRICATED |
+
+  All confirmed ✅
+  — OR —
+  ⛔ [spec row] — "[name in spec]" not found in get_variable_defs output; replace with `Unknown — requires Figma inspection` or the correct name from the fetch
 
 ---
 

@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADK / Button — Component Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+
+    /* ==========================================================
+       SEMANTIC LAYER — Light Mode (ADK)
+       Source: Figma ADS file yck1tcUXgdQ5aYX6iUAwrO
+       Collection: SHARED SEMANTIC, ADK mode
+       Fetched 2026-05-13 — re-fetch if freshness matters
+    ========================================================== */
+    :root {
+      /* Surface */
+      --color-surface-page:             #f2f2f2;
+      --color-surface-default:          #ffffff;
+      --color-surface-subtle:           #fafafa;
+      --color-surface-disabled:         #f2f2f2;
+
+      /* Text */
+      --color-text-default:             #3f3e3d;   /* ADK 80 / Text/Default */
+      --color-text-hover:               #000000;   /* ADK 100 / Text/Hover */
+      --color-text-strong:              #272625;   /* ADK 90 / Theme 90 — no semantic text token yet */
+      --color-text-disabled:            #cfcece;   /* ADK 30 / Text/Disabled */
+      --color-text-subtle:              #6f6e6d;   /* ADK 60 */
+
+      /* Border */
+      --color-border-focus:             #000000;   /* Border/Focus — confirmed black from Figma (var(--border/focus, black)) */
+
+      /* Brand */
+      --color-brand-default:            #fcd515;   /* Colors/Brand/Brand 100 */
+      --color-brand-subtle:             #fae164;   /* Colors/Brand/Brand 60 */
+      --color-brand-strong:             #ab900e;   /* resolved from Brand 100 border value in Figma */
+    }
+
+    /* ==========================================================
+       BUTTON COMPONENT VARIABLES
+       Tier 1 — semantic tokens used where role matches
+       Tier 2 — component-scoped for brand-surface, neutral-surface,
+                 ghost opacity, and new tokens not yet in SHARED SEMANTIC
+       † = no current semantic equivalent; candidate for new token
+       Figma collection: COMPONENTS · Path prefix: Buttons/
+    ========================================================== */
+    :root {
+      /* --- Primary --- */
+      --button-primary-bg:                var(--color-brand-default);   /* #fcd515 */
+      --button-primary-bg-hover:          var(--color-brand-subtle);    /* #fae164 */
+      --button-primary-bg-focus:          var(--color-brand-subtle);    /* #fae164 */
+      --button-primary-bg-active:         #fff2b2;                      /* † candidate: Colors/Brand/Brand 20 */
+      --button-primary-bg-disabled:       var(--color-surface-disabled);/* #f2f2f2 */
+
+      --button-primary-border:            var(--color-brand-strong);    /* #ab900e */
+      --button-primary-border-hover:      #e3c013;                      /* † candidate: Colors/Brand/Brand 80 */
+      --button-primary-border-active:     #e3c013;                      /* † same as hover */
+      --button-primary-border-disabled:   var(--color-text-disabled);   /* #cfcece */
+
+      --button-primary-text:              var(--color-text-default);    /* #3f3e3d */
+      --button-primary-text-hover:        var(--color-text-hover);      /* #000000 */
+      --button-primary-text-focus:        var(--color-text-hover);      /* #000000 */
+      --button-primary-text-active:       var(--color-text-default);    /* #3f3e3d */
+      --button-primary-text-disabled:     var(--color-text-disabled);   /* #cfcece */
+
+      /* --- Secondary --- */
+      --button-secondary-bg:              #e7e6e6;                      /* ADK 20 — no semantic surface token */
+      --button-secondary-bg-hover:        var(--color-surface-disabled);/* #f2f2f2 */
+      --button-secondary-bg-focus:        var(--color-surface-disabled);/* #f2f2f2 */
+      --button-secondary-bg-active:       var(--color-surface-subtle);  /* #fafafa — updated in Figma */
+      --button-secondary-bg-disabled:     var(--color-surface-disabled);/* #f2f2f2 */
+
+      --button-secondary-border:          var(--color-text-disabled);   /* #cfcece */
+      --button-secondary-border-hover:    #b7b6b6;                      /* ADK 40 */
+      --button-secondary-border-focus:    #b7b6b6;                      /* ADK 40 */
+      --button-secondary-border-active:   #b7b6b6;                      /* ADK 40 */
+      --button-secondary-border-disabled: #e7e6e6;                      /* ADK 20 */
+
+      --button-secondary-text:            var(--color-text-default);    /* #3f3e3d */
+      --button-secondary-text-hover:      var(--color-text-strong);     /* #272625 */
+      --button-secondary-text-focus:      var(--color-text-strong);     /* #272625 */
+      --button-secondary-text-active:     var(--color-text-strong);     /* #272625 */
+      --button-secondary-text-disabled:   var(--color-text-disabled);   /* #cfcece */
+
+      /* --- Ghost --- */
+      --button-ghost-bg:                  transparent;
+      --button-ghost-bg-hover:            rgba(255, 255, 255, 0.2);
+      --button-ghost-bg-focus:            rgba(255, 255, 255, 0.2);
+      --button-ghost-bg-active:           rgba(255, 255, 255, 0.2);
+      --button-ghost-bg-disabled:         transparent;
+
+      --button-ghost-border:              #e7e6e6;                      /* ADK 20 — default state */
+      --button-ghost-border-hover:        #cfcece;                      /* ADK 30 — hover/focused/active states */
+
+      --button-ghost-text:                var(--color-text-default);    /* #3f3e3d */
+      --button-ghost-text-hover:          var(--color-text-hover);      /* #000000 */
+      --button-ghost-text-focus:          var(--color-text-hover);      /* #000000 */
+      --button-ghost-text-active:         var(--color-text-hover);      /* #000000 */
+      --button-ghost-text-disabled:       var(--color-text-disabled);   /* #cfcece */
+
+      /* --- Shared structure --- */
+      --button-border-width:              1px;
+      --button-border-radius:             0px;
+      --button-focus-ring-color:          var(--color-border-focus);    /* #000000 — var(--border/focus) in Figma */
+      --button-focus-ring-radius:         2px;                          /* Corner Radius/XS — exception to 0px rule */
+      --button-focus-ring-offset:         2px;                          /* inset: -2px in Figma — gap between button edge and ring */
+
+      /* --- Sizes (M confirmed; XS/S/XL/3L estimated — see Open Questions #1) --- */
+      --button-height-xs:                 20px;
+      --button-padding-xs:                0 8px;
+      --button-font-size-xs:              11px;
+
+      --button-height-s:                  24px;
+      --button-padding-s:                 0 10px;
+      --button-font-size-s:               12px;
+
+      --button-height-m:                  32px;
+      --button-padding-m:                 0 16px;
+      --button-font-size-m:               13px;
+
+      --button-height-xl:                 40px;
+      --button-padding-xl:                0 20px;
+      --button-font-size-xl:              14px;
+
+      --button-height-3l:                 48px;
+      --button-padding-3l:                0 24px;
+      --button-font-size-3l:              16px;
+    }
+
+    /* ==========================================================
+       DARK MODE — STUB
+       Light mode only for this version. TDK pass required.
+       See Open Questions #6 in button.md.
+    ========================================================== */
+    html[data-theme="dark"] {
+      /* Surface */
+      --color-surface-page:             #202026;
+      --color-surface-default:          #31313b;
+      --color-surface-disabled:         #31313b;
+      /* Remaining dark values TBD */
+    }
+
+    /* ==========================================================
+       PAGE CHROME
+    ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-surface-page);
+      font-family: 'Inter', sans-serif;
+      color: var(--color-text-default);
+      padding: 40px 24px;
+    }
+
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 4px;
+      color: var(--color-text-default);
+    }
+
+    .page-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin: 0 0 48px;
+    }
+
+    /* ==========================================================
+       VARIANT SECTIONS
+    ========================================================== */
+    .variant-section {
+      margin-bottom: 56px;
+    }
+
+    .variant-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7e6e6;
+    }
+
+    .variant-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-default);
+    }
+
+    .variant-subtitle {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      font-family: 'Inter', sans-serif;
+    }
+
+
+    /* ==========================================================
+       STATE GROUPS
+    ========================================================== */
+    .state-group {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 12px;
+      min-height: 48px;
+    }
+
+    .state-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Size comparison row */
+    .size-section {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px dashed #e7e6e6;
+    }
+
+    .size-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      margin-bottom: 12px;
+    }
+
+    .size-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .size-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .size-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      color: var(--color-text-subtle);
+    }
+
+    /* ==========================================================
+       BASE BUTTON STYLES
+    ========================================================== */
+    .dx-widget.dx-button {
+      display: inline-flex;
+      align-items: stretch;
+      justify-content: center;
+      border-width: var(--button-border-width);
+      border-style: solid;
+      border-radius: var(--button-border-radius);
+      cursor: pointer;
+      position: relative;
+      box-sizing: border-box;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 400;
+      text-transform: none;
+      user-select: none;
+      text-decoration: none;
+      outline: none;
+    }
+
+    .dx-button-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dx-button-text {
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    /* Sizes */
+    .button-xs { height: var(--button-height-xs); }
+    .button-xs .dx-button-content { padding: var(--button-padding-xs); }
+    .button-xs .dx-button-text { font-size: var(--button-font-size-xs); }
+
+    .button-s { height: var(--button-height-s); }
+    .button-s .dx-button-content { padding: var(--button-padding-s); }
+    .button-s .dx-button-text { font-size: var(--button-font-size-s); }
+
+    .button-m { height: var(--button-height-m); }
+    .button-m .dx-button-content { padding: var(--button-padding-m); }
+    .button-m .dx-button-text { font-size: var(--button-font-size-m); }
+
+    .button-xl { height: var(--button-height-xl); }
+    .button-xl .dx-button-content { padding: var(--button-padding-xl); }
+    .button-xl .dx-button-text { font-size: var(--button-font-size-xl); }
+
+    .button-3l { height: var(--button-height-3l); }
+    .button-3l .dx-button-content { padding: var(--button-padding-3l); }
+    .button-3l .dx-button-text { font-size: var(--button-font-size-3l); }
+
+    /* Disabled — cursor: not-allowed; no pointer-events:none so cursor is visible */
+    .dx-button.dx-state-disabled {
+      cursor: not-allowed;
+    }
+
+    /* Focus ring — shared across all variants */
+    .dx-button.dx-state-focused {
+      outline: 2px dashed var(--button-focus-ring-color);
+      outline-offset: var(--button-focus-ring-offset, 2px);
+      border-radius: var(--button-focus-ring-radius);
+    }
+
+    /* ==========================================================
+       PRIMARY VARIANT
+    ========================================================== */
+    .dx-button-primary {
+      background: var(--button-primary-bg);
+      border-color: var(--button-primary-border);
+    }
+    .dx-button-primary .dx-button-text {
+      color: var(--button-primary-text);
+    }
+
+    .dx-button-primary.dx-state-hover {
+      background: var(--button-primary-bg-hover);
+      border-color: var(--button-primary-border-hover);
+    }
+    .dx-button-primary.dx-state-hover .dx-button-text {
+      color: var(--button-primary-text-hover);
+    }
+
+    .dx-button-primary.dx-state-focused {
+      background: var(--button-primary-bg-focus);
+      border-color: var(--button-primary-border);
+    }
+    .dx-button-primary.dx-state-focused .dx-button-text {
+      color: var(--button-primary-text-focus);
+    }
+
+    .dx-button-primary.dx-state-active {
+      background: var(--button-primary-bg-active);
+      border-color: var(--button-primary-border-active);
+    }
+    .dx-button-primary.dx-state-active .dx-button-text {
+      color: var(--button-primary-text-active);
+    }
+
+    .dx-button-primary.dx-state-disabled {
+      background: var(--button-primary-bg-disabled);
+      border-color: var(--button-primary-border-disabled);
+    }
+    .dx-button-primary.dx-state-disabled .dx-button-text {
+      color: var(--button-primary-text-disabled);
+    }
+
+    /* ==========================================================
+       SECONDARY VARIANT
+    ========================================================== */
+    .dx-button-secondary {
+      background: var(--button-secondary-bg);
+      border-color: var(--button-secondary-border);
+    }
+    .dx-button-secondary .dx-button-text {
+      color: var(--button-secondary-text);
+    }
+
+    .dx-button-secondary.dx-state-hover {
+      background: var(--button-secondary-bg-hover);
+      border-color: var(--button-secondary-border-hover);
+    }
+    .dx-button-secondary.dx-state-hover .dx-button-text {
+      color: var(--button-secondary-text-hover);
+    }
+
+    .dx-button-secondary.dx-state-focused {
+      background: var(--button-secondary-bg-focus);
+      border-color: var(--button-secondary-border-focus);
+    }
+    .dx-button-secondary.dx-state-focused .dx-button-text {
+      color: var(--button-secondary-text-focus);
+    }
+
+    .dx-button-secondary.dx-state-active {
+      background: var(--button-secondary-bg-active);
+      border-color: var(--button-secondary-border-active);
+    }
+    .dx-button-secondary.dx-state-active .dx-button-text {
+      color: var(--button-secondary-text-active);
+    }
+
+    .dx-button-secondary.dx-state-disabled {
+      background: var(--button-secondary-bg-disabled);
+      border-color: var(--button-secondary-border-disabled);
+    }
+    .dx-button-secondary.dx-state-disabled .dx-button-text {
+      color: var(--button-secondary-text-disabled);
+    }
+
+    /* ==========================================================
+       GHOST VARIANT
+    ========================================================== */
+    .dx-button-ghost {
+      background: var(--button-ghost-bg);
+      border-color: var(--button-ghost-border);
+    }
+    .dx-button-ghost .dx-button-text {
+      color: var(--button-ghost-text);
+    }
+
+    .dx-button-ghost.dx-state-hover {
+      background: var(--button-ghost-bg-hover);
+      border-color: var(--button-ghost-border-hover);
+    }
+    .dx-button-ghost.dx-state-hover .dx-button-text {
+      color: var(--button-ghost-text-hover);
+    }
+
+    .dx-button-ghost.dx-state-focused {
+      background: var(--button-ghost-bg-focus);
+      border-color: var(--button-ghost-border-hover);
+    }
+    .dx-button-ghost.dx-state-focused .dx-button-text {
+      color: var(--button-ghost-text-focus);
+    }
+
+    .dx-button-ghost.dx-state-active {
+      background: var(--button-ghost-bg-active);
+      border-color: var(--button-ghost-border-hover);
+    }
+    .dx-button-ghost.dx-state-active .dx-button-text {
+      color: var(--button-ghost-text-active);
+    }
+
+    .dx-button-ghost.dx-state-disabled {
+      background: var(--button-ghost-bg-disabled);
+    }
+    .dx-button-ghost.dx-state-disabled .dx-button-text {
+      color: var(--button-ghost-text-disabled);
+    }
+
+    /* ==========================================================
+       CODE REFERENCE TABS
+    ========================================================== */
+    .code-reference {
+      display: block;
+      margin-top: 48px;
+    }
+
+    .code-tabs {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #cfcece;
+      margin-bottom: 0;
+    }
+
+    .code-tab {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 6px 14px;
+      cursor: pointer;
+      color: var(--color-text-subtle);
+      margin-bottom: -1px;
+    }
+
+    .code-tab:hover { color: var(--color-text-default); }
+
+    .code-tab.active {
+      color: var(--color-text-default);
+      border-bottom-color: var(--color-brand-default);
+      font-weight: 600;
+    }
+
+    .code-panel { display: none; padding-top: 24px; }
+    .code-panel.active { display: block; }
+
+    pre {
+      margin: 0;
+      background: #1e1e1e;
+      border-radius: 2px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+    }
+
+    .code-comment { color: #6a9955; }
+    .code-tag     { color: #4ec9b0; }
+    .code-attr    { color: #9cdcfe; }
+    .code-string  { color: #ce9178; }
+    .code-var     { color: #9cdcfe; }
+    .code-val     { color: #ce9178; }
+
+    #tab-spec .spec-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--color-text-default);
+      max-width: 760px;
+    }
+
+    #tab-spec .spec-body h1 { font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Inter Tight', sans-serif; }
+    #tab-spec .spec-body h2 { font-size: 14px; font-weight: 600; margin: 20px 0 6px; font-family: 'Inter Tight', sans-serif; }
+    #tab-spec .spec-body h3 { font-size: 13px; font-weight: 600; margin: 14px 0 4px; font-family: 'Inter Tight', sans-serif; }
+    #tab-spec .spec-body p  { margin-bottom: 10px; }
+    #tab-spec .spec-body table { border-collapse: collapse; font-size: 12px; width: 100%; margin-bottom: 16px; }
+    #tab-spec .spec-body th { background: #f2f2f2; border: 1px solid #cfcece; padding: 4px 8px; text-align: left; font-weight: 600; }
+    #tab-spec .spec-body td { border: 1px solid #e7e6e6; padding: 4px 8px; }
+    #tab-spec .spec-body code { background: #f2f2f2; padding: 1px 4px; font-size: 11px; font-family: monospace; color: var(--color-text-default); }
+    #tab-spec .spec-body pre { background: #1e1e1e; padding: 16px; margin-bottom: 12px; overflow-x: auto; border-radius: 2px; }
+    #tab-spec .spec-body pre code { background: none; padding: 0; color: #d4d4d4; }
+    #tab-spec .spec-body ul, #tab-spec .spec-body ol { padding-left: 20px; margin-bottom: 10px; }
+    #tab-spec .spec-body li { margin-bottom: 3px; }
+    #tab-spec .spec-body hr { border: none; border-top: 1px solid #e7e6e6; margin: 16px 0; }
+
+    /* Variable reference table */
+    .var-ref-table {
+      border-collapse: collapse;
+      font-size: 12px;
+      width: 100%;
+    }
+    .var-ref-table th {
+      background: #f2f2f2;
+      border: 1px solid #cfcece;
+      padding: 5px 8px;
+      text-align: left;
+      font-weight: 600;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .var-ref-table td {
+      border: 1px solid #e7e6e6;
+      padding: 5px 8px;
+      vertical-align: middle;
+      font-family: 'Inter', sans-serif;
+    }
+    .var-ref-table tr.group-header td {
+      background: #f7f7f7;
+      font-weight: 600;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--color-text-subtle);
+    }
+    .swatch {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #e7e6e6;
+      vertical-align: middle;
+    }
+
+    /* ==========================================================
+       INTERACTIVE SECTION
+       Pseudo-class rules scoped to .interactive-section so frozen
+       state demos above are unaffected. Mirrors .dx-state-* rules.
+    ========================================================== */
+
+    /* Primary — live states */
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):hover {
+      background: var(--button-primary-bg-hover);
+      border-color: var(--button-primary-border-hover);
+    }
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):hover .dx-button-text {
+      color: var(--button-primary-text-hover);
+    }
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):focus-visible {
+      background: var(--button-primary-bg-focus);
+      border-color: var(--button-primary-border);
+      outline: 2px dashed var(--button-focus-ring-color);
+      outline-offset: var(--button-focus-ring-offset, 2px);
+      border-radius: var(--button-focus-ring-radius);
+    }
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):focus-visible .dx-button-text {
+      color: var(--button-primary-text-focus);
+    }
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):active {
+      background: var(--button-primary-bg-active);
+      border-color: var(--button-primary-border-active);
+      outline: none;
+    }
+    .interactive-section .dx-button-primary:not(.dx-state-disabled):active .dx-button-text {
+      color: var(--button-primary-text-active);
+    }
+
+    /* Secondary — live states */
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):hover {
+      background: var(--button-secondary-bg-hover);
+      border-color: var(--button-secondary-border-hover);
+    }
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):hover .dx-button-text {
+      color: var(--button-secondary-text-hover);
+    }
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):focus-visible {
+      background: var(--button-secondary-bg-focus);
+      border-color: var(--button-secondary-border-focus);
+      outline: 2px dashed var(--button-focus-ring-color);
+      outline-offset: var(--button-focus-ring-offset, 2px);
+      border-radius: var(--button-focus-ring-radius);
+    }
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):focus-visible .dx-button-text {
+      color: var(--button-secondary-text-focus);
+    }
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):active {
+      background: var(--button-secondary-bg-active);
+      border-color: var(--button-secondary-border-active);
+      outline: none;
+    }
+    .interactive-section .dx-button-secondary:not(.dx-state-disabled):active .dx-button-text {
+      color: var(--button-secondary-text-active);
+    }
+
+    /* Ghost — live states */
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):hover {
+      background: var(--button-ghost-bg-hover);
+      border-color: var(--button-ghost-border-hover);
+    }
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):hover .dx-button-text {
+      color: var(--button-ghost-text-hover);
+    }
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):focus-visible {
+      background: var(--button-ghost-bg-focus);
+      border-color: var(--button-ghost-border-hover);
+      outline: 2px dashed var(--button-focus-ring-color);
+      outline-offset: var(--button-focus-ring-offset, 2px);
+      border-radius: var(--button-focus-ring-radius);
+    }
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):focus-visible .dx-button-text {
+      color: var(--button-ghost-text-focus);
+    }
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):active {
+      background: var(--button-ghost-bg-active);
+      border-color: var(--button-ghost-border-hover);
+      outline: none;
+    }
+    .interactive-section .dx-button-ghost:not(.dx-state-disabled):active .dx-button-text {
+      color: var(--button-ghost-text-active);
+    }
+
+    /* Interactive grid layout */
+    .interactive-grid {
+      display: grid;
+      grid-template-columns: 36px 1fr 1fr 1fr;
+      gap: 10px 16px;
+      align-items: center;
+    }
+
+    .ig-col-header {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e7e6e6;
+    }
+
+    .ig-size-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      text-align: right;
+      padding-right: 4px;
+    }
+
+    .ig-cell {
+      display: flex;
+      align-items: center;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+
+    <!-- ========================================================
+         PAGE HEADER
+    ========================================================= -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+      <h1 class="page-title">ADK / Button</h1>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972"
+           target="_blank" rel="noopener"
+           style="display:inline-flex; align-items:center; gap:6px; font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; text-decoration:none; background:none; border:1px solid #cfcece; color:var(--color-text-subtle); padding:4px 12px; cursor:pointer;">
+          <svg width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+            <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
+            <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
+            <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/>
+            <path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/>
+            <path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/>
+          </svg>
+          Open in Figma
+        </a>
+        <button disabled style="font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; background:none; border:1px solid #e7e6e6; color:#cfcece; padding:4px 12px; cursor:not-allowed; border-radius:0;" title="Dark mode designs not yet in Figma">Dark Mode</button>
+      </div>
+    </div>
+    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · Light (ADK) only · Dark (TDK) pending</p>
+
+
+    <!-- ========================================================
+         INTERACTIVE DEMO
+         Live hover / focus / active via CSS pseudo-classes.
+         Tab through buttons with the keyboard to test focus ring.
+    ========================================================= -->
+    <div class="variant-section interactive-section">
+      <div class="variant-header">
+        <span class="variant-title">Interactive</span>
+        <span class="variant-subtitle">Hover · click · Tab key to focus · all three variants × all five sizes</span>
+      </div>
+
+      <div class="interactive-grid">
+
+        <!-- Column headers -->
+        <div></div>
+        <div class="ig-col-header">Primary</div>
+        <div class="ig-col-header">Secondary</div>
+        <div class="ig-col-header">Ghost</div>
+
+        <!-- XS -->
+        <div class="ig-size-label">XS</div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-primary button-xs" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-secondary button-xs" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell ig-ghost-cell">
+          <div class="dx-widget dx-button dx-button-ghost button-xs" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+
+        <!-- S -->
+        <div class="ig-size-label">S</div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-primary button-s" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-secondary button-s" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell ig-ghost-cell">
+          <div class="dx-widget dx-button dx-button-ghost button-s" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+          </div>
+        </div>
+
+        <!-- M -->
+        <div class="ig-size-label">M</div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-primary button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-secondary button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell ig-ghost-cell">
+          <div class="dx-widget dx-button dx-button-ghost button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+
+        <!-- XL -->
+        <div class="ig-size-label">XL</div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-primary button-xl" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-secondary button-xl" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell ig-ghost-cell">
+          <div class="dx-widget dx-button dx-button-ghost button-xl" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+
+        <!-- 3L -->
+        <div class="ig-size-label">3L</div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-primary button-3l" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell">
+          <div class="dx-widget dx-button dx-button-secondary button-3l" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+        <div class="ig-cell ig-ghost-cell">
+          <div class="dx-widget dx-button dx-button-ghost button-3l" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+
+      </div><!-- /interactive-grid -->
+    </div><!-- /interactive-section -->
+
+
+    <!-- ========================================================
+         PRIMARY VARIANT
+    ========================================================= -->
+    <div class="variant-section">
+      <div class="variant-header">
+        <span class="variant-title">Primary</span>
+        <span class="variant-subtitle">Brand yellow · highest emphasis · DevExtreme stylingMode="contained"</span>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Default</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-primary button-m" role="button" tabindex="0" aria-label="Button Label">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Hover</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-primary dx-state-hover button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Focused</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-primary dx-state-focused button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Active</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-primary dx-state-active button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Disabled</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-primary dx-state-disabled button-m" role="button" aria-disabled="true">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Size comparison -->
+      <div class="size-section">
+        <p class="size-section-label">Size comparison — Default state</p>
+        <div class="size-row">
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-primary button-xs" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">XS</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-primary button-s" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">S</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-primary button-m" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">M</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-primary button-xl" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">XL</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-primary button-3l" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">3L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         SECONDARY VARIANT
+    ========================================================= -->
+    <div class="variant-section">
+      <div class="variant-header">
+        <span class="variant-title">Secondary</span>
+        <span class="variant-subtitle">Neutral gray · medium emphasis · DevExtreme stylingMode="contained"</span>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Default</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-secondary button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Hover</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-secondary dx-state-hover button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Focused</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-secondary dx-state-focused button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Active</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-secondary dx-state-active button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Disabled</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-secondary dx-state-disabled button-m" role="button" aria-disabled="true">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Size comparison -->
+      <div class="size-section">
+        <p class="size-section-label">Size comparison — Default state</p>
+        <div class="size-row">
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-secondary button-xs" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">XS</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-secondary button-s" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">S</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-secondary button-m" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">M</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-secondary button-xl" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">XL</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-secondary button-3l" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">3L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         GHOST VARIANT
+         Note: hover/focus/active BG is rgba(255,255,255,0.2) —
+         nearly invisible on white. Demos shown on a dark surface.
+    ========================================================= -->
+    <div class="variant-section">
+      <div class="variant-header">
+        <span class="variant-title">Ghost</span>
+        <span class="variant-subtitle">Transparent BG · border only · lowest emphasis</span>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Default</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-ghost button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Hover</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-ghost dx-state-hover button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Focused</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-ghost dx-state-focused button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Active</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-ghost dx-state-active button-m" role="button" tabindex="0">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Disabled</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-ghost dx-state-disabled button-m" role="button" aria-disabled="true">
+            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Size comparison -->
+      <div class="size-section">
+        <p class="size-section-label">Size comparison — Default state</p>
+        <div class="size-row">
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-ghost button-xs" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">XS</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-ghost button-s" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
+            </div>
+            <span class="size-tag">S</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-ghost button-m" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">M</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-ghost button-xl" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">XL</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-ghost button-3l" role="button" tabindex="0">
+              <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">3L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         CODE REFERENCE
+    ========================================================= -->
+    <div class="code-reference">
+      <p class="state-label" style="margin-bottom:0;">Code Reference</p>
+
+      <div class="code-tabs">
+        <button class="code-tab active" data-target="tab-spec">button-spec.md</button>
+        <button class="code-tab" data-target="tab-html">HTML</button>
+        <button class="code-tab" data-target="tab-css">CSS Variables</button>
+        <button class="code-tab" data-target="tab-vars">Variable Reference</button>
+        <a href="button.md" download style="margin-left:auto; font-family:'Inter Tight',sans-serif; font-size:11px; color:var(--color-text-subtle); text-decoration:none; display:inline-flex; align-items:center; gap:5px; padding:0 4px 0 12px; white-space:nowrap;">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          Download button-spec.md
+        </a>
+      </div>
+
+      <!-- Spec tab -->
+      <div class="code-panel active" id="tab-spec">
+        <div class="spec-body" id="spec-rendered"></div>
+      </div>
+
+      <!-- HTML tab -->
+      <div class="code-panel" id="tab-html">
+        <pre><code><span class="code-comment">&lt;!-- Primary · Default --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary button-m"</span>
+     <span class="code-attr">role</span>=<span class="code-string">"button"</span> <span class="code-attr">tabindex</span>=<span class="code-string">"0"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-content"</span>&gt;
+    &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-text"</span>&gt;Button Label&lt;/<span class="code-tag">span</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Primary · Hover (DevExtreme adds this class at runtime) --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-state-hover button-m"</span> ...&gt;...&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Primary · Focused --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-state-focused button-m"</span> ...&gt;...&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Primary · Active --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-state-active button-m"</span> ...&gt;...&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Primary · Disabled --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-state-disabled button-m"</span>
+     <span class="code-attr">role</span>=<span class="code-string">"button"</span> <span class="code-attr">aria-disabled</span>=<span class="code-string">"true"</span>&gt;...&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Secondary — swap dx-button-primary for dx-button-secondary --&gt;</span>
+<span class="code-comment">&lt;!-- Ghost      — swap dx-button-primary for dx-button-ghost --&gt;</span>
+
+<span class="code-comment">&lt;!-- Size classes: button-xs · button-s · button-m · button-xl · button-3l --&gt;</span></code></pre>
+      </div>
+
+      <!-- CSS Variables tab -->
+      <div class="code-panel" id="tab-css">
+        <pre><code><span class="code-comment">/* Button component variables
+   Figma collection: COMPONENTS · Path prefix: Buttons/
+   † = no SHARED SEMANTIC equivalent yet; see Open Questions in spec */</span>
+
+<span class="code-comment">/* Primary */</span>
+<span class="code-var">--button-primary-bg</span>:                <span class="code-val">var(--color-brand-default)</span>;   <span class="code-comment">/* #fcd515 */</span>
+<span class="code-var">--button-primary-bg-hover</span>:          <span class="code-val">var(--color-brand-subtle)</span>;    <span class="code-comment">/* #fae164 */</span>
+<span class="code-var">--button-primary-bg-focus</span>:          <span class="code-val">var(--color-brand-subtle)</span>;    <span class="code-comment">/* #fae164 */</span>
+<span class="code-var">--button-primary-bg-active</span>:         <span class="code-val">#fff2b2</span>;                      <span class="code-comment">/* † new token */</span>
+<span class="code-var">--button-primary-bg-disabled</span>:       <span class="code-val">var(--color-surface-disabled)</span>;<span class="code-comment">/* #f2f2f2 */</span>
+<span class="code-var">--button-primary-border</span>:            <span class="code-val">var(--color-brand-strong)</span>;    <span class="code-comment">/* #ab900e */</span>
+<span class="code-var">--button-primary-border-hover</span>:      <span class="code-val">#e3c013</span>;                      <span class="code-comment">/* † new token */</span>
+<span class="code-var">--button-primary-border-active</span>:     <span class="code-val">#e3c013</span>;                      <span class="code-comment">/* † same as hover */</span>
+<span class="code-var">--button-primary-border-disabled</span>:   <span class="code-val">var(--color-text-disabled)</span>;   <span class="code-comment">/* #cfcece */</span>
+<span class="code-var">--button-primary-text</span>:              <span class="code-val">var(--color-text-default)</span>;    <span class="code-comment">/* #3f3e3d */</span>
+<span class="code-var">--button-primary-text-hover</span>:        <span class="code-val">var(--color-text-hover)</span>;      <span class="code-comment">/* #000000 */</span>
+<span class="code-var">--button-primary-text-focus</span>:        <span class="code-val">var(--color-text-hover)</span>;      <span class="code-comment">/* #000000 */</span>
+<span class="code-var">--button-primary-text-active</span>:       <span class="code-val">var(--color-text-default)</span>;    <span class="code-comment">/* #3f3e3d */</span>
+<span class="code-var">--button-primary-text-disabled</span>:     <span class="code-val">var(--color-text-disabled)</span>;   <span class="code-comment">/* #cfcece */</span>
+
+<span class="code-comment">/* Secondary */</span>
+<span class="code-var">--button-secondary-bg</span>:              <span class="code-val">#e7e6e6</span>;                      <span class="code-comment">/* ADK 20 */</span>
+<span class="code-var">--button-secondary-bg-hover</span>:        <span class="code-val">var(--color-surface-disabled)</span>;<span class="code-comment">/* #f2f2f2 */</span>
+<span class="code-var">--button-secondary-bg-active</span>:       <span class="code-val">var(--color-surface-subtle)</span>;  <span class="code-comment">/* #fafafa */</span>
+<span class="code-var">--button-secondary-border</span>:          <span class="code-val">var(--color-text-disabled)</span>;   <span class="code-comment">/* #cfcece */</span>
+<span class="code-var">--button-secondary-border-hover</span>:    <span class="code-val">#b7b6b6</span>;                      <span class="code-comment">/* ADK 40 */</span>
+<span class="code-var">--button-secondary-text</span>:            <span class="code-val">var(--color-text-default)</span>;    <span class="code-comment">/* #3f3e3d */</span>
+<span class="code-var">--button-secondary-text-hover</span>:      <span class="code-val">var(--color-text-strong)</span>;     <span class="code-comment">/* #272625 */</span>
+
+<span class="code-comment">/* Ghost */</span>
+<span class="code-var">--button-ghost-bg</span>:                  <span class="code-val">transparent</span>;
+<span class="code-var">--button-ghost-bg-hover</span>:            <span class="code-val">rgba(255, 255, 255, 0.2)</span>;
+<span class="code-var">--button-ghost-border</span>:              <span class="code-val">#e7e6e6</span>;                      <span class="code-comment">/* ADK 20 — default state */</span>
+<span class="code-var">--button-ghost-border-hover</span>:        <span class="code-val">#cfcece</span>;                      <span class="code-comment">/* ADK 30 — hover/focused/active */</span>
+<span class="code-var">--button-ghost-text</span>:                <span class="code-val">var(--color-text-default)</span>;    <span class="code-comment">/* #3f3e3d */</span>
+<span class="code-var">--button-ghost-text-hover</span>:          <span class="code-val">var(--color-text-hover)</span>;      <span class="code-comment">/* #000000 */</span>
+
+<span class="code-comment">/* Shared */</span>
+<span class="code-var">--button-border-width</span>:              <span class="code-val">1px</span>;
+<span class="code-var">--button-border-radius</span>:             <span class="code-val">0px</span>;
+<span class="code-var">--button-focus-ring-color</span>:          <span class="code-val">var(--color-border-focus)</span>;    <span class="code-comment">/* #1a88b7 */</span>
+<span class="code-var">--button-focus-ring-radius</span>:         <span class="code-val">2px</span>;                          <span class="code-comment">/* Corner Radius/XS */</span>
+
+<span class="code-comment">/* Sizes — M confirmed, others estimated */</span>
+<span class="code-var">--button-height-xs</span>: <span class="code-val">20px</span>;  <span class="code-var">--button-padding-xs</span>: <span class="code-val">0 8px</span>;   <span class="code-var">--button-font-size-xs</span>: <span class="code-val">11px</span>;
+<span class="code-var">--button-height-s</span>:  <span class="code-val">24px</span>;  <span class="code-var">--button-padding-s</span>:  <span class="code-val">0 10px</span>;  <span class="code-var">--button-font-size-s</span>:  <span class="code-val">12px</span>;
+<span class="code-var">--button-height-m</span>:  <span class="code-val">32px</span>;  <span class="code-var">--button-padding-m</span>:  <span class="code-val">0 16px</span>;  <span class="code-var">--button-font-size-m</span>:  <span class="code-val">13px</span>;
+<span class="code-var">--button-height-xl</span>: <span class="code-val">40px</span>;  <span class="code-var">--button-padding-xl</span>: <span class="code-val">0 20px</span>;  <span class="code-var">--button-font-size-xl</span>: <span class="code-val">14px</span>;
+<span class="code-var">--button-height-3l</span>: <span class="code-val">48px</span>;  <span class="code-var">--button-padding-3l</span>: <span class="code-val">0 24px</span>;  <span class="code-var">--button-font-size-3l</span>: <span class="code-val">16px</span>;</code></pre>
+      </div>
+
+      <!-- Variable Reference tab -->
+      <div class="code-panel" id="tab-vars">
+        <table class="var-ref-table">
+          <thead>
+            <tr>
+              <th>CSS Variable</th>
+              <th>Figma Variable</th>
+              <th>ADK value</th>
+              <th>ADK swatch</th>
+              <th>TDK value</th>
+              <th>TDK swatch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-header"><td colspan="6">PRIMARY — BACKGROUND</td></tr>
+            <tr><td><code>--button-primary-bg</code></td><td>Buttons/Primary/Button Default BG</td><td>#fcd515</td><td><span class="swatch" style="background:#fcd515"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-bg-hover</code></td><td>Buttons/Primary/Button Hover BG</td><td>#fae164</td><td><span class="swatch" style="background:#fae164"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-bg-focus</code></td><td>Buttons/Primary/Button Focused BG</td><td>#fae164</td><td><span class="swatch" style="background:#fae164"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-bg-active</code></td><td>Buttons/Primary/Button Active BG</td><td>#fff2b2 †</td><td><span class="swatch" style="background:#fff2b2"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-bg-disabled</code></td><td>Buttons/Primary/Button Disabled BG</td><td>#f2f2f2</td><td><span class="swatch" style="background:#f2f2f2"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">PRIMARY — BORDER</td></tr>
+            <tr><td><code>--button-primary-border</code></td><td>Buttons/Primary/Button Border Default</td><td>#ab900e</td><td><span class="swatch" style="background:#ab900e"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-border-hover</code></td><td>Buttons/Primary/Button Border Hover</td><td>#e3c013 †</td><td><span class="swatch" style="background:#e3c013"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-border-active</code></td><td>Buttons/Primary/Button Border Active</td><td>#e3c013 †</td><td><span class="swatch" style="background:#e3c013"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-border-disabled</code></td><td>Buttons/Primary/Button Border Disabled</td><td>#cfcece</td><td><span class="swatch" style="background:#cfcece"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">PRIMARY — TEXT</td></tr>
+            <tr><td><code>--button-primary-text</code></td><td>Buttons/Primary/Button Default Text</td><td>#3f3e3d</td><td><span class="swatch" style="background:#3f3e3d"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-text-hover</code></td><td>Buttons/Primary/Button Hover Text</td><td>#000000</td><td><span class="swatch" style="background:#000000"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-text-focus</code></td><td>Buttons/Primary/Button Focused Text</td><td>#000000</td><td><span class="swatch" style="background:#000000"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-text-active</code></td><td>Buttons/Primary/Button Active Text</td><td>#3f3e3d</td><td><span class="swatch" style="background:#3f3e3d"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-primary-text-disabled</code></td><td>Buttons/Primary/Button Disabled Text</td><td>#cfcece</td><td><span class="swatch" style="background:#cfcece"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">SECONDARY — BACKGROUND</td></tr>
+            <tr><td><code>--button-secondary-bg</code></td><td>Buttons/Secondary/Button Default BG</td><td>#e7e6e6</td><td><span class="swatch" style="background:#e7e6e6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-bg-hover</code></td><td>Buttons/Secondary/Button Hover BG</td><td>#f2f2f2</td><td><span class="swatch" style="background:#f2f2f2"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-bg-focus</code></td><td>Buttons/Secondary/Button Focused BG</td><td>#f2f2f2</td><td><span class="swatch" style="background:#f2f2f2"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-bg-active</code></td><td>Buttons/Secondary/Button Active BG</td><td>#fafafa</td><td><span class="swatch" style="background:#fafafa;border:1px solid #e7e6e6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-bg-disabled</code></td><td>Buttons/Secondary/Button Disabled BG</td><td>#f2f2f2</td><td><span class="swatch" style="background:#f2f2f2"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">SECONDARY — BORDER</td></tr>
+            <tr><td><code>--button-secondary-border</code></td><td>Buttons/Secondary/Button Border Default</td><td>#cfcece</td><td><span class="swatch" style="background:#cfcece"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-border-hover</code></td><td>Buttons/Secondary/Button Border Hover</td><td>#b7b6b6</td><td><span class="swatch" style="background:#b7b6b6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-border-focus</code></td><td>Buttons/Secondary/Button Border Focused</td><td>#b7b6b6</td><td><span class="swatch" style="background:#b7b6b6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-border-active</code></td><td>Buttons/Secondary/Button Border Active</td><td>#b7b6b6</td><td><span class="swatch" style="background:#b7b6b6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-border-disabled</code></td><td>Buttons/Secondary/Button Border Disabled</td><td>#e7e6e6</td><td><span class="swatch" style="background:#e7e6e6"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">SECONDARY — TEXT</td></tr>
+            <tr><td><code>--button-secondary-text</code></td><td>Buttons/Secondary/Button Default Text</td><td>#3f3e3d</td><td><span class="swatch" style="background:#3f3e3d"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-text-hover</code></td><td>Buttons/Secondary/Button Hover Text</td><td>#272625</td><td><span class="swatch" style="background:#272625"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-text-focus</code></td><td>Buttons/Secondary/Button Focused Text</td><td>#272625</td><td><span class="swatch" style="background:#272625"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-text-active</code></td><td>Buttons/Secondary/Button Active Text</td><td>#272625</td><td><span class="swatch" style="background:#272625"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-secondary-text-disabled</code></td><td>Buttons/Secondary/Button Disabled Text</td><td>#cfcece</td><td><span class="swatch" style="background:#cfcece"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">GHOST — BACKGROUND</td></tr>
+            <tr><td><code>--button-ghost-bg</code></td><td>Buttons/Ghost/Button Default BG</td><td>transparent</td><td><span class="swatch" style="background:transparent;border:1px solid #cfcece"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-ghost-bg-hover</code></td><td>Buttons/Ghost/Button Hover BG</td><td>rgba(255,255,255,0.2)</td><td><span class="swatch" style="background:rgba(255,255,255,0.2);border:1px solid #cfcece"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-ghost-bg-active</code></td><td>Buttons/Ghost/Button Active BG</td><td>rgba(255,255,255,0.2)</td><td><span class="swatch" style="background:rgba(255,255,255,0.2);border:1px solid #cfcece"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">GHOST — BORDER &amp; TEXT</td></tr>
+            <tr><td><code>--button-ghost-border</code></td><td>Buttons/Ghost/Button Border Default</td><td>#e7e6e6</td><td><span class="swatch" style="background:#e7e6e6"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-ghost-border-hover</code></td><td>Buttons/Ghost/Button Border Hover</td><td>#cfcece</td><td><span class="swatch" style="background:#cfcece"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-ghost-text</code></td><td>Buttons/Ghost/Button Default Text</td><td>#3f3e3d</td><td><span class="swatch" style="background:#3f3e3d"></span></td><td>—</td><td></td></tr>
+            <tr><td><code>--button-ghost-text-hover</code></td><td>Buttons/Ghost/Button Hover Text</td><td>#000000</td><td><span class="swatch" style="background:#000000"></span></td><td>—</td><td></td></tr>
+            <tr class="group-header"><td colspan="6">SHARED — FOCUS RING</td></tr>
+            <tr><td><code>--button-focus-ring-color</code></td><td>Border/Focus (SHARED SEMANTIC)</td><td>#000000</td><td><span class="swatch" style="background:#000000"></span></td><td>—</td><td></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px; color:var(--color-text-subtle); margin-top:12px;">† No current SHARED SEMANTIC equivalent. See Open Questions #2 and #3 in button-spec.md.</p>
+      </div>
+
+    </div><!-- /code-reference -->
+
+  </div><!-- /page-wrap -->
+
+  <script>
+    /* Tab switching */
+    document.querySelectorAll('.code-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const panel = document.getElementById(tab.dataset.target);
+        if (!panel) return;
+        tab.closest('.code-reference').querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        tab.closest('.code-reference').querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        panel.classList.add('active');
+      });
+    });
+
+    /* Load spec.md into the spec tab */
+    fetch('button.md')
+      .then(r => r.text())
+      .then(md => {
+        document.getElementById('spec-rendered').innerHTML = marked.parse(md);
+      })
+      .catch(() => {
+        document.getElementById('spec-rendered').innerHTML =
+          '<p style="color:var(--color-text-subtle);font-size:12px;">Spec not loaded — open button.html via a local server or file:// with fetch allowed.</p>';
+      });
+  </script>
+</body>
+</html>
