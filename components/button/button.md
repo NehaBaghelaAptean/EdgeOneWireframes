@@ -326,3 +326,4 @@ Buttons are predominantly **Tier 1 (shared semantic)** for text and disabled sta
 | 6 | TDK (dark mode) token values for all three variants — dark pass required before acceptance | Designer | Open |
 | 7 | DevExtreme `stylingMode` mapping: confirm whether Ghost maps to `text` or `outlined` in the actual app implementation | Front End | Open |
 | 8 | Icon variant token structure (icon color, gap between icon and label, icon sizes per size tier) — needed for next iteration | Designer | Open |
+| 9 | `#272625` (ADK 90) is used for Secondary hover/focus/active title (`Buttons/Secondary/Button Hover Title` etc.) but has no SHARED SEMANTIC text token. Current prototype bridges via a local `--color-text-strong` alias. Should `Text/Strong` (`#272625` ADK / TBD TDK) be added to the SHARED SEMANTIC collection? | Designer | Open |
