@@ -212,6 +212,43 @@
       margin: 0 0 48px;
     }
 
+    .page-header-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      background: none;
+      border: 1px solid #cfcece;
+      color: var(--color-text-default);
+      padding: 4px 12px;
+      cursor: pointer;
+      border-radius: 0;
+    }
+
+    html[data-theme="dark"] .page-header-btn {
+      border-color: #50505d;
+      color: #d4d4d5;
+    }
+
+    html[data-theme="dark"] .var-ref-table th {
+      background: #3c3c44;
+      border-color: #50505d;
+      color: #d4d4d5;
+    }
+    html[data-theme="dark"] .var-ref-table td {
+      border-color: #3c3c44;
+      color: #d4d4d5;
+    }
+    html[data-theme="dark"] .var-ref-table tr.group-header td {
+      background: #292930;
+      color: #d4d4d5;
+    }
+
     /* ==========================================================
        VARIANT SECTIONS
     ========================================================== */
@@ -602,7 +639,7 @@
       font-family: 'Inter Tight', sans-serif;
       font-size: 11px;
       letter-spacing: 0.04em;
-      color: var(--color-text-subtle);
+      color: var(--color-text-default);
     }
     .swatch {
       display: inline-block;
@@ -745,7 +782,7 @@
       <div style="display:flex; align-items:center; gap:8px;">
         <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972"
            target="_blank" rel="noopener"
-           style="display:inline-flex; align-items:center; gap:6px; font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; text-decoration:none; background:none; border:1px solid #cfcece; color:var(--color-text-subtle); padding:4px 12px; cursor:pointer;">
+           class="page-header-btn">
           <svg width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
             <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
             <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
@@ -755,7 +792,7 @@
           </svg>
           Open in Figma
         </a>
-        <button id="theme-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'; this.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light Mode' : 'Dark Mode';" style="font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; background:none; border:1px solid #e7e6e6; color:#3f3e3d; padding:4px 12px; cursor:pointer; border-radius:0;">Dark Mode</button>
+        <button id="theme-toggle" class="page-header-btn" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'; this.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light Mode' : 'Dark Mode';">Dark Mode</button>
       </div>
     </div>
     <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · Light (ADK) · Dark (TDK)</p>
