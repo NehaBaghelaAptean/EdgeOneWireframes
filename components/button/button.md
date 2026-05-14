@@ -187,10 +187,14 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 ## Dimension Tokens
 
-Heights for S/M/XL/3L confirmed from Figma metadata (node 13386:11634). XS not present in Figma frames — height estimated. Padding and font-size values estimated for all sizes — see Open Questions #1.
+Heights for S/M/XL/3L confirmed from Figma metadata (node 13386:11634). Font properties confirmed from `Body/Regular/body-02` text style via `get_variable_defs`. Font size for M confirmed (`Font Size/14`); other sizes estimated. Padding estimated for all sizes — see Open Questions #1.
 
 | CSS Variable | Selector → Property | Value | Figma Variable | Notes |
 |---|---|---|---|---|
+| `--button-font-family` | `.dx-button → font-family` | `'Inter Tight', sans-serif` | `Font Family/GermanedgeSansCn` via `Body/Regular/body-02` | Confirmed · Inter Tight substituted for GermanedgeSansCn |
+| `--button-font-weight` | `.dx-button → font-weight` | `400` | `Font Weight/regular` via `Body/Regular/body-02` | Confirmed |
+| `--button-letter-spacing` | `.dx-button → letter-spacing` | `0` | `Letter Spacing/0` via `Body/Regular/body-02` | Confirmed |
+| `--button-line-height` | `.dx-button-text → line-height` | `18px` | `Line Height/18` via `Body/Regular/body-02` | Confirmed (M size) |
 | `--button-height-xs` | `.dx-button.button-xs → height` | `20px` | Unknown — requires Figma inspection | Estimated — XS not found in Figma |
 | `--button-height-s` | `.dx-button.button-s → height` | `32px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
 | `--button-height-m` | `.dx-button.button-m → height` | `40px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
@@ -203,9 +207,9 @@ Heights for S/M/XL/3L confirmed from Figma metadata (node 13386:11634). XS not p
 | `--button-padding-3l` | `.dx-button.button-3l .dx-button-content → padding` | `0 24px` | Unknown — requires Figma inspection | Estimated |
 | `--button-font-size-xs` | `.dx-button.button-xs .dx-button-text → font-size` | `11px` | Unknown — requires Figma inspection | Estimated |
 | `--button-font-size-s` | `.dx-button.button-s .dx-button-text → font-size` | `12px` | Unknown — requires Figma inspection | Estimated |
-| `--button-font-size-m` | `.dx-button.button-m .dx-button-text → font-size` | `13px` | Unknown — requires Figma inspection | Confirmed from Figma |
-| `--button-font-size-xl` | `.dx-button.button-xl .dx-button-text → font-size` | `14px` | Unknown — requires Figma inspection | Estimated |
-| `--button-font-size-3l` | `.dx-button.button-3l .dx-button-text → font-size` | `16px` | Unknown — requires Figma inspection | Estimated |
+| `--button-font-size-m` | `.dx-button.button-m .dx-button-text → font-size` | `14px` | `Font Size/14` via `Body/Regular/body-02` | Confirmed |
+| `--button-font-size-xl` | `.dx-button.button-xl .dx-button-text → font-size` | `16px` | Unknown — requires Figma inspection | Estimated |
+| `--button-font-size-3l` | `.dx-button.button-3l .dx-button-text → font-size` | `18px` | Unknown — requires Figma inspection | Estimated |
 | `--button-border-width` | `.dx-button → border-width` | `1px` | — | All variants, all states |
 | `--button-border-radius` | `.dx-button → border-radius` | `0px` | — | Square corners; Germanedge convention |
 | `--button-focus-ring-offset` | `.dx-button.dx-state-focused → outline-offset` | `0px` | — | Focus ring hugs the button edge |

@@ -108,7 +108,13 @@
       --button-focus-ring-radius:         2px;                          /* Corner Radius/XS — exception to 0px rule */
       --button-focus-ring-offset:         2px;                          /* inset: -2px in Figma — gap between button edge and ring */
 
-      /* --- Sizes (S/M/XL/3L heights confirmed from Figma node 13386:11634; padding estimated; XS not in Figma — see Open Questions #1) --- */
+      /* --- Typography (confirmed from Body/Regular/body-02 text style via get_variable_defs) --- */
+      --button-font-family:               'Inter Tight', sans-serif; /* Font Family/GermanedgeSansCn → Inter Tight */
+      --button-font-weight:               400;                       /* Font Weight/regular */
+      --button-letter-spacing:            0;                         /* Letter Spacing/0 */
+      --button-line-height:               18px;                      /* Line Height/18 */
+
+      /* --- Sizes (S/M/XL/3L heights confirmed from Figma node 13386:11634; font-size-m confirmed; padding + other font sizes estimated — see Open Questions #1) --- */
       --button-height-xs:                 20px;    /* † XS not found in Figma — estimated */
       --button-padding-xs:                0 8px;   /* estimated */
       --button-font-size-xs:              11px;    /* estimated */
@@ -119,15 +125,15 @@
 
       --button-height-m:                  40px;    /* confirmed */
       --button-padding-m:                 0 16px;  /* estimated */
-      --button-font-size-m:               13px;    /* estimated */
+      --button-font-size-m:               14px;    /* confirmed · Font Size/14 */
 
       --button-height-xl:                 56px;    /* confirmed */
       --button-padding-xl:                0 20px;  /* estimated */
-      --button-font-size-xl:              14px;    /* estimated */
+      --button-font-size-xl:              16px;    /* estimated */
 
       --button-height-3l:                 72px;    /* confirmed */
       --button-padding-3l:                0 24px;  /* estimated */
-      --button-font-size-3l:              16px;    /* estimated */
+      --button-font-size-3l:              18px;    /* estimated */
     }
 
     /* ==========================================================
@@ -351,8 +357,9 @@
       cursor: pointer;
       position: relative;
       box-sizing: border-box;
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 400;
+      font-family: var(--button-font-family);
+      font-weight: var(--button-font-weight);
+      letter-spacing: var(--button-letter-spacing);
       text-transform: none;
       user-select: none;
       text-decoration: none;
@@ -367,7 +374,7 @@
 
     .dx-button-text {
       white-space: nowrap;
-      line-height: 1;
+      line-height: var(--button-line-height);
     }
 
     /* Sizes */
@@ -614,6 +621,11 @@
     #tab-spec .spec-body hr { border: none; border-top: 1px solid #e7e6e6; margin: 16px 0; }
 
     /* Variable reference table */
+    .var-ref-table td code {
+      color: var(--color-text-default);
+      font-size: 11px;
+    }
+
     .var-ref-table {
       border-collapse: collapse;
       font-size: 12px;
@@ -1288,12 +1300,18 @@
 <span class="code-var">--button-focus-ring-color</span>:          <span class="code-val">var(--color-border-focus)</span>;    <span class="code-comment">/* #1a88b7 */</span>
 <span class="code-var">--button-focus-ring-radius</span>:         <span class="code-val">2px</span>;                          <span class="code-comment">/* Corner Radius/XS */</span>
 
-<span class="code-comment">/* Sizes — M confirmed, others estimated */</span>
+<span class="code-comment">/* Typography — confirmed from Body/Regular/body-02 (get_variable_defs) */</span>
+<span class="code-var">--button-font-family</span>:    <span class="code-val">'Inter Tight', sans-serif</span>;  <span class="code-comment">/* Font Family/GermanedgeSansCn */</span>
+<span class="code-var">--button-font-weight</span>:    <span class="code-val">400</span>;                          <span class="code-comment">/* Font Weight/regular */</span>
+<span class="code-var">--button-letter-spacing</span>: <span class="code-val">0</span>;                            <span class="code-comment">/* Letter Spacing/0 */</span>
+<span class="code-var">--button-line-height</span>:    <span class="code-val">18px</span>;                         <span class="code-comment">/* Line Height/18 */</span>
+
+<span class="code-comment">/* Sizes — heights S/M/XL/3L confirmed; font-size-m confirmed; padding + other font sizes estimated */</span>
 <span class="code-var">--button-height-xs</span>: <span class="code-val">20px</span>;  <span class="code-var">--button-padding-xs</span>: <span class="code-val">0 8px</span>;   <span class="code-var">--button-font-size-xs</span>: <span class="code-val">11px</span>;
-<span class="code-var">--button-height-s</span>:  <span class="code-val">24px</span>;  <span class="code-var">--button-padding-s</span>:  <span class="code-val">0 10px</span>;  <span class="code-var">--button-font-size-s</span>:  <span class="code-val">12px</span>;
-<span class="code-var">--button-height-m</span>:  <span class="code-val">32px</span>;  <span class="code-var">--button-padding-m</span>:  <span class="code-val">0 16px</span>;  <span class="code-var">--button-font-size-m</span>:  <span class="code-val">13px</span>;
-<span class="code-var">--button-height-xl</span>: <span class="code-val">40px</span>;  <span class="code-var">--button-padding-xl</span>: <span class="code-val">0 20px</span>;  <span class="code-var">--button-font-size-xl</span>: <span class="code-val">14px</span>;
-<span class="code-var">--button-height-3l</span>: <span class="code-val">48px</span>;  <span class="code-var">--button-padding-3l</span>: <span class="code-val">0 24px</span>;  <span class="code-var">--button-font-size-3l</span>: <span class="code-val">16px</span>;</code></pre>
+<span class="code-var">--button-height-s</span>:  <span class="code-val">32px</span>;  <span class="code-var">--button-padding-s</span>:  <span class="code-val">0 10px</span>;  <span class="code-var">--button-font-size-s</span>:  <span class="code-val">12px</span>;
+<span class="code-var">--button-height-m</span>:  <span class="code-val">40px</span>;  <span class="code-var">--button-padding-m</span>:  <span class="code-val">0 16px</span>;  <span class="code-var">--button-font-size-m</span>:  <span class="code-val">14px</span>;
+<span class="code-var">--button-height-xl</span>: <span class="code-val">56px</span>;  <span class="code-var">--button-padding-xl</span>: <span class="code-val">0 20px</span>;  <span class="code-var">--button-font-size-xl</span>: <span class="code-val">16px</span>;
+<span class="code-var">--button-height-3l</span>: <span class="code-val">72px</span>;  <span class="code-var">--button-padding-3l</span>: <span class="code-val">0 24px</span>;  <span class="code-var">--button-font-size-3l</span>: <span class="code-val">18px</span>;</code></pre>
       </div>
 
       <!-- Variable Reference tab -->

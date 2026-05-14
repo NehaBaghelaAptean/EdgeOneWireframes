@@ -99,7 +99,7 @@ Call `get_variable_defs` on each Figma node provided before writing any spec row
 get_variable_defs(fileKey, nodeId)  ← one call per variant node
 ```
 
-Store the returned variable name → hex pairs. This output is the **only** allowed source for the Figma Variable column in the spec. Treat it as a lookup table:
+Store the returned variable name → hex pairs. This output is the **only** allowed source for the Figma Variable column in the spec. Also extract the text style bundle (e.g. `Body/Regular/body-02`) if present — it will contain `Font Family/*`, `Font Weight/*`, `Font Size/*`, `Line Height/*`, and `Letter Spacing/*` values. These become `--[component]-font-family`, `--[component]-font-weight`, `--[component]-font-size-[tier]`, `--[component]-line-height`, and `--[component]-letter-spacing` variables in the spec and prototype. Treat it as a lookup table:
 
 - Name appears in the output → use it verbatim
 - Name does not appear → write `Unknown — requires Figma inspection`
@@ -416,7 +416,33 @@ Re-run get_variable_defs for each variant node. For every row in the Color Token
   — OR —
   ⛔ [spec row] — "[name in spec]" not found in get_variable_defs output; replace with `Unknown — requires Figma inspection` or the correct name from the fetch
 
-## 9. Dimension Accuracy ⛔ BLOCKER if any confirmed size mismatches
+## 9. Font Style Consistency ⛔ BLOCKER if any hardcoded font values found in component CSS
+
+Grep the component CSS for hardcoded font values. Every font property must be behind a CSS variable — no exceptions.
+
+```
+grep -n "font-family\|font-weight\|letter-spacing\|line-height" [component].html
+```
+
+For each match, check whether the value is a `var(--[component]-*)` reference or a hardcoded literal:
+
+| Line | Property | Value | Status |
+|---|---|---|---|
+| [n] | font-family | `var(--button-font-family)` | ✅ variable |
+| [n] | font-weight | `400` | ⛔ hardcoded |
+
+  All font properties use variables ✅
+  — OR —
+  ⛔ [property] at line [n] is hardcoded — move to `--[component]-[property]` variable
+
+Required font variables for every component:
+- `--[component]-font-family` — sourced from `Font Family/*` in `get_variable_defs`
+- `--[component]-font-weight` — sourced from `Font Weight/*`
+- `--[component]-font-size-[tier]` — one per size tier, sourced from `Font Size/*`
+- `--[component]-line-height` — sourced from `Line Height/*`
+- `--[component]-letter-spacing` — sourced from `Letter Spacing/*`
+
+## 10. Dimension Accuracy ⛔ BLOCKER if any confirmed size mismatches
 
 Using the symbol dimensions extracted from `get_metadata` in Step 4a, compare each size tier's `height` in the Figma metadata against the corresponding `--[component]-height-[size]` CSS variable in the spec and prototype.
 
