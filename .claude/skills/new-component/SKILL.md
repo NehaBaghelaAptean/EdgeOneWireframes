@@ -203,11 +203,23 @@ Create `components/[id]/[id].html`. Read `components/slider/slider.html` to cali
 - **Focus rings:** `outline: 2px dashed [focus-color]; outline-offset: 0px` — at the element edge.
 - **Disabled:** `cursor: not-allowed` on the root disabled element (e.g. `.dx-state-disabled`). Do not set `pointer-events: none` on interactive child elements — it prevents the cursor from displaying. Interaction is blocked via the JS guard (`if (slider.classList.contains('dx-state-disabled')) return;`) rather than pointer-events.
 - **Spacing:** all gaps must be explicit CSS variables set to a value, never omitted.
+- **No-cache meta tags:** every prototype `<head>` must include these three tags so GitHub Pages CDN never serves a stale version:
+  ```html
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  ```
+- **Page chrome dark mode — no hardcoded colors:** every color value in page chrome CSS (body, page-wrap, headers, tabs, tables, swatches, etc.) must go through a CSS variable. No raw hex in structural rules. Every semantic variable used by page chrome must have an explicit override in the `html[data-theme="dark"]` block. Additionally, set `background` directly on `body` inside the dark rule — do not rely solely on the variable cascade, which can fail on CDN edge nodes:
+  ```css
+  html[data-theme="dark"] body {
+    background: #202026; /* explicit — matches --color-surface-page TDK value */
+  }
+  ```
 
 ### Page layout
 
 ```
-body → background: var(--color-surface-subtle); padding: 40px 24px
+body → background: var(--color-surface-page); padding: 40px 24px
   .page-wrap → max-width: 860px; margin: 0 auto
     page header → component name, subtitle, Figma link button (if URL available), theme toggle
     .state-group (one per state) → .state-label + component demo
@@ -238,6 +250,22 @@ Include only if a Figma URL was provided. Use the 5-shape Figma SVG mark (see `c
 ## 7. Update the Registry
 
 After both files are created, add a row to `components/README.md`. If the user has GitHub Pages set up, include a live demo link; otherwise use `—` for that column.
+
+### `.nojekyll` check — required before pushing
+
+GitHub Pages runs Jekyll by default. Jekyll intercepts any `.md` file that has YAML frontmatter and either processes it into HTML or changes its path — so `fetch('[id].md')` in the spec tab and the download link will both break unless Jekyll is disabled.
+
+Before pushing: verify a `.nojekyll` file exists at the repo root. If it does not exist, create it (empty file, no content). This is a one-time repo-level setup — once it exists it covers all current and future components.
+
+```
+# check
+ls .nojekyll
+
+# create if missing
+touch .nojekyll   # or New-Item .nojekyll on Windows
+git add .nojekyll
+git commit -m "Add .nojekyll to disable Jekyll on GitHub Pages"
+```
 
 ```md
 | [Name] | `[id]` | Draft | [Figma]([figma-url]) | [Live demo](https://[github-username].github.io/inspire-components/components/[id]/[id].html) | [id].md]([id]/[id].md) |
