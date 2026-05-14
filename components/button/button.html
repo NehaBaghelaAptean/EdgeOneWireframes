@@ -37,6 +37,10 @@
       --color-border-focus:             #000000;   /* Border/Focus — confirmed black from Figma (var(--border/focus, black)) */
       --color-border-subtle:            #e7e6e6;   /* ADK 20 — page chrome dividers */
 
+      /* Inline link */
+      --color-link-default:             #1a88b7;   /* Colors/Inline Link/Inline Link Default ADK */
+      --color-link-hover:               #009ec0;   /* Colors/Inline Link/Inline Link Hover ADK */
+
       /* Brand */
       --color-brand-default:            #fcd515;   /* Colors/Brand/Brand 100 */
       --color-brand-subtle:             #fae164;   /* Colors/Brand/Brand 60 */
@@ -161,6 +165,8 @@
       --color-border-focus:             #ffffff;  /* Border/Focus TDK — white ring */
       --color-border-subtle:            #3c3c44;  /* TDK — page chrome dividers */
       --color-text-subtle:              #8a8a97;  /* TDK — estimated; ADK 60 equivalent */
+      --color-link-default:             #7c79ff;  /* Colors/Inline Link/Inline Link Default TDK */
+      --color-link-hover:               #534ffd;  /* Colors/Inline Link/Inline Link Hover TDK */
 
       /* Primary overrides */
       --button-primary-bg-active:         #fceb98;   /* Brand 40 TDK † */
@@ -712,6 +718,8 @@
     #tab-spec .spec-body ul, #tab-spec .spec-body ol { padding-left: 20px; margin-bottom: 10px; }
     #tab-spec .spec-body li { margin-bottom: 3px; }
     #tab-spec .spec-body hr { border: none; border-top: 1px solid #e7e6e6; margin: 16px 0; }
+    #tab-spec .spec-body a { color: var(--color-link-default); }
+    #tab-spec .spec-body a:hover { color: var(--color-link-hover); }
 
     /* Variable reference table */
     .var-ref-table td code {

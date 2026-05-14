@@ -209,6 +209,20 @@ Create `components/[id]/[id].html`. Read `components/slider/slider.html` to cali
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   ```
+- **Inline link colors:** add `--color-link-default` and `--color-link-hover` to the semantic `:root` block and override them in the dark mode block. Apply to spec-body links. Values come from the `Colors/Inline Link` SHARED SEMANTIC collection — ADK: `#1a88b7` / `#009ec0`; TDK: `#7c79ff` / `#534ffd`. Browser default link colors (`#0000ee` / `#551a8b`) are unreadable on dark backgrounds.
+  ```css
+  /* :root */
+  --color-link-default: #1a88b7;
+  --color-link-hover:   #009ec0;
+
+  /* html[data-theme="dark"] */
+  --color-link-default: #7c79ff;
+  --color-link-hover:   #534ffd;
+
+  /* spec-body links */
+  #tab-spec .spec-body a       { color: var(--color-link-default); }
+  #tab-spec .spec-body a:hover { color: var(--color-link-hover); }
+  ```
 - **Page chrome dark mode — no hardcoded colors:** every color value in page chrome CSS (body, page-wrap, headers, tabs, tables, swatches, etc.) must go through a CSS variable. No raw hex in structural rules. Every semantic variable used by page chrome must have an explicit override in the `html[data-theme="dark"]` block. Additionally, set `background` directly on `body` inside the dark rule — do not rely solely on the variable cascade, which can fail on CDN edge nodes:
   ```css
   html[data-theme="dark"] body {
