@@ -32,6 +32,7 @@
 
       /* Border */
       --color-border-focus:             #000000;   /* Border/Focus — confirmed black from Figma (var(--border/focus, black)) */
+      --color-border-subtle:            #e7e6e6;   /* ADK 20 — page chrome dividers */
 
       /* Brand */
       --color-brand-default:            #fcd515;   /* Colors/Brand/Brand 100 */
@@ -155,6 +156,8 @@
       --color-brand-default:            #ffd14a;  /* Colors/Brand/Brand 100 TDK */
       --color-brand-subtle:             #f5dd66;  /* Colors/Brand/Brand 60 TDK */
       --color-border-focus:             #ffffff;  /* Border/Focus TDK — white ring */
+      --color-border-subtle:            #3c3c44;  /* TDK — page chrome dividers */
+      --color-text-subtle:              #8a8a97;  /* TDK — estimated; ADK 60 equivalent */
 
       /* Primary overrides */
       --button-primary-bg-active:         #fceb98;   /* Brand 40 TDK † */
@@ -274,7 +277,7 @@
       gap: 12px;
       margin-bottom: 20px;
       padding-bottom: 8px;
-      border-bottom: 1px solid #e7e6e6;
+      border-bottom: 1px solid var(--color-border-subtle);
     }
 
     .variant-title {
@@ -321,7 +324,7 @@
     .size-section {
       margin-top: 28px;
       padding-top: 20px;
-      border-top: 1px dashed #e7e6e6;
+      border-top: 1px dashed var(--color-border-subtle);
     }
 
     .size-section-label {
@@ -612,7 +615,7 @@
     .code-tabs {
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #cfcece;
+      border-bottom: 1px solid var(--color-border-subtle);
       margin-bottom: 0;
     }
 
@@ -833,7 +836,7 @@
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
       padding-bottom: 4px;
-      border-bottom: 1px solid #e7e6e6;
+      border-bottom: 1px solid var(--color-border-subtle);
     }
 
     .ig-size-label {
