@@ -587,17 +587,17 @@
        the variant. Focus ring border-radius re-applies 9999px after
        the shared focused rule sets it to 2px.
     ========================================================== */
-    .dx-button-icon-only {
+    .dx-button.dx-button-icon-only {
       border-radius: var(--button-border-radius-full);
       aspect-ratio: 1;
     }
-    .dx-button-icon-only .dx-button-content {
+    .dx-button.dx-button-icon-only .dx-button-content {
       padding: 0;
     }
-    .dx-button-icon-only.dx-state-focused {
+    .dx-button.dx-button-icon-only.dx-state-focused {
       border-radius: var(--button-border-radius-full);
     }
-    .dx-button-icon-only.button-xs {
+    .dx-button.dx-button-icon-only.button-xs {
       height: 24px; /* icon container size — XS text button is 20px but icon-only min is 24px */
     }
 
@@ -813,7 +813,7 @@
     }
 
     /* Icon only focus ring stays circular in interactive section */
-    .interactive-section .dx-button-icon-only:not(.dx-state-disabled):focus-visible {
+    .interactive-section .dx-button.dx-button-icon-only:not(.dx-state-disabled):focus-visible {
       border-radius: var(--button-border-radius-full);
     }
 
