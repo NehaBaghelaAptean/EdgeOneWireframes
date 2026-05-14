@@ -13,8 +13,8 @@ prototype: components/button/button.html
 spec: components/button/button.md
 modes:
   light: ADK (complete)
-  dark: TDK (stub — dark mode pass TBD)
-last-updated: 2026-05-13
+  dark: TDK (complete)
+last-updated: 2026-05-14
 ---
 
 # Button
@@ -87,30 +87,30 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-primary-bg` | `.dx-button-primary → background` | `Buttons/Primary/Button Default BG` | COMPONENTS | `#fcd515 · Brand 100` | — | stub |
-| `--button-primary-bg-hover` | `.dx-button-primary.dx-state-hover → background` | `Buttons/Primary/Button Hover BG` | COMPONENTS | `#fae164 · Brand 60` | — | stub |
-| `--button-primary-bg-focus` | `.dx-button-primary.dx-state-focused → background` | `Buttons/Primary/Button Focused BG` | COMPONENTS | `#fae164 · Brand 60` | — | stub |
-| `--button-primary-bg-active` | `.dx-button-primary.dx-state-active → background` | `Buttons/Primary/Button Active BG` | COMPONENTS | `#fff2b2 · †` | — | stub |
-| `--button-primary-bg-disabled` | `.dx-button-primary.dx-state-disabled → background` | `Buttons/Primary/Button Disabled BG` | COMPONENTS | `#f2f2f2 · ADK 10` | — | stub |
+| `--button-primary-bg` | `.dx-button-primary → background` | `Buttons/Primary/Button Default BG` | COMPONENTS | `#fcd515 · Brand 100` | `#ffd14a · Brand 100` | cascades via `--color-brand-default` |
+| `--button-primary-bg-hover` | `.dx-button-primary.dx-state-hover → background` | `Buttons/Primary/Button Hover BG` | COMPONENTS | `#fae164 · Brand 60` | `#f5dd66 · Brand 60` | cascades via `--color-brand-subtle` |
+| `--button-primary-bg-focus` | `.dx-button-primary.dx-state-focused → background` | `Buttons/Primary/Button Focused BG` | COMPONENTS | `#fae164 · Brand 60` | `#f5dd66 · Brand 60` | cascades via `--color-brand-subtle` |
+| `--button-primary-bg-active` | `.dx-button-primary.dx-state-active → background` | `Buttons/Primary/Button Active BG` | COMPONENTS | `#fff2b2 · †` | `#fceb98 · Brand 40` | `explicit: #fceb98 †` |
+| `--button-primary-bg-disabled` | `.dx-button-primary.dx-state-disabled → background` | `Buttons/Primary/Button Disabled BG` | COMPONENTS | `#f2f2f2 · ADK 10` | `#31313b · TDK 30` | cascades via `--color-surface-disabled` |
 
 ### Primary — Border
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-primary-border` | `.dx-button-primary → border-color` | `Buttons/Primary/Button Border Default` | COMPONENTS | `#ab900e · Brand Strong` | — | stub |
-| `--button-primary-border-hover` | `.dx-button-primary.dx-state-hover → border-color` | `Buttons/Primary/Button Border Hover` | COMPONENTS | `#e3c013 · †` | — | stub |
-| `--button-primary-border-active` | `.dx-button-primary.dx-state-active → border-color` | `Buttons/Primary/Button Border Active` | COMPONENTS | `#e3c013 · †` | — | stub |
-| `--button-primary-border-disabled` | `.dx-button-primary.dx-state-disabled → border-color` | `Buttons/Primary/Button Border Disabled` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
+| `--button-primary-border` | `.dx-button-primary → border-color` | `Buttons/Primary/Button Border Default` | COMPONENTS | `#ab900e · Brand Strong` | `#ffd14a · Brand 100` | `explicit: #ffd14a †` |
+| `--button-primary-border-hover` | `.dx-button-primary.dx-state-hover → border-color` | `Buttons/Primary/Button Border Hover` | COMPONENTS | `#e3c013 · †` | `#f5dd66 · Brand 60` | `explicit: #f5dd66 †` |
+| `--button-primary-border-active` | `.dx-button-primary.dx-state-active → border-color` | `Buttons/Primary/Button Border Active` | COMPONENTS | `#e3c013 · †` | `#fceb98 · Brand 40` | `explicit: #fceb98 †` |
+| `--button-primary-border-disabled` | `.dx-button-primary.dx-state-disabled → border-color` | `Buttons/Primary/Button Border Disabled` | COMPONENTS | `#cfcece · ADK 30` | `#31313b · TDK 30` | `explicit: #31313b` |
 
 ### Primary — Text
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-primary-text` | `.dx-button-primary .dx-button-text → color` | `Buttons/Primary/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | — | stub |
-| `--button-primary-text-hover` | `.dx-button-primary.dx-state-hover .dx-button-text → color` | `Buttons/Primary/Button Hover Title` | COMPONENTS | `#000000 · ADK 100` | — | stub |
-| `--button-primary-text-focus` | `.dx-button-primary.dx-state-focused .dx-button-text → color` | `Buttons/Primary/Button Focus Title` | COMPONENTS | `#000000 · ADK 100` | — | stub |
-| `--button-primary-text-active` | `.dx-button-primary.dx-state-active .dx-button-text → color` | `Buttons/Primary/Button Active Title` | COMPONENTS | `#3f3e3d · ADK 80` | — | stub |
-| `--button-primary-text-disabled` | `.dx-button-primary.dx-state-disabled .dx-button-text → color` | `Buttons/Primary/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
+| `--button-primary-text` | `.dx-button-primary .dx-button-text → color` | `Buttons/Primary/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | `#31313b · TDK 30` | `explicit: #31313b †` |
+| `--button-primary-text-hover` | `.dx-button-primary.dx-state-hover .dx-button-text → color` | `Buttons/Primary/Button Hover Title` | COMPONENTS | `#000000 · ADK 100` | `#000000` | cascades via `--color-text-hover` |
+| `--button-primary-text-focus` | `.dx-button-primary.dx-state-focused .dx-button-text → color` | `Buttons/Primary/Button Focus Title` | COMPONENTS | `#000000 · ADK 100` | `#000000` | cascades via `--color-text-hover` |
+| `--button-primary-text-active` | `.dx-button-primary.dx-state-active .dx-button-text → color` | `Buttons/Primary/Button Active Title` | COMPONENTS | `#3f3e3d · ADK 80` | `#31313b · TDK 30` | `explicit: #31313b †` |
+| `--button-primary-text-disabled` | `.dx-button-primary.dx-state-disabled .dx-button-text → color` | `Buttons/Primary/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | `#50505d · TDK 50` | cascades via `--color-text-disabled` |
 
 ---
 
@@ -118,31 +118,31 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-secondary-bg` | `.dx-button-secondary → background` | `Buttons/Secondary/Button Default BG` | COMPONENTS | `#e7e6e6 · ADK 20` | — | stub |
-| `--button-secondary-bg-hover` | `.dx-button-secondary.dx-state-hover → background` | `Buttons/Secondary/Button Hover BG` | COMPONENTS | `#f2f2f2 · ADK 10` | — | stub |
-| `--button-secondary-bg-focus` | `.dx-button-secondary.dx-state-focused → background` | `Buttons/Secondary/Button Focused BG` | COMPONENTS | `#f2f2f2 · ADK 10` | — | stub |
-| `--button-secondary-bg-active` | `.dx-button-secondary.dx-state-active → background` | `Buttons/Secondary/Button Active BG` | COMPONENTS | `#fafafa · ADK 00` | — | stub |
-| `--button-secondary-bg-disabled` | `.dx-button-secondary.dx-state-disabled → background` | `Buttons/Secondary/Button Disabled BG` | COMPONENTS | `#f2f2f2 · ADK 10` | — | stub |
+| `--button-secondary-bg` | `.dx-button-secondary → background` | `Buttons/Secondary/Button Default BG` | COMPONENTS | `#e7e6e6 · ADK 20` | `#31313b · TDK 30` | `explicit: #31313b` |
+| `--button-secondary-bg-hover` | `.dx-button-secondary.dx-state-hover → background` | `Buttons/Secondary/Button Hover BG` | COMPONENTS | `#f2f2f2 · ADK 10` | `#3c3c44 · TDK 40` | `explicit: #3c3c44` |
+| `--button-secondary-bg-focus` | `.dx-button-secondary.dx-state-focused → background` | `Buttons/Secondary/Button Focused BG` | COMPONENTS | `#f2f2f2 · ADK 10` | `#3c3c44 · TDK 40` | `explicit: #3c3c44` |
+| `--button-secondary-bg-active` | `.dx-button-secondary.dx-state-active → background` | `Buttons/Secondary/Button Active BG` | COMPONENTS | `#fafafa · ADK 00` | `#50505d · TDK 50` | `explicit: #50505d` |
+| `--button-secondary-bg-disabled` | `.dx-button-secondary.dx-state-disabled → background` | `Buttons/Secondary/Button Disabled BG` | COMPONENTS | `#f2f2f2 · ADK 10` | `#31313b · TDK 30` | cascades via `--color-surface-disabled` |
 
 ### Secondary — Border
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-secondary-border` | `.dx-button-secondary → border-color` | `Buttons/Secondary/Button Border Default` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
-| `--button-secondary-border-hover` | `.dx-button-secondary.dx-state-hover → border-color` | `Buttons/Secondary/Button Border Hover` | COMPONENTS | `#b7b6b6 · ADK 40` | — | stub |
-| `--button-secondary-border-focus` | `.dx-button-secondary.dx-state-focused → border-color` | `Buttons/Secondary/Button Border Focused` | COMPONENTS | `#b7b6b6 · ADK 40` | — | stub |
-| `--button-secondary-border-active` | `.dx-button-secondary.dx-state-active → border-color` | `Buttons/Secondary/Button Border Active` | COMPONENTS | `#b7b6b6 · ADK 40` | — | stub |
-| `--button-secondary-border-disabled` | `.dx-button-secondary.dx-state-disabled → border-color` | `Buttons/Secondary/Button Border Disabled` | COMPONENTS | `#e7e6e6 · ADK 20` | — | stub |
+| `--button-secondary-border` | `.dx-button-secondary → border-color` | `Buttons/Secondary/Button Border Default` | COMPONENTS | `#cfcece · ADK 30` | `#31313b · TDK 30` | `explicit: #31313b` |
+| `--button-secondary-border-hover` | `.dx-button-secondary.dx-state-hover → border-color` | `Buttons/Secondary/Button Border Hover` | COMPONENTS | `#b7b6b6 · ADK 40` | `#3c3c44 · TDK 40` | `explicit: #3c3c44` |
+| `--button-secondary-border-focus` | `.dx-button-secondary.dx-state-focused → border-color` | `Buttons/Secondary/Button Border Focused` | COMPONENTS | `#b7b6b6 · ADK 40` | `#3c3c44 · TDK 40` | `explicit: #3c3c44` |
+| `--button-secondary-border-active` | `.dx-button-secondary.dx-state-active → border-color` | `Buttons/Secondary/Button Border Active` | COMPONENTS | `#b7b6b6 · ADK 40` | `#50505d · TDK 50` | `explicit: #50505d` |
+| `--button-secondary-border-disabled` | `.dx-button-secondary.dx-state-disabled → border-color` | `Buttons/Secondary/Button Border Disabled` | COMPONENTS | `#e7e6e6 · ADK 20` | `#31313b · TDK 30` | `explicit: #31313b` |
 
 ### Secondary — Text
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-secondary-text` | `.dx-button-secondary .dx-button-text → color` | `Buttons/Secondary/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | — | stub |
-| `--button-secondary-text-hover` | `.dx-button-secondary.dx-state-hover .dx-button-text → color` | `Buttons/Secondary/Button Hover Title` | COMPONENTS | `#272625 · ADK 90` | — | stub |
-| `--button-secondary-text-focus` | `.dx-button-secondary.dx-state-focused .dx-button-text → color` | `Buttons/Secondary/Button Focus Title` | COMPONENTS | `#272625 · ADK 90` | — | stub |
-| `--button-secondary-text-active` | `.dx-button-secondary.dx-state-active .dx-button-text → color` | `Buttons/Secondary/Button Active Title` | COMPONENTS | `#272625 · ADK 90` | — | stub |
-| `--button-secondary-text-disabled` | `.dx-button-secondary.dx-state-disabled .dx-button-text → color` | `Buttons/Secondary/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
+| `--button-secondary-text` | `.dx-button-secondary .dx-button-text → color` | `Buttons/Secondary/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-secondary-text-hover` | `.dx-button-secondary.dx-state-hover .dx-button-text → color` | `Buttons/Secondary/Button Hover Title` | COMPONENTS | `#272625 · ADK 90` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-secondary-text-focus` | `.dx-button-secondary.dx-state-focused .dx-button-text → color` | `Buttons/Secondary/Button Focus Title` | COMPONENTS | `#272625 · ADK 90` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-secondary-text-active` | `.dx-button-secondary.dx-state-active .dx-button-text → color` | `Buttons/Secondary/Button Active Title` | COMPONENTS | `#272625 · ADK 90` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-secondary-text-disabled` | `.dx-button-secondary.dx-state-disabled .dx-button-text → color` | `Buttons/Secondary/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | `#50505d · TDK 50` | cascades via `--color-text-disabled` |
 
 ---
 
@@ -150,28 +150,28 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-ghost-bg` | `.dx-button-ghost → background` | `Buttons/Ghost/Button Default BG` | COMPONENTS | `transparent` | — | stub |
-| `--button-ghost-bg-hover` | `.dx-button-ghost.dx-state-hover → background` | `Buttons/Ghost/Button Hover BG` | COMPONENTS | `rgba(255,255,255,0.2)` | — | stub |
-| `--button-ghost-bg-focus` | `.dx-button-ghost.dx-state-focused → background` | `Buttons/Ghost/Button Focused BG` | COMPONENTS | `rgba(255,255,255,0.2)` | — | stub |
-| `--button-ghost-bg-active` | `.dx-button-ghost.dx-state-active → background` | `Buttons/Ghost/Button Active BG` | COMPONENTS | `rgba(255,255,255,0.2)` | — | stub |
-| `--button-ghost-bg-disabled` | `.dx-button-ghost.dx-state-disabled → background` | `Buttons/Ghost/Button Disabled BG` | COMPONENTS | `transparent` | — | stub |
+| `--button-ghost-bg` | `.dx-button-ghost → background` | `Buttons/Ghost/Button Default BG` | COMPONENTS | `transparent` | `transparent` | — |
+| `--button-ghost-bg-hover` | `.dx-button-ghost.dx-state-hover → background` | `Buttons/Ghost/Button Hover BG` | COMPONENTS | `rgba(255,255,255,0.2)` | `#ffffff0d` | `explicit: #ffffff0d †` |
+| `--button-ghost-bg-focus` | `.dx-button-ghost.dx-state-focused → background` | `Buttons/Ghost/Button Focus BG` | COMPONENTS | `rgba(255,255,255,0.2)` | `#ffffff0d` | `explicit: #ffffff0d †` |
+| `--button-ghost-bg-active` | `.dx-button-ghost.dx-state-active → background` | `Buttons/Ghost/Button Active BG` | COMPONENTS | `rgba(255,255,255,0.2)` | `#ffffff14` | `explicit: #ffffff14 †` |
+| `--button-ghost-bg-disabled` | `.dx-button-ghost.dx-state-disabled → background` | `Buttons/Ghost/Button Disabled BG` | COMPONENTS | `transparent` | `transparent` | — |
 
 ### Ghost — Border
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-ghost-border` | `.dx-button-ghost → border-color` | `Buttons/Ghost/Button Border Default` | COMPONENTS | `#e7e6e6 · ADK 20` | — | stub |
-| `--button-ghost-border-hover` | `.dx-button-ghost.dx-state-hover → border-color`, `.dx-button-ghost.dx-state-focused → border-color`, `.dx-button-ghost.dx-state-active → border-color` | `Buttons/Ghost/Button Border Hover` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
+| `--button-ghost-border` | `.dx-button-ghost → border-color` | `Buttons/Ghost/Button Border Default` | COMPONENTS | `#e7e6e6 · ADK 20` | `#3c3c44 · TDK 40` | `explicit: #3c3c44` |
+| `--button-ghost-border-hover` | `.dx-button-ghost.dx-state-hover → border-color`, `.dx-button-ghost.dx-state-focused → border-color`, `.dx-button-ghost.dx-state-active → border-color` | `Buttons/Ghost/Button Border Hover` | COMPONENTS | `#cfcece · ADK 30` | `#50505d · TDK 50` | `explicit: #50505d` |
 
 ### Ghost — Text
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-ghost-text` | `.dx-button-ghost .dx-button-text → color` | `Buttons/Ghost/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | — | stub |
-| `--button-ghost-text-hover` | `.dx-button-ghost.dx-state-hover .dx-button-text → color` | `Buttons/Ghost/Button Hover Title` | COMPONENTS | `#000000 · ADK 100` | — | stub |
-| `--button-ghost-text-focus` | `.dx-button-ghost.dx-state-focused .dx-button-text → color` | `Buttons/Ghost/Button Focus Title` | COMPONENTS | `#000000 · ADK 100` | — | stub |
-| `--button-ghost-text-active` | `.dx-button-ghost.dx-state-active .dx-button-text → color` | `Buttons/Ghost/Button Active Title` | COMPONENTS | `#000000 · ADK 100` | — | stub |
-| `--button-ghost-text-disabled` | `.dx-button-ghost.dx-state-disabled .dx-button-text → color` | `Buttons/Ghost/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | — | stub |
+| `--button-ghost-text` | `.dx-button-ghost .dx-button-text → color` | `Buttons/Ghost/Button Default Title` | COMPONENTS | `#3f3e3d · ADK 80` | `#d4d4d5 · TDK 80` | cascades via `--color-text-default` |
+| `--button-ghost-text-hover` | `.dx-button-ghost.dx-state-hover .dx-button-text → color` | `Buttons/Ghost/Button Hover Title` | COMPONENTS | `#000000 · ADK 100` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-ghost-text-focus` | `.dx-button-ghost.dx-state-focused .dx-button-text → color` | `Buttons/Ghost/Button Focus Title` | COMPONENTS | `#000000 · ADK 100` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-ghost-text-active` | `.dx-button-ghost.dx-state-active .dx-button-text → color` | `Buttons/Ghost/Button Active Title` | COMPONENTS | `#000000 · ADK 100` | `#f8f8f8 · TDK 100` | `explicit: #f8f8f8 †` |
+| `--button-ghost-text-disabled` | `.dx-button-ghost.dx-state-disabled .dx-button-text → color` | `Buttons/Ghost/Button Disabled Title` | COMPONENTS | `#cfcece · ADK 30` | `#50505d · TDK 50` | cascades via `--color-text-disabled` |
 
 ---
 
@@ -179,7 +179,7 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 | CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
 |---|---|---|---|---|---|---|
-| `--button-focus-ring-color` | `.dx-button.dx-state-focused → outline-color` | `Border/Focus` | SHARED SEMANTIC | `#000000` (black) | — | stub |
+| `--button-focus-ring-color` | `.dx-button.dx-state-focused → outline-color` | `Border/Focus` | SHARED SEMANTIC | `#000000` (black) | `#ffffff` (white) | `explicit: #ffffff` |
 | `--button-focus-ring-radius` | `.dx-button.dx-state-focused → border-radius` | `Corner Radius/XS` | Unknown — requires Figma inspection | `2px` | — | — |
 | `--button-focus-ring-offset` | `.dx-button.dx-state-focused → outline-offset` | — | — | `2px` | — | — |
 
@@ -323,7 +323,7 @@ Buttons are predominantly **Tier 1 (shared semantic)** for text and disabled sta
 | 3 | Should `#e3c013` (Primary hover/active border) be added to SHARED SEMANTIC? Possible `Colors/Brand/Brand 80`? | Designer | Open |
 | 4 | Ghost button hover BG is `rgba(255,255,255,0.2)` — nearly invisible on a white surface. Confirm ghost is intended only for use on colored or dark backgrounds | Designer | Open |
 | 5 | Primary focused state uses default border (`#ab900e`), not hover border. Secondary focused uses hover border (`#b7b6b6`). Is the Primary discrepancy intentional? | Designer | Open |
-| 6 | TDK (dark mode) token values for all three variants — dark pass required before acceptance | Designer | Open |
+| 6 | TDK (dark mode) token values for all three variants — dark pass required before acceptance | Designer | Resolved 2026-05-14 |
 | 7 | DevExtreme `stylingMode` mapping: confirm whether Ghost maps to `text` or `outlined` in the actual app implementation | Front End | Open |
 | 8 | Icon variant token structure (icon color, gap between icon and label, icon sizes per size tier) — needed for next iteration | Designer | Open |
 | 9 | `#272625` (ADK 90) is used for Secondary hover/focus/active title (`Buttons/Secondary/Button Hover Title` etc.) but has no SHARED SEMANTIC text token. Current prototype bridges via a local `--color-text-strong` alias. Should `Text/Strong` (`#272625` ADK / TBD TDK) be added to the SHARED SEMANTIC collection? | Designer | Open |

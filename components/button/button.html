@@ -131,16 +131,53 @@
     }
 
     /* ==========================================================
-       DARK MODE — STUB
-       Light mode only for this version. TDK pass required.
-       See Open Questions #6 in button.md.
+       DARK MODE — TDK
+       All values confirmed from Figma node 13386:11634 (2026-05-14).
     ========================================================== */
     html[data-theme="dark"] {
-      /* Surface */
+      /* Semantic overrides */
       --color-surface-page:             #202026;
       --color-surface-default:          #31313b;
       --color-surface-disabled:         #31313b;
-      /* Remaining dark values TBD */
+      --color-text-default:             #d4d4d5;  /* Text/Default TDK */
+      --color-text-disabled:            #50505d;  /* Text/Disabled TDK */
+      --color-brand-default:            #ffd14a;  /* Colors/Brand/Brand 100 TDK */
+      --color-brand-subtle:             #f5dd66;  /* Colors/Brand/Brand 60 TDK */
+      --color-border-focus:             #ffffff;  /* Border/Focus TDK — white ring */
+
+      /* Primary overrides */
+      --button-primary-bg-active:         #fceb98;   /* Brand 40 TDK † */
+      --button-primary-border:            #ffd14a;   /* same as BG in dark † */
+      --button-primary-border-hover:      #f5dd66;   /* same as hover BG † */
+      --button-primary-border-active:     #fceb98;   /* same as active BG † */
+      --button-primary-border-disabled:   #31313b;
+      --button-primary-text:              #31313b;   /* dark text on yellow BG † */
+      --button-primary-text-active:       #31313b;
+
+      /* Secondary overrides */
+      --button-secondary-bg:              #31313b;
+      --button-secondary-bg-hover:        #3c3c44;
+      --button-secondary-bg-focus:        #3c3c44;
+      --button-secondary-bg-active:       #50505d;
+      --button-secondary-border:          #31313b;
+      --button-secondary-border-hover:    #3c3c44;
+      --button-secondary-border-focus:    #3c3c44;
+      --button-secondary-border-active:   #50505d;
+      --button-secondary-border-disabled: #31313b;
+      --button-secondary-text:            #f8f8f8;   /* Theme 100 TDK † */
+      --button-secondary-text-hover:      #f8f8f8;
+      --button-secondary-text-focus:      #f8f8f8;
+      --button-secondary-text-active:     #f8f8f8;
+
+      /* Ghost overrides */
+      --button-ghost-bg-hover:            #ffffff0d; /* rgba(255,255,255,0.05) † */
+      --button-ghost-bg-focus:            #ffffff0d;
+      --button-ghost-bg-active:           #ffffff14; /* rgba(255,255,255,0.08) † */
+      --button-ghost-border:              #3c3c44;
+      --button-ghost-border-hover:        #50505d;
+      --button-ghost-text-hover:          #f8f8f8;   /* Theme 100 TDK † */
+      --button-ghost-text-focus:          #f8f8f8;
+      --button-ghost-text-active:         #f8f8f8;
     }
 
     /* ==========================================================
@@ -718,10 +755,10 @@
           </svg>
           Open in Figma
         </a>
-        <button disabled style="font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; background:none; border:1px solid #e7e6e6; color:#cfcece; padding:4px 12px; cursor:not-allowed; border-radius:0;" title="Dark mode designs not yet in Figma">Dark Mode</button>
+        <button id="theme-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'; this.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light Mode' : 'Dark Mode';" style="font-family:'Inter Tight',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; background:none; border:1px solid #e7e6e6; color:#3f3e3d; padding:4px 12px; cursor:pointer; border-radius:0;">Dark Mode</button>
       </div>
     </div>
-    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · Light (ADK) only · Dark (TDK) pending</p>
+    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · Light (ADK) · Dark (TDK)</p>
 
 
     <!-- ========================================================
