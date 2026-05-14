@@ -108,6 +108,10 @@
       --button-focus-ring-radius:         2px;                          /* Corner Radius/XS — exception to 0px rule */
       --button-focus-ring-offset:         2px;                          /* inset: -2px in Figma — gap between button edge and ring */
 
+      /* --- Icon (confirmed from Figma get_design_context, node 13480:147330) --- */
+      --button-icon-size:                 24px;   /* icon container width/height */
+      --button-icon-gap:                  8px;    /* gap between icon and text */
+
       /* --- Typography (confirmed from Body/Regular/body-02 text style via get_variable_defs) --- */
       --button-font-family:               'Inter Tight', sans-serif; /* Font Family/GermanedgeSansCn → Inter Tight */
       --button-font-weight:               400;                       /* Font Weight/regular */
@@ -344,6 +348,14 @@
       color: var(--color-text-subtle);
     }
 
+    /* Icon variant grid — reuses ig-col-header / ig-size-label / ig-cell from interactive section */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: 44px repeat(5, 1fr);
+      gap: 10px 12px;
+      align-items: center;
+    }
+
     /* ==========================================================
        BASE BUTTON STYLES
     ========================================================== */
@@ -375,6 +387,19 @@
     .dx-button-text {
       white-space: nowrap;
       line-height: var(--button-line-height);
+    }
+
+    /* Icon layout — dx-button-has-icon is applied by DevExtreme when icon prop is set */
+    .dx-button-has-icon .dx-button-content {
+      gap: var(--button-icon-gap);
+    }
+    .dx-icon {
+      width: var(--button-icon-size);
+      height: var(--button-icon-size);
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Sizes */
@@ -807,7 +832,7 @@
         <button id="theme-toggle" class="page-header-btn" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'; this.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light Mode' : 'Dark Mode';">Dark Mode</button>
       </div>
     </div>
-    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · Light (ADK) · Dark (TDK)</p>
+    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · icon left/right · Light (ADK) · Dark (TDK)</p>
 
 
     <!-- ========================================================
@@ -977,6 +1002,33 @@
         </div>
       </div>
 
+      <!-- Icon variants -->
+      <div class="size-section">
+        <p class="size-section-label">With Icon — Size M · icon color inherits via currentColor</p>
+        <div class="icon-grid">
+          <div></div>
+          <div class="ig-col-header">Default</div>
+          <div class="ig-col-header">Hover</div>
+          <div class="ig-col-header">Focused</div>
+          <div class="ig-col-header">Active</div>
+          <div class="ig-col-header">Disabled</div>
+          <!-- Icon Left -->
+          <div class="ig-size-label">Left</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <!-- Icon Right -->
+          <div class="ig-size-label">Right</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+        </div>
+      </div>
+
       <!-- Size comparison -->
       <div class="size-section">
         <p class="size-section-label">Size comparison — Default state</p>
@@ -1067,6 +1119,33 @@
           <div class="dx-widget dx-button dx-button-secondary dx-state-disabled button-m" role="button" aria-disabled="true">
             <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Icon variants -->
+      <div class="size-section">
+        <p class="size-section-label">With Icon — Size M · icon color inherits via currentColor</p>
+        <div class="icon-grid">
+          <div></div>
+          <div class="ig-col-header">Default</div>
+          <div class="ig-col-header">Hover</div>
+          <div class="ig-col-header">Focused</div>
+          <div class="ig-col-header">Active</div>
+          <div class="ig-col-header">Disabled</div>
+          <!-- Icon Left -->
+          <div class="ig-size-label">Left</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <!-- Icon Right -->
+          <div class="ig-size-label">Right</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
         </div>
       </div>
 
@@ -1165,6 +1244,33 @@
         </div>
       </div>
 
+      <!-- Icon variants -->
+      <div class="size-section">
+        <p class="size-section-label">With Icon — Size M · icon color inherits via currentColor</p>
+        <div class="icon-grid">
+          <div></div>
+          <div class="ig-col-header">Default</div>
+          <div class="ig-col-header">Hover</div>
+          <div class="ig-col-header">Focused</div>
+          <div class="ig-col-header">Active</div>
+          <div class="ig-col-header">Disabled</div>
+          <!-- Icon Left -->
+          <div class="ig-size-label">Left</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <!-- Icon Right -->
+          <div class="ig-size-label">Right</div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+        </div>
+      </div>
+
       <!-- Size comparison -->
       <div class="size-section">
         <p class="size-section-label">Size comparison — Default state</p>
@@ -1252,7 +1358,25 @@
 <span class="code-comment">&lt;!-- Secondary — swap dx-button-primary for dx-button-secondary --&gt;</span>
 <span class="code-comment">&lt;!-- Ghost      — swap dx-button-primary for dx-button-ghost --&gt;</span>
 
-<span class="code-comment">&lt;!-- Size classes: button-xs · button-s · button-m · button-xl · button-3l --&gt;</span></code></pre>
+<span class="code-comment">&lt;!-- Size classes: button-xs · button-s · button-m · button-xl · button-3l --&gt;</span>
+
+<span class="code-comment">&lt;!-- Icon Left (DevExtreme adds dx-button-has-icon + dx-button-has-text when icon prop is set) --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m"</span>
+     <span class="code-attr">role</span>=<span class="code-string">"button"</span> <span class="code-attr">tabindex</span>=<span class="code-string">"0"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-content"</span>&gt;
+    &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-icon"</span>&gt;<span class="code-comment">&lt;!-- icon SVG, currentColor --&gt;</span>&lt;/<span class="code-tag">span</span>&gt;
+    &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-text"</span>&gt;Button Label&lt;/<span class="code-tag">span</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Icon Right — swap the order of dx-icon and dx-button-text --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m"</span>
+     <span class="code-attr">role</span>=<span class="code-string">"button"</span> <span class="code-attr">tabindex</span>=<span class="code-string">"0"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-content"</span>&gt;
+    &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-button-text"</span>&gt;Button Label&lt;/<span class="code-tag">span</span>&gt;
+    &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-icon"</span>&gt;<span class="code-comment">&lt;!-- icon SVG, currentColor --&gt;</span>&lt;/<span class="code-tag">span</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;</code></pre>
       </div>
 
       <!-- CSS Variables tab -->

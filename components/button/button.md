@@ -19,7 +19,7 @@ last-updated: 2026-05-14
 
 # Button
 
-**Status:** Draft · **Modes:** ADK (Light) complete; TDK (Dark) in progress · **Library:** DevExtreme dxButton  
+**Status:** Draft · **Modes:** ADK (Light) complete; TDK (Dark) complete · **Library:** DevExtreme dxButton  
 **Prototype:** `components/button/button.html` · **Figma:** [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573)
 
 ## Who reads what
@@ -220,6 +220,8 @@ Heights for S/M/XL/3L confirmed from Figma metadata (node 13386:11634). Font pro
 
 DevExtreme dxButton renders the following DOM structure at runtime:
 
+**Text only:**
+
 ```html
 <div class="dx-widget dx-button dx-button-mode-contained [variant-class] [size-class] [state-class]"
      role="button"
@@ -231,6 +233,20 @@ DevExtreme dxButton renders the following DOM structure at runtime:
 </div>
 ```
 
+**With icon — left:**
+
+```html
+<div class="dx-widget dx-button [variant-class] dx-button-has-icon dx-button-has-text [size-class]"
+     role="button" tabindex="0">
+  <div class="dx-button-content">
+    <span class="dx-icon"><!-- SVG icon, fill/stroke: currentColor --></span>
+    <span class="dx-button-text">Button Label</span>
+  </div>
+</div>
+```
+
+**With icon — right:** same structure, `dx-button-text` before `dx-icon`.
+
 **Variant classes** — added to root `.dx-button`:
 
 | Class | Variant |
@@ -239,15 +255,22 @@ DevExtreme dxButton renders the following DOM structure at runtime:
 | `.dx-button-secondary` | Secondary |
 | `.dx-button-ghost` | Ghost |
 
+**Icon classes** — applied automatically by DevExtreme when `icon` prop is set:
+
+| Class | Meaning |
+|---|---|
+| `.dx-button-has-icon` | Button has an icon |
+| `.dx-button-has-text` | Button has a text label (always present when text is non-empty) |
+
 **Size classes** — added to root `.dx-button`:
 
 | Class | Height |
 |---|---|
-| `.button-xs` | 20px |
-| `.button-s` | 24px |
-| `.button-m` | 32px (reference) |
-| `.button-xl` | 40px |
-| `.button-3l` | 48px |
+| `.button-xs` | 20px (estimated — not in Figma) |
+| `.button-s` | 32px (confirmed) |
+| `.button-m` | 40px (confirmed) |
+| `.button-xl` | 56px (confirmed) |
+| `.button-3l` | 72px (confirmed) |
 
 **Runtime state classes** (DevExtreme applies these automatically):
 
