@@ -626,6 +626,11 @@
       aspect-ratio: 1;
       color: var(--button-icon-only-icon);
     }
+    /* Zero out the size-class padding so content width never exceeds height,
+       allowing aspect-ratio:1 to keep the button square/circular. */
+    .dx-button-icon-only .dx-button-content {
+      padding: 0;
+    }
     .dx-button-icon-only.dx-state-hover {
       background: var(--button-icon-only-bg-hover);
       border-color: var(--button-icon-only-border-hover);
