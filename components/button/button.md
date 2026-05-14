@@ -187,15 +187,15 @@ Authoritative mapping: CSS variable → applied selector → Figma variable path
 
 ## Dimension Tokens
 
-M size is confirmed from Figma. XS, S, XL, and 3L dimension values are estimated — see Open Questions #1.
+Heights for S/M/XL/3L confirmed from Figma metadata (node 13386:11634). XS not present in Figma frames — height estimated. Padding and font-size values estimated for all sizes — see Open Questions #1.
 
 | CSS Variable | Selector → Property | Value | Figma Variable | Notes |
 |---|---|---|---|---|
-| `--button-height-xs` | `.dx-button.button-xs → height` | `20px` | Unknown — requires Figma inspection | Estimated |
-| `--button-height-s` | `.dx-button.button-s → height` | `24px` | Unknown — requires Figma inspection | Estimated |
-| `--button-height-m` | `.dx-button.button-m → height` | `32px` | Unknown — requires Figma inspection | Confirmed from M-size Figma frame |
-| `--button-height-xl` | `.dx-button.button-xl → height` | `40px` | Unknown — requires Figma inspection | Estimated |
-| `--button-height-3l` | `.dx-button.button-3l → height` | `48px` | Unknown — requires Figma inspection | Estimated |
+| `--button-height-xs` | `.dx-button.button-xs → height` | `20px` | Unknown — requires Figma inspection | Estimated — XS not found in Figma |
+| `--button-height-s` | `.dx-button.button-s → height` | `32px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
+| `--button-height-m` | `.dx-button.button-m → height` | `40px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
+| `--button-height-xl` | `.dx-button.button-xl → height` | `56px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
+| `--button-height-3l` | `.dx-button.button-3l → height` | `72px` | Unknown — requires Figma inspection | Confirmed from Figma metadata |
 | `--button-padding-xs` | `.dx-button.button-xs .dx-button-content → padding` | `0 8px` | Unknown — requires Figma inspection | Estimated |
 | `--button-padding-s` | `.dx-button.button-s .dx-button-content → padding` | `0 10px` | Unknown — requires Figma inspection | Estimated |
 | `--button-padding-m` | `.dx-button.button-m .dx-button-content → padding` | `0 16px` | Unknown — requires Figma inspection | Estimated |

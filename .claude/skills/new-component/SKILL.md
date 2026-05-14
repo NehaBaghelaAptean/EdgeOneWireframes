@@ -93,7 +93,7 @@ For each visual property, assign a tier:
 
 **Required if a Figma URL was provided. Skip only if no Figma URL exists.**
 
-Call `get_variable_defs` on each Figma node provided before writing any spec row or `:root` block. A component with multiple variants (e.g. Primary, Secondary, Ghost) will have multiple nodes — fetch them all.
+Call `get_variable_defs` on each Figma node provided before writing any spec row or `:root` block. At the same time, call `get_metadata` on the parent frame to extract symbol dimensions — you will need these for the dimension validation in Step 9. A component with multiple variants (e.g. Primary, Secondary, Ghost) will have multiple nodes — fetch them all.
 
 ```
 get_variable_defs(fileKey, nodeId)  ← one call per variant node
@@ -415,6 +415,22 @@ Re-run get_variable_defs for each variant node. For every row in the Color Token
   All confirmed ✅
   — OR —
   ⛔ [spec row] — "[name in spec]" not found in get_variable_defs output; replace with `Unknown — requires Figma inspection` or the correct name from the fetch
+
+## 9. Dimension Accuracy ⛔ BLOCKER if any confirmed size mismatches
+
+Using the symbol dimensions extracted from `get_metadata` in Step 4a, compare each size tier's `height` in the Figma metadata against the corresponding `--[component]-height-[size]` CSS variable in the spec and prototype.
+
+How to extract heights: in the `get_metadata` XML output, find `<symbol>` tags with `State=Default` and `Button-icon=None` (or the equivalent default/neutral state for the component). The `height` attribute is the confirmed pixel height for that size tier.
+
+| Size | Figma height (from metadata) | Spec/CSS height | Match? |
+|---|---|---|---|
+| [size] | [px from symbol tag] | [px from CSS var] | ✅ / ⛔ |
+
+  All sizes match ✅
+  — OR —
+  ⛔ [size] — Figma: [X]px, CSS: [Y]px — update `--[component]-height-[size]` to [X]px
+
+Any size not present in the Figma metadata (e.g. XS) must be marked "Estimated — not in Figma" in the spec's Dimension Tokens Notes column and added to Open Questions.
 
 ---
 
