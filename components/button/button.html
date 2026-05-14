@@ -101,9 +101,30 @@
       --button-ghost-text-active:         var(--color-text-hover);      /* #000000 */
       --button-ghost-text-disabled:       var(--color-text-disabled);   /* #cfcece */
 
+      /* --- Icon Only (circular) --- */
+      /* † All values estimated — requires Figma inspection for confirmed token bindings */
+      --button-icon-only-bg:              #e7e6e6;                      /* † estimated · ADK 20 */
+      --button-icon-only-bg-hover:        var(--color-surface-disabled);/* † estimated · #f2f2f2 */
+      --button-icon-only-bg-focus:        var(--color-surface-disabled);/* † estimated · #f2f2f2 */
+      --button-icon-only-bg-active:       var(--color-surface-subtle);  /* † estimated · #fafafa */
+      --button-icon-only-bg-disabled:     var(--color-surface-disabled);/* † estimated · #f2f2f2 */
+
+      --button-icon-only-border:          var(--color-text-disabled);   /* † estimated · #cfcece */
+      --button-icon-only-border-hover:    #b7b6b6;                      /* † estimated · ADK 40 */
+      --button-icon-only-border-focus:    #b7b6b6;                      /* † estimated · ADK 40 */
+      --button-icon-only-border-active:   #b7b6b6;                      /* † estimated · ADK 40 */
+      --button-icon-only-border-disabled: #e7e6e6;                      /* † estimated · ADK 20 */
+
+      --button-icon-only-icon:            var(--color-text-default);    /* † estimated · #3f3e3d */
+      --button-icon-only-icon-hover:      var(--color-text-strong);     /* † estimated · #272625 */
+      --button-icon-only-icon-focus:      var(--color-text-strong);     /* † estimated · #272625 */
+      --button-icon-only-icon-active:     var(--color-text-strong);     /* † estimated · #272625 */
+      --button-icon-only-icon-disabled:   var(--color-text-disabled);   /* † estimated · #cfcece */
+
       /* --- Shared structure --- */
       --button-border-width:              1px;
       --button-border-radius:             0px;
+      --button-border-radius-full:        9999px; /* circular / pill */
       --button-focus-ring-color:          var(--color-border-focus);    /* #000000 — var(--border/focus) in Figma */
       --button-focus-ring-radius:         2px;                          /* Corner Radius/XS — exception to 0px rule */
       --button-focus-ring-offset:         2px;                          /* inset: -2px in Figma — gap between button edge and ring */
@@ -188,6 +209,21 @@
       --button-ghost-text-hover:          #f8f8f8;   /* Theme 100 TDK † */
       --button-ghost-text-focus:          #f8f8f8;
       --button-ghost-text-active:         #f8f8f8;
+
+      /* Icon Only overrides — estimated from secondary dark mode pattern */
+      --button-icon-only-bg:              #31313b;
+      --button-icon-only-bg-hover:        #3c3c44;
+      --button-icon-only-bg-focus:        #3c3c44;
+      --button-icon-only-bg-active:       #50505d;
+      --button-icon-only-border:          #31313b;
+      --button-icon-only-border-hover:    #3c3c44;
+      --button-icon-only-border-focus:    #3c3c44;
+      --button-icon-only-border-active:   #50505d;
+      --button-icon-only-border-disabled: #31313b;
+      --button-icon-only-icon:            #f8f8f8;
+      --button-icon-only-icon-hover:      #f8f8f8;
+      --button-icon-only-icon-focus:      #f8f8f8;
+      --button-icon-only-icon-active:     #f8f8f8;
     }
 
     /* ==========================================================
@@ -441,6 +477,7 @@
     .dx-button-primary {
       background: var(--button-primary-bg);
       border-color: var(--button-primary-border);
+      color: var(--button-primary-text);
     }
     .dx-button-primary .dx-button-text {
       color: var(--button-primary-text);
@@ -449,6 +486,7 @@
     .dx-button-primary.dx-state-hover {
       background: var(--button-primary-bg-hover);
       border-color: var(--button-primary-border-hover);
+      color: var(--button-primary-text-hover);
     }
     .dx-button-primary.dx-state-hover .dx-button-text {
       color: var(--button-primary-text-hover);
@@ -457,6 +495,7 @@
     .dx-button-primary.dx-state-focused {
       background: var(--button-primary-bg-focus);
       border-color: var(--button-primary-border);
+      color: var(--button-primary-text-focus);
     }
     .dx-button-primary.dx-state-focused .dx-button-text {
       color: var(--button-primary-text-focus);
@@ -465,6 +504,7 @@
     .dx-button-primary.dx-state-active {
       background: var(--button-primary-bg-active);
       border-color: var(--button-primary-border-active);
+      color: var(--button-primary-text-active);
     }
     .dx-button-primary.dx-state-active .dx-button-text {
       color: var(--button-primary-text-active);
@@ -485,6 +525,7 @@
     .dx-button-secondary {
       background: var(--button-secondary-bg);
       border-color: var(--button-secondary-border);
+      color: var(--button-secondary-text);
     }
     .dx-button-secondary .dx-button-text {
       color: var(--button-secondary-text);
@@ -493,6 +534,7 @@
     .dx-button-secondary.dx-state-hover {
       background: var(--button-secondary-bg-hover);
       border-color: var(--button-secondary-border-hover);
+      color: var(--button-secondary-text-hover);
     }
     .dx-button-secondary.dx-state-hover .dx-button-text {
       color: var(--button-secondary-text-hover);
@@ -501,6 +543,7 @@
     .dx-button-secondary.dx-state-focused {
       background: var(--button-secondary-bg-focus);
       border-color: var(--button-secondary-border-focus);
+      color: var(--button-secondary-text-focus);
     }
     .dx-button-secondary.dx-state-focused .dx-button-text {
       color: var(--button-secondary-text-focus);
@@ -509,6 +552,7 @@
     .dx-button-secondary.dx-state-active {
       background: var(--button-secondary-bg-active);
       border-color: var(--button-secondary-border-active);
+      color: var(--button-secondary-text-active);
     }
     .dx-button-secondary.dx-state-active .dx-button-text {
       color: var(--button-secondary-text-active);
@@ -529,6 +573,7 @@
     .dx-button-ghost {
       background: var(--button-ghost-bg);
       border-color: var(--button-ghost-border);
+      color: var(--button-ghost-text);
     }
     .dx-button-ghost .dx-button-text {
       color: var(--button-ghost-text);
@@ -537,6 +582,7 @@
     .dx-button-ghost.dx-state-hover {
       background: var(--button-ghost-bg-hover);
       border-color: var(--button-ghost-border-hover);
+      color: var(--button-ghost-text-hover);
     }
     .dx-button-ghost.dx-state-hover .dx-button-text {
       color: var(--button-ghost-text-hover);
@@ -545,6 +591,7 @@
     .dx-button-ghost.dx-state-focused {
       background: var(--button-ghost-bg-focus);
       border-color: var(--button-ghost-border-hover);
+      color: var(--button-ghost-text-focus);
     }
     .dx-button-ghost.dx-state-focused .dx-button-text {
       color: var(--button-ghost-text-focus);
@@ -553,6 +600,7 @@
     .dx-button-ghost.dx-state-active {
       background: var(--button-ghost-bg-active);
       border-color: var(--button-ghost-border-hover);
+      color: var(--button-ghost-text-active);
     }
     .dx-button-ghost.dx-state-active .dx-button-text {
       color: var(--button-ghost-text-active);
@@ -564,6 +612,40 @@
     }
     .dx-button-ghost.dx-state-disabled .dx-button-text {
       color: var(--button-ghost-text-disabled);
+    }
+
+    /* ==========================================================
+       ICON ONLY VARIANT (circular)
+       color set on root so the icon inherits via currentColor.
+       Focus ring border-radius overrides the shared 2px rule.
+    ========================================================== */
+    .dx-button-icon-only {
+      background: var(--button-icon-only-bg);
+      border-color: var(--button-icon-only-border);
+      border-radius: var(--button-border-radius-full);
+      aspect-ratio: 1;
+      color: var(--button-icon-only-icon);
+    }
+    .dx-button-icon-only.dx-state-hover {
+      background: var(--button-icon-only-bg-hover);
+      border-color: var(--button-icon-only-border-hover);
+      color: var(--button-icon-only-icon-hover);
+    }
+    .dx-button-icon-only.dx-state-focused {
+      background: var(--button-icon-only-bg-focus);
+      border-color: var(--button-icon-only-border-focus);
+      color: var(--button-icon-only-icon-focus);
+      border-radius: var(--button-border-radius-full);
+    }
+    .dx-button-icon-only.dx-state-active {
+      background: var(--button-icon-only-bg-active);
+      border-color: var(--button-icon-only-border-active);
+      color: var(--button-icon-only-icon-active);
+    }
+    .dx-button-icon-only.dx-state-disabled {
+      background: var(--button-icon-only-bg-disabled);
+      border-color: var(--button-icon-only-border-disabled);
+      color: var(--button-icon-only-icon-disabled);
     }
 
     /* ==========================================================
@@ -770,16 +852,38 @@
     .interactive-section .dx-button-ghost:not(.dx-state-disabled):active {
       background: var(--button-ghost-bg-active);
       border-color: var(--button-ghost-border-hover);
+      color: var(--button-ghost-text-active);
       outline: none;
     }
     .interactive-section .dx-button-ghost:not(.dx-state-disabled):active .dx-button-text {
       color: var(--button-ghost-text-active);
     }
 
+    /* Icon Only — live states */
+    .interactive-section .dx-button-icon-only:not(.dx-state-disabled):hover {
+      background: var(--button-icon-only-bg-hover);
+      border-color: var(--button-icon-only-border-hover);
+      color: var(--button-icon-only-icon-hover);
+    }
+    .interactive-section .dx-button-icon-only:not(.dx-state-disabled):focus-visible {
+      background: var(--button-icon-only-bg-focus);
+      border-color: var(--button-icon-only-border-focus);
+      color: var(--button-icon-only-icon-focus);
+      outline: 2px dashed var(--button-focus-ring-color);
+      outline-offset: var(--button-focus-ring-offset, 2px);
+      border-radius: var(--button-border-radius-full);
+    }
+    .interactive-section .dx-button-icon-only:not(.dx-state-disabled):active {
+      background: var(--button-icon-only-bg-active);
+      border-color: var(--button-icon-only-border-active);
+      color: var(--button-icon-only-icon-active);
+      outline: none;
+    }
+
     /* Interactive grid layout */
     .interactive-grid {
       display: grid;
-      grid-template-columns: 36px 1fr 1fr 1fr;
+      grid-template-columns: 36px 1fr 1fr 1fr 1fr;
       gap: 10px 16px;
       align-items: center;
     }
@@ -835,7 +939,7 @@
         <button id="theme-toggle" class="page-header-btn" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'; this.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light Mode' : 'Dark Mode';">Dark Mode</button>
       </div>
     </div>
-    <p class="page-subtitle">Component draft · 3 variants · 5 states · 5 sizes · icon left/right · Light (ADK) · Dark (TDK)</p>
+    <p class="page-subtitle">Component draft · 4 variants · 5 states · 5 sizes · icon left/right · Light (ADK) · Dark (TDK)</p>
 
 
     <!-- ========================================================
@@ -846,7 +950,7 @@
     <div class="variant-section interactive-section">
       <div class="variant-header">
         <span class="variant-title">Interactive</span>
-        <span class="variant-subtitle">Hover · click · Tab key to focus · all three variants × all five sizes</span>
+        <span class="variant-subtitle">Hover · click · Tab key to focus · all four variants × all five sizes</span>
       </div>
 
       <div class="interactive-grid">
@@ -856,96 +960,42 @@
         <div class="ig-col-header">Primary</div>
         <div class="ig-col-header">Secondary</div>
         <div class="ig-col-header">Ghost</div>
+        <div class="ig-col-header">Icon Only</div>
 
         <!-- XS -->
         <div class="ig-size-label">XS</div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-primary button-xs" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-secondary button-xs" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell ig-ghost-cell">
-          <div class="dx-widget dx-button dx-button-ghost button-xs" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary button-xs" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary button-xs" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost button-xs" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-xs" role="button" tabindex="0" aria-label="Action"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
 
         <!-- S -->
         <div class="ig-size-label">S</div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-primary button-s" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-secondary button-s" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell ig-ghost-cell">
-          <div class="dx-widget dx-button dx-button-ghost button-s" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Label</span></div>
-          </div>
-        </div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary button-s" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary button-s" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost button-s" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-s" role="button" tabindex="0" aria-label="Action"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
 
         <!-- M -->
         <div class="ig-size-label">M</div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-primary button-m" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-secondary button-m" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell ig-ghost-cell">
-          <div class="dx-widget dx-button dx-button-ghost button-m" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-m" role="button" tabindex="0" aria-label="Action"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
 
         <!-- XL -->
         <div class="ig-size-label">XL</div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-primary button-xl" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-secondary button-xl" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell ig-ghost-cell">
-          <div class="dx-widget dx-button dx-button-ghost button-xl" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary button-xl" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary button-xl" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost button-xl" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-xl" role="button" tabindex="0" aria-label="Action"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
 
         <!-- 3L -->
         <div class="ig-size-label">3L</div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-primary button-3l" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell">
-          <div class="dx-widget dx-button dx-button-secondary button-3l" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
-        <div class="ig-cell ig-ghost-cell">
-          <div class="dx-widget dx-button dx-button-ghost button-3l" role="button" tabindex="0">
-            <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
-          </div>
-        </div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary button-3l" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary button-3l" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost button-3l" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Button Label</span></div></div></div>
+        <div class="ig-cell"><div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-3l" role="button" tabindex="0" aria-label="Action"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
 
       </div><!-- /interactive-grid -->
     </div><!-- /interactive-section -->
@@ -1017,18 +1067,18 @@
           <div class="ig-col-header">Disabled</div>
           <!-- Icon Left -->
           <div class="ig-size-label">Left</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
           <!-- Icon Right -->
           <div class="ig-size-label">Right</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-primary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
         </div>
       </div>
 
@@ -1137,18 +1187,18 @@
           <div class="ig-col-header">Disabled</div>
           <!-- Icon Left -->
           <div class="ig-size-label">Left</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
           <!-- Icon Right -->
           <div class="ig-size-label">Right</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-secondary dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
         </div>
       </div>
 
@@ -1259,18 +1309,18 @@
           <div class="ig-col-header">Disabled</div>
           <!-- Icon Left -->
           <div class="ig-size-label">Left</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="dx-button-text">Label</span></div></div></div>
           <!-- Icon Right -->
           <div class="ig-size-label">Right</div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
-          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-hover button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-focused button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-active button-m" role="button" tabindex="0"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
+          <div class="ig-cell"><div class="dx-widget dx-button dx-button-ghost dx-button-has-icon dx-button-has-text dx-state-disabled button-m" role="button" aria-disabled="true"><div class="dx-button-content"><span class="dx-button-text">Label</span><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div></div>
         </div>
       </div>
 
@@ -1305,6 +1355,99 @@
           <div class="size-cell">
             <div class="dx-widget dx-button dx-button-ghost button-3l" role="button" tabindex="0">
               <div class="dx-button-content"><span class="dx-button-text">Button Label</span></div>
+            </div>
+            <span class="size-tag">3L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         ICON ONLY VARIANT
+    ========================================================= -->
+    <div class="variant-section">
+      <div class="variant-header">
+        <span class="variant-title">Icon Only</span>
+        <span class="variant-subtitle">Circular · border-radius: 9999px · no text label · † token values estimated, requires Figma inspection</span>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Default</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-m" role="button" tabindex="0" aria-label="Action">
+            <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Hover</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon dx-state-hover button-m" role="button" tabindex="0" aria-label="Action">
+            <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Focused</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon dx-state-focused button-m" role="button" tabindex="0" aria-label="Action">
+            <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Active</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon dx-state-active button-m" role="button" tabindex="0" aria-label="Action">
+            <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-group">
+        <span class="state-label">Disabled</span>
+        <div class="demo-row">
+          <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon dx-state-disabled button-m" role="button" aria-disabled="true" aria-label="Action">
+            <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Size comparison -->
+      <div class="size-section">
+        <p class="size-section-label">Size comparison — Default state</p>
+        <div class="size-row">
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-xs" role="button" tabindex="0" aria-label="Action">
+              <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+            </div>
+            <span class="size-tag">XS</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-s" role="button" tabindex="0" aria-label="Action">
+              <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+            </div>
+            <span class="size-tag">S</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-m" role="button" tabindex="0" aria-label="Action">
+              <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+            </div>
+            <span class="size-tag">M</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-xl" role="button" tabindex="0" aria-label="Action">
+              <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
+            </div>
+            <span class="size-tag">XL</span>
+          </div>
+          <div class="size-cell">
+            <div class="dx-widget dx-button dx-button-icon-only dx-button-has-icon button-3l" role="button" tabindex="0" aria-label="Action">
+              <div class="dx-button-content"><span class="dx-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></div>
             </div>
             <span class="size-tag">3L</span>
           </div>
