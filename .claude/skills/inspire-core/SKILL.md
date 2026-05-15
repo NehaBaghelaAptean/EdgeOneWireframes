@@ -506,5 +506,5 @@ These are explicitly deferred — do not flag them as blockers in acceptance che
 |---|---|---|---|
 | inspire-core | (reference only) | Foundation | ✅ Active |
 | new-component | `/new-component` | Generator | ✅ Active |
-| inspect-spacing | `/inspect-spacing` | Validator | 🔲 Planned (Phase 2) |
+| inspect-spacing | `/inspect-spacing` | Validator | ✅ Active |
 | inspire-patterns | TBD | Pattern | 🔲 Planned (Phase 2) |
