@@ -104,6 +104,37 @@ references the proprietary font names. This needs to be aligned:
 **Note:** This is a Figma authoring task, not a skill change. The font
 substitution rule is already encoded in `inspire-core` and `new-component`.
 
+### 4. Design language — formalize and document
+The design language defines the visual rules that span all components — not
+just the token values but the principles behind them. Corner radius is the
+clearest example: the global rule is `0px` (square corners), but there is a
+richer set of intentional exceptions that need to be formally documented
+rather than scattered across individual component specs.
+
+**Corner radius rules (complete):**
+
+| Context | Value | Rationale |
+|---|---|---|
+| Global default | `0px` | Square corners are the Inspire/Germanedge identity |
+| Slider track | `2px` | Subtle rounding to soften the track without breaking the language |
+| Chat list item | `2px` | Same rationale as slider track |
+| Button — icon-only | `9999px` | Circular shape for icon-only variants; intentional break from the square language to signal a distinct interaction model |
+| *(additional rules TBD)* | | Review Figma for any further documented exceptions |
+
+**What design language documentation covers beyond corner radius:**
+- Elevation and shadow tokens (`Elevation/ADK Base`, `Elevation/ADK Height`)
+- Iconography rules — sizing, weight, usage contexts
+- Motion and transition guidelines (currently undefined — see "not yet covered")
+- Typography scale and when to use each style
+- Color usage principles beyond token assignment
+
+**Output:** A dedicated `design-language` reference document (or Figma page)
+that `inspire-core` and every component skill can point to. Not a skill that
+runs interactively — a living reference like `inspire-core`.
+
+**Status:** Not yet started. Formalizing corner radius exceptions is the
+first step.
+
 ---
 
 ## Themes

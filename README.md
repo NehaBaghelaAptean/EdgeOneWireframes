@@ -50,8 +50,7 @@ URL: https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/...?node-id=...
 
 - **Source of truth: Figma.** Token values, spacing, and states are defined in the GE — Astronaut Design System Figma file (`yck1tcUXgdQ5aYX6iUAwrO`). Prototypes validate against Figma, not the other way around.
 - **Accessibility:** WCAG 2.1 AA baseline. Color contrast (4.5:1 text, 3:1 UI elements), keyboard access, and ARIA requirements are encoded in `inspire-core` and checked in the 9-check acceptance process.
-- **Border radius:** `0px` everywhere (square corners). Documented exceptions: slider track `2px`, button icon-only `9999px`.
-- **Font:** `Inter Tight` for condensed/headings, `Inter` for body.
+- **Font:** `Inter Tight` (condensed/headings) and `Inter` (body) are the documented substitutes for `GermanedgeSansCn` and `GermanedgeSans`. Note: GermanedgeSans is still widely deployed in the Figma file — a full font swap is in progress. See ROADMAP immediate priority 3.
 - **Dark mode:** `html[data-theme="dark"]` — all components support ADK (light) and TDK (dark).
 
 ## Prerequisites
