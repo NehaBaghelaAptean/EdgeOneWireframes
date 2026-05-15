@@ -36,6 +36,10 @@ Skills in this library serve two directions:
 
 ## Source of truth hierarchy
 
+**Figma is the source of truth.** HTML prototypes and `.md` specs are validated
+against Figma — not the other way around. When a value in the prototype or spec
+conflicts with Figma, Figma wins and the prototype/spec is updated.
+
 In any conflict, the higher tier wins. The lower tier needs updating, not the higher.
 
 | Tier | Source | Authority over |
@@ -47,6 +51,11 @@ In any conflict, the higher tier wins. The lower tier needs updating, not the hi
 
 When docs conflict with Figma or prototypes: Figma wins. Flag the inconsistency in
 `ROADMAP.md` and update docs separately.
+
+**Future — Storybook:** If a coded Storybook is established as the authoritative
+implementation, the validation direction shifts. Figma will validate against
+Storybook rather than Storybook validating against Figma. Update the tier table
+and all acceptance checks at that point to reflect code as Tier 1.
 
 ---
 
