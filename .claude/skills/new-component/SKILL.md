@@ -282,7 +282,7 @@ git commit -m "Add .nojekyll to disable Jekyll on GitHub Pages"
 ```
 
 ```md
-| [Name] | `[id]` | Draft | [Figma]([figma-url]) | [Live demo](https://[github-username].github.io/inspire-components/components/[id]/[id].html) | [id].md]([id]/[id].md) |
+| [Name] | `[id]` | Draft | [Figma]([figma-url]) | [Live demo](https://[github-username].github.io/inspire-design-system/components/[id]/[id].html) | [id].md]([id]/[id].md) |
 ```
 
 ### Live demo URL — optional but recommended
@@ -296,14 +296,14 @@ A live demo URL lets you share the prototype with anyone on the team via a plain
 1. **Create a GitHub account**
    Go to [github.com/signup](https://github.com/signup). Use your work email. Username will appear in the live URL (e.g. `jane-doe-aptean`).
 
-2. **Fork the inspire-components repo**
-   Go to the inspire-components repo on GitHub and click the **Fork** button (top right). This creates your own copy under your account.
+2. **Fork the inspire-design-system repo**
+   Go to the inspire-design-system repo on GitHub and click the **Fork** button (top right). This creates your own copy under your account.
 
 3. **Enable GitHub Pages on your fork**
    In your fork, go to **Settings → Pages**. Under **Source**, choose **Deploy from a branch**, select the **main** branch and **/ (root)** folder, then click **Save**.
 
 4. **Wait ~1 minute**, then your prototype is live at:
-   `https://[your-username].github.io/inspire-components/components/[id]/[id].html`
+   `https://[your-username].github.io/inspire-design-system/components/[id]/[id].html`
 
 5. **Push your new component files** to your fork's main branch. GitHub Pages will update automatically within a minute or two.
 
