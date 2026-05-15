@@ -57,6 +57,49 @@ in the room.
 
 ---
 
+## Immediate priorities — next actions
+
+These are in-flight tasks that precede the Phase 1 component build work.
+
+### 1. Internal sharing — designer feedback round
+Share the skill library (`inspire-core`, `new-component`, `inspect-spacing`)
+with other designers on the UX Guild for feedback before expanding. Goals:
+- Validate that the spec format is readable and actionable for designers
+- Identify gaps in the acceptance check process from a design perspective
+- Confirm the ADK/TDK naming convention is understood and accepted
+
+**Action:** Share the GitHub Pages live demos and the README as the entry point.
+Collect feedback before writing the next component skill.
+
+### 2. Button style propagation — update system components
+The Primary / Secondary / Ghost button styles established in the button prototype
+need to be applied consistently across components that use similar interactive
+elements. Components confirmed to need updates:
+
+| Component | What needs updating |
+|---|---|
+| Content Tabs | Active/hover/focus states should follow button style language |
+| Overflow Menu | Action items need consistent hover/active treatment |
+| Toggle Switch | On/off states should align with Primary button active token |
+
+This is a Figma-first task: update the component definitions in the ADS file,
+then re-run `/inspect-spacing` and the acceptance check on each.
+
+### 3. Font substitution — GermanedgeSans → Inter in Figma
+Prototypes and specs already use `Inter Tight` (for GermanedgeSansCn) and
+`Inter` (for GermanedgeSans) as confirmed substitutes. The Figma file still
+references the proprietary font names. This needs to be aligned:
+
+- In Figma: swap `GermanedgeSans` → `Inter`, `GermanedgeSansCn` → `Inter Tight`
+  across all components in the ADS file
+- In specs: already correct — `Inter` / `Inter Tight` are the documented names
+- In prototypes: already correct — Google Fonts loaded in every prototype
+
+**Note:** This is a Figma authoring task, not a skill change. The font
+substitution rule is already encoded in `inspire-core` and `new-component`.
+
+---
+
 ## Themes
 
 | Theme | Code name | Context |
