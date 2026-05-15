@@ -67,37 +67,77 @@ in the room.
 
 ## Complete component inventory
 
-Sourced from `e1-dev.k8s.myapp.de/help-and-resources/` — the official
-Edge.One platform documentation.
+**Source of truth:** Figma layer structure confirmed 2026-05-15 from the
+GE - Astronaut Design System file. Organized by the file's own section IDs.
+Docs-site names noted where they differ.
 
-### Containers
-Accordion · Boardlet · Card · Grid Container · Section · Tab · Vertical Tab
+### ID 1 — Icons
+Icons 24px · Icons 16px · Other Icons & Logo
 
-### General
-Button · Icon · Label · Link · Overflow Menu · Title
+### ID 2 — Actions / Navigation
+Button · Link · Content Switch · Breadcrumb · Navigation Header Bar ·
+Navigation Panel · Cell Component · Bottom Navigation ·
+Tree (Structured List) · Toolbar · Navigation Menu
 
-### Data Display
-Attachment Viewer · Document Viewer · IFrame · Image Displayer · Image Point Viewer ·
-List · Pivot Grid · Table · Tree View · Video Player
+### ID 3 — Forms
+Text Input · Text Area · Dropdown · Toggle · Number Input · Checkbox · Radio ·
+File Upload · Date Picker & Range Picker · Scan Input · Form Element ·
+Code Editor · Inline Input · Image Carousel
 
-### Charts
-Box Plot · Gantt · Histogram · Line · Stacked Bar
+### ID 4 — Dialog / Popover
+Dialog & Modal · Overflow Menu · Tooltip · Notifications
 
-### Data Entry
-Checkbox · Combobox · Date Picker · Date Range Picker · File Upload · Files Table ·
-Form · Input · Lookup Input · Multi Select · Number Input · Radio Group ·
-RFID Scanner · Single Select · Table Selection · Tabs Form · Textarea ·
-Toggle Switch · Translation Input · Translation Textarea · Visual Codes Scanner
+### ID 5 — Containers
+Accordion · Boardlet · Bottom Sheet · Card
 
-### Feedback
-Inline Notification · Progress Bar · Progress States · Tooltip · Validation
+### ID 6 — Table
+Data Grid (Tables) · Filters · Scrollbar
 
-### Navigation
-Dashboard Navigation
+### ID 7 — Display
+Browser Bars · Camera · Clock · Empty States · Document Viewer · Image Raster ·
+Progress Indicator · Tag · Loader · Global Search · Progress Bar · Rule ·
+Video Player
 
-### Specialized
-Calendar · Chat · Clock · Code Editor · Countdown · Date Interval Counter ·
-Kanban Board · Karma · Pictogram · Raster · Ruler · Static Boardlet Wrapper · Tag
+### ID 8 — Data Visualization
+Data Lines · Data Points · Label · Planning Board · Charts · Karma
+
+---
+
+### Cross-reference: docs site names vs Figma names
+
+| Figma (authoritative) | Docs site name | Match? |
+|---|---|---|
+| Text Input | Input | ✅ same |
+| Text Area | Textarea | ✅ same |
+| Dropdown | Combobox / Single Select / Dropdown | ⚠️ multiple docs names — one Figma component |
+| Toggle | Toggle Switch | ✅ same |
+| Scan Input | RFID Scanner / Visual Codes Scanner | ⚠️ one Figma component, two docs names |
+| Dialog & Modal | Dialog | ✅ confirmed one component (resolves I-06) |
+| Notifications | Inline Notification + Toast Notification | ⚠️ one Figma section, split in docs |
+| Bottom Sheet | — | ❌ not in docs at all |
+| Data Grid | Table | ✅ same |
+| Filters | Filter Builder | ⚠️ may be the same — needs confirmation |
+| Progress Indicator | Progress States | ✅ same |
+| Progress Bar | Progress Bar | ✅ same |
+| Loader | — | ❌ not in docs (separate from Progress Bar/Indicator) |
+| Rule | Ruler | ⚠️ name differs |
+| Image Raster | Raster | ✅ same |
+| Planning Board | Kanban Board | ⚠️ different names — same component? |
+| Content Switch | — | ❌ not in docs |
+| Navigation Header Bar | Dashboard Navigation | ⚠️ name differs |
+| Navigation Panel | — | ❌ not in docs |
+| Cell Component | — | ❌ not in docs |
+| Bottom Navigation | — | ❌ not in docs |
+| Toolbar | — | ❌ not in docs |
+| Navigation Menu | — | ❌ not in docs |
+| Form Element | Form | ⚠️ name differs |
+| Inline Input | Input | ⚠️ may be a variant of Text Input |
+| Image Carousel | — | ❌ not in docs |
+| Scrollbar | — | ❌ not in docs |
+| Browser Bars | — | ❌ not in docs |
+| Camera | — | ❌ not in docs |
+| Global Search | — | ❌ not in docs |
+| Data Lines · Data Points · Label | — | ❌ chart sub-components, not in docs |
 
 ---
 
@@ -162,7 +202,7 @@ not the prototype or Figma.
 | I-03 | All | Spacing token names | CSS class strings (`row-gap-4`, `p-4`) | SPACING collection variables (`Gap/Gap-08`, `Padding/Padding-24`) | Update docs to reference token names |
 | I-04 | Button | Icon-only variant | Docs say don't replace text with icon-only | Prototype has icon-only circular variant as a supported sub-variant | Update docs to document icon-only as valid |
 | I-05 | All | Token values | No token values or color hex values in docs | Figma SHARED SEMANTIC and COMPONENTS collections are the source | Docs should link to token system |
-| I-06 | Dialog / Modal | Two names for one component? | "Dialog" | `ADK/ Dialog` AND `Master / Modal` both exist in Figma | Confirm whether Dialog and Modal are the same component or two distinct ones |
+| I-06 | Dialog / Modal | ~~Two names for one component?~~ | "Dialog" | `ADK/ Dialog` / `Master / Modal` | ✅ Resolved — Figma layer ID 4.1 is "Dialog & Modal" confirming one component, two names. Docs should use "Dialog & Modal" |
 | I-07 | Textarea | Component name | "Textarea" | `ADK / Input-area` | Update docs or align Figma name — pick one |
 | I-08 | Inline Notification | Named by state not component | "Inline Notification" (one component) | `Master/ ADK / Success`, `Master/ ADK / Warning` (individual state components) | Confirm if these should be one component with variants or stay separate |
 | I-09 | Progress State | Mobile-only label | "Progress States" (no platform qualifier) | `Master / Progress State Mobile` | Confirm if desktop variant exists; if not, docs should note mobile-only |
@@ -172,8 +212,22 @@ not the prototype or Figma.
 | # | Component | Figma name | Notes |
 |---|---|---|---|
 | I-10 | Tile | `Master / Tile` | Dashboard tile component — undocumented |
-| I-11 | Column Chooser | `ADK / Column-chooser / 3-columns` | Data table utility component — undocumented |
-| I-12 | PB / Cell + List | `Master/PB/Cell` · `Master/PB/List` | Unknown component family — "PB" meaning unclear |
+| I-11 | Column Chooser | `ADK / Column-chooser / 3-columns` | Sub-component of Data Grid — undocumented separately |
+| I-12 | Planning Board cells | `Master/PB/Cell` · `Master/PB/List` | PB = Planning Board (ID 8.4); sub-components of the Planning Board |
+| I-23 | Bottom Sheet | ID 5.3 in Figma | Container component — entirely absent from docs |
+| I-24 | Content Switch | ID 2.3 in Figma | Navigation component — absent from docs |
+| I-25 | Navigation Panel | ID 2.6 in Figma | Absent from docs |
+| I-26 | Cell Component | ID 2.7 in Figma | Absent from docs — purpose unclear |
+| I-27 | Bottom Navigation | ID 2.8 in Figma | Absent from docs |
+| I-28 | Toolbar | ID 2.10 in Figma | Absent from docs |
+| I-29 | Navigation Menu | ID 2.11 in Figma | Absent from docs |
+| I-30 | Inline Input | ID 3.13 in Figma | Absent from docs — possibly a variant of Text Input |
+| I-31 | Image Carousel | ID 3.14 in Figma | Absent from docs |
+| I-32 | Scrollbar | ID 6.3 in Figma | Absent from docs |
+| I-33 | Browser Bars | ID 7.1 in Figma | Absent from docs |
+| I-34 | Camera | ID 7.2 in Figma | Absent from docs |
+| I-35 | Loader | ID 7.9 in Figma | Absent from docs — distinct from Progress Bar and Progress Indicator |
+| I-36 | Global Search | ID 7.10 in Figma | Absent from docs |
 
 ### In docs but not found in Figma
 
