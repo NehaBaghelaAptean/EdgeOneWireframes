@@ -113,6 +113,39 @@ No pattern skills exist yet. No core/foundation skill exists yet.
 
 ---
 
+## Figma library — confirmed component inventory
+
+Sourced from `GE - Astronaut Design System` library via Figma MCP search,
+2026-05-15. Components appear under two prefixes: `ADK /` (published
+component set) and `Master /` (master component, used as base for ADK variants).
+
+| Component | Figma name(s) | Notes |
+|---|---|---|
+| Button | `ADK / Button / Primary` · `ADK / Button / Secondary` · `ADK / Button / Ghost` · `Master / Button / Primary / Small` · `Master / Button / Secondary / Small` | Small sub-variant confirmed in Master layer |
+| Input | `ADK / Input` · `ADK / Mobile / Input` | Desktop + mobile variants |
+| Textarea | `ADK / Input-area` | Named "Input-area" in Figma, "Textarea" in docs |
+| Dropdown | `ADK / Dropdown` | Single-select |
+| Dialog | `ADK/ Dialog` · `Master / Modal` | Two names — needs resolution (see I-06) |
+| Tooltip | `ADK / Tooltip` | |
+| Tag | `ADK / Tag` · `Master / Tag` | |
+| Icon | `ADK / Icon / 24x24 / *` | Named icons: Add, Close, Delete, Edit, Import, Info, Menu, More, Reset, Search |
+| Boardlet | `Master / Boardlet / Header` | Only header found; full boardlet may be on a different page |
+| Card | `Master / Card` · `Master / Card / Top-bar` | |
+| Breadcrumb | `Master / Breadcrumb` | |
+| Tree | `Master / Tree` · `ADK / Tree / New Component` | Two versions — active vs legacy unclear |
+| Calendar | `Master / Calendar / Monthsfield` · `Master / Dayfield` | Month field + day field sub-components |
+| Toast / Notification | `Master / ToastNotification / Element / Content` | |
+| Inline Notification | `Master/ ADK / Success` · `Master/ ADK / Warning` | Named by state, not as a component |
+| Progress State | `Master / Progress State Mobile` | Mobile-labelled — desktop version may exist |
+| Text | `Master / Text` | Typography component |
+| Tile | `Master / Tile` | Not in docs (see I-10) |
+| Column Chooser | `ADK / Column-chooser / 3-columns` | Not in docs (see I-11) |
+| PB / Cell + List | `Master/PB/Cell` · `Master/PB/List` | PB meaning unknown — Progress Bar? Pick Board? (see I-12) |
+| Slider | Confirmed from prior work (node `22145:141089`) | |
+| Filter Builder | Confirmed from prior work (node `22271:11752`) | |
+
+---
+
 ## Known inconsistencies — docs to be updated
 
 **Authority:** Figma and the HTML prototypes are the source of truth.
@@ -120,13 +153,52 @@ The docs site (`e1-dev.k8s.myapp.de/help-and-resources/`) lags behind the
 design system. Inconsistencies listed here mean the **docs need updating**,
 not the prototype or Figma.
 
-| # | Component | Inconsistency | Docs (outdated) | Figma / Prototype (authoritative) | Action |
+### Naming and scope mismatches
+
+| # | Component | Inconsistency | Docs (outdated) | Figma (authoritative) | Action |
 |---|---|---|---|---|---|
 | I-01 | Button | Size tier names | `medium`, `large`, `extra_large` | `XS`, `S`, `M`, `XL`, `3L` | Update docs to match Figma size scale |
-| I-02 | All | Theme naming | "Astronaut" (light) / "Tokyo" (dark) | ADK (light) / TDK (dark) | Cosmetic — both in use; docs may use either, prototypes use ADK/TDK |
-| I-03 | All | Spacing token names | CSS class strings (`row-gap-4`, `p-4`) | SPACING collection variables (`Gap/Gap-08`, `Padding/Padding-24`) | Update docs to reference token names, not raw class strings |
-| I-04 | Button | Icon-only variant | Docs say don't replace text with icon-only | Prototype has icon-only circular variant as a supported sub-variant | Update docs to document icon-only as a valid pattern |
-| I-05 | All | Token values | No token values or color hex values in docs | Figma SHARED SEMANTIC and COMPONENTS collections | Docs should link to or reference the token system |
+| I-02 | All | Theme naming | "Astronaut" (light) / "Tokyo" (dark) | ADK (light) / TDK (dark) | Cosmetic — both acceptable; prototypes use ADK/TDK |
+| I-03 | All | Spacing token names | CSS class strings (`row-gap-4`, `p-4`) | SPACING collection variables (`Gap/Gap-08`, `Padding/Padding-24`) | Update docs to reference token names |
+| I-04 | Button | Icon-only variant | Docs say don't replace text with icon-only | Prototype has icon-only circular variant as a supported sub-variant | Update docs to document icon-only as valid |
+| I-05 | All | Token values | No token values or color hex values in docs | Figma SHARED SEMANTIC and COMPONENTS collections are the source | Docs should link to token system |
+| I-06 | Dialog / Modal | Two names for one component? | "Dialog" | `ADK/ Dialog` AND `Master / Modal` both exist in Figma | Confirm whether Dialog and Modal are the same component or two distinct ones |
+| I-07 | Textarea | Component name | "Textarea" | `ADK / Input-area` | Update docs or align Figma name — pick one |
+| I-08 | Inline Notification | Named by state not component | "Inline Notification" (one component) | `Master/ ADK / Success`, `Master/ ADK / Warning` (individual state components) | Confirm if these should be one component with variants or stay separate |
+| I-09 | Progress State | Mobile-only label | "Progress States" (no platform qualifier) | `Master / Progress State Mobile` | Confirm if desktop variant exists; if not, docs should note mobile-only |
+
+### In Figma but not in docs
+
+| # | Component | Figma name | Notes |
+|---|---|---|---|
+| I-10 | Tile | `Master / Tile` | Dashboard tile component — undocumented |
+| I-11 | Column Chooser | `ADK / Column-chooser / 3-columns` | Data table utility component — undocumented |
+| I-12 | PB / Cell + List | `Master/PB/Cell` · `Master/PB/List` | Unknown component family — "PB" meaning unclear |
+
+### In docs but not found in Figma
+
+These components appear in the docs site but were not returned in any Figma
+library search. They may exist under different names, on unpublished pages,
+or may not yet have Figma definitions.
+
+| # | Component | Docs name | Status |
+|---|---|---|---|
+| I-13 | Accordion | Accordion | Not found in Figma searches |
+| I-14 | Grid Container | Grid Container | Not found in Figma searches |
+| I-15 | Tab / Vertical Tab | Tab · Vertical Tab | Not found in Figma searches |
+| I-16 | Table | Table | Not found in Figma searches |
+| I-17 | Checkbox / Radio / Toggle | Checkbox · Radio Group · Toggle Switch | Not found in Figma searches |
+| I-18 | Select variants | Single Select · Multi Select · Combobox · Lookup Input | Not found in Figma searches |
+| I-19 | Overflow Menu | Overflow Menu | Not found in Figma searches |
+| I-20 | Kanban Board | Kanban Board | Not found in Figma searches |
+| I-21 | Charts | Box Plot · Gantt · Histogram · Line · Stacked Bar | Not found in Figma searches |
+| I-22 | Specialized inputs | Date Range Picker · Number Input · File Upload · RFID Scanner | Not found in Figma searches |
+
+> **Note on I-13 to I-22:** Figma search returns a limited result set. These
+> components may exist in the file on pages not currently indexed by the search
+> tool. Absence from search results is not confirmed absence from Figma —
+> each should be verified by browsing the Figma file directly before concluding
+> it is missing.
 
 ---
 
