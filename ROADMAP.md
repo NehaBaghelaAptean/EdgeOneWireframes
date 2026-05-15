@@ -40,6 +40,11 @@ the structural rules for how App Composer dashboards should be composed.
 3. **Markdown specs** (`.md`) — the machine-authoritative contract
 4. **Docs site** (`e1-dev.k8s.myapp.de/help-and-resources/`) — usage guidance for App Composer; lags behind design. When docs conflict with Figma/prototype, Figma wins and the docs need updating.
 
+**Validation chain:**  
+Figma → HTML/CSS prototypes → *(future)* App Composer compiled JSON output
+
+The HTML/CSS layer is the current focus. It defines the contracts that App Composer must honor when it compiles a dashboard to JSON in the low-code environment. Validating the compiled JSON output is a future phase — once the HTML layer is solid, the JSON validation follows the same rules.
+
 **Without these skills**, AI-assisted development will:
 - Build components with the wrong size tiers, tokens, or states
 - Assemble dashboards that violate action hierarchy or boardlet rules
@@ -352,6 +357,18 @@ The most-used data display component in supply chain software. Row actions
 
 ---
 
+### Phase 7 — App Composer compiled JSON validation *(future)*
+App Composer compiles dashboard configurations to JSON. This phase extends
+the validation chain from HTML/CSS contracts down to the runtime output of the
+low-code environment — verifying that what App Composer generates honors the
+same spacing, token, and layout rules defined in the HTML prototypes.
+
+Prerequisite: the HTML/CSS layer (Phases 0–6) must be stable before this
+phase begins. The JSON schema and the property names App Composer uses will
+inform what checks are possible.
+
+---
+
 ## What each skill must include
 
 Every component skill must follow this structure:
@@ -378,6 +395,7 @@ Every component skill must follow this structure:
 - Animation and transition tokens — not yet defined in the system
 - Contribution workflow — how components move from Draft → Accepted
 - Third-party component library integration (DevExtreme versions, upgrade path)
+- App Composer compiled JSON validation — tracked in Phase 7; begins after HTML/CSS layer is stable
 
 ---
 
