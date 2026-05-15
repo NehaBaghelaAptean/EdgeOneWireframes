@@ -206,6 +206,22 @@ and note `SPACING primitive — no semantic alias yet`.
 
 ---
 
+## Production codebase vs Figma tokens — important distinction
+
+The production Edge.One codebase uses a Bootstrap-derived utility class spacing
+system (`m-4`, `p-4`, `row-gap-4`). This is **not** the SPACING collection.
+The docs site reflects this old system — that is the root cause of inconsistency
+I-03 in the ROADMAP.
+
+**New components must use SPACING collection variables, not utility classes.**
+When you see docs or production SCSS referencing utility class names, those are
+from the legacy system. Ignore them and use the SPACING collection.
+
+The production SCSS also uses `GermanedgeSans` / `GermanedgeSansCn` font names.
+These map to `Inter` / `Inter Tight` in prototypes and specs.
+
+---
+
 ## Germanedge styling rules
 
 These rules apply to every component and prototype. They are non-negotiable
