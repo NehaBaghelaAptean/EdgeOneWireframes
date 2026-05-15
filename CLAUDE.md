@@ -21,6 +21,10 @@ components/
     new-component/SKILL.md   — /new-component skill definition
 ```
 
+## Roadmap
+
+`ROADMAP.md` at the repo root — platform context, full component inventory, known inconsistencies, and the prioritized skill build plan.
+
 ## Key Conventions
 
 - The spec (`.md`) is the contract. Code and Figma both reflect the spec.
