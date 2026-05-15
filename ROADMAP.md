@@ -418,6 +418,81 @@ inform what checks are possible.
 
 ---
 
+## Documentation alignment initiative *(deferred — not ready yet)*
+
+**Vision:** A bidirectional connection between the Figma library and the
+Edge.One docs site (`e1-dev.k8s.myapp.de/help-and-resources/`). Each Figma
+library page has a standardized documentation text frame that stays in sync
+with the corresponding docs site markdown file. Designers own the content;
+the pipeline keeps both surfaces consistent.
+
+**Why it's deferred:** The inconsistency gap between Figma and the docs site
+is currently too wide to start syncing. Pushing docs content into Figma now
+would propagate the discrepancies rather than resolve them. The I-XX flags in
+this ROADMAP must be substantially cleared first.
+
+**Prerequisite:** Resolve the component inconsistency list (priority 1 and 2
+items above) and complete the font substitution. Once Figma and docs broadly
+agree, the sync pipeline has a clean foundation to build on.
+
+---
+
+### Two directions — and which comes first
+
+**Direction A — Docs → Figma** *(feasible now, deferred)*  
+The docs site markdown is accessible via `llms-full.txt` and greppable today.
+Using Figma MCP, we can read the docs content for each component and insert a
+standardized text frame onto each Figma library page. This is a one-time
+seeding operation that can run before the pipeline is automated.
+
+Not starting yet — the docs content has too many inaccuracies relative to
+Figma. Seeding bad content into Figma makes the problem harder to see, not
+easier to fix.
+
+**Direction B — Figma → Docs** *(future, preferred end state)*  
+Designers add or update usage instructions directly in Figma in a standardized
+text frame format. Figma MCP reads those frames and writes the content into
+the corresponding docs site markdown files. The docs site becomes an output
+of Figma, not a separate document that drifts.
+
+This is the preferred long-term direction. Designers already work in Figma;
+making it the authoring surface removes a context switch and keeps content
+close to the design decisions that motivated it.
+
+---
+
+### Standardized text frame format *(to be defined)*
+
+Each Figma library component page will have a locked documentation frame
+containing:
+
+- **Component name** — matches the Inspire/ADK name, not the library class name
+- **What it is** — one paragraph
+- **When to use / When not to use** — explicit list
+- **Variants** — names and when to use each
+- **App Composer configuration** — key properties
+- **A11y notes** — from the docs site or added by the designer
+- **Known inconsistencies** — any open I-XX flags for this component
+
+The frame format doubles as the input schema for the Figma → Docs pipeline.
+Defining it precisely is a prerequisite for automation.
+
+---
+
+### Skill to build *(when ready)*
+
+A `sync-docs` skill that:
+1. Reads a Figma library page's documentation frame (Figma MCP)
+2. Validates it against the standardized format
+3. Writes the content to the correct markdown file in the docs site repo
+4. Or, in reverse: reads the docs markdown and populates an empty frame
+
+**Trigger to start this work:** Inconsistency flags reduced to zero for a
+component, or the team decides to accept the current docs state as the
+canonical starting point and update from there.
+
+---
+
 ## What each skill must include
 
 Every component skill must follow this structure:
