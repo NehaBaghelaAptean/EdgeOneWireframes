@@ -254,5 +254,5 @@ Every component skill must follow this structure:
 
 ---
 
-*Built by the Germanedge UX team.*  
+*Built by the Germanedge UX Guild.*  
 *Inspire Design System · Edge.One Platform*
