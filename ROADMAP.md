@@ -271,12 +271,13 @@ or may not yet have Figma definitions.
 
 ## Skill build roadmap
 
-### Phase 0 — Foundation (now)
-**inspire-core** _(not yet built)_  
+### Phase 0 — Foundation ✅ Complete
+**inspire-core** — `.claude/skills/inspire-core/SKILL.md`  
 The root skill. Covers: what Inspire is, what App Composer is, the ADK/TDK
 token architecture, the two-file output format (HTML prototype + MD spec),
-border radius rules, font rules, the acceptance check process, and the
-one rule that overrides everything else. Every other skill references this.
+border radius rules, font rules, the acceptance check process, GitHub Pages
+requirements, SHARED SEMANTIC token list, and the one rule that overrides
+everything else. Every other skill references this.
 
 ---
 

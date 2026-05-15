@@ -4,6 +4,7 @@
 
 | Skill | Command | What it does |
 |---|---|---|
+| Inspire Core | (reference) | Foundation rules loaded by all other skills — token architecture, ADK/TDK, acceptance checks, styling constraints. |
 | New Component | `/new-component` | Builds a new ADK/TDK design system component — HTML prototype + spec. |
 
 Skills are CLI-only. They don't run in Claude Desktop or the Claude.ai web UI.
@@ -18,6 +19,7 @@ components/
   README.md     — component registry
 .claude/
   skills/
+    inspire-core/SKILL.md    — foundation reference loaded by all skills
     new-component/SKILL.md   — /new-component skill definition
 ```
 
