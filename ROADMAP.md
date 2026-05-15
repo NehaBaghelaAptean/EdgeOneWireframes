@@ -34,6 +34,12 @@ Button encodes the visual contract between Figma, the HTML prototype, and the
 App Composer configuration panel. A pattern skill like Dashboard Layout encodes
 the structural rules for how App Composer dashboards should be composed.
 
+**Source of truth hierarchy:**
+1. **Figma** — variable values, component structure, spacing, states
+2. **HTML prototypes** — the living reference implementation
+3. **Markdown specs** (`.md`) — the machine-authoritative contract
+4. **Docs site** (`e1-dev.k8s.myapp.de/help-and-resources/`) — usage guidance for App Composer; lags behind design. When docs conflict with Figma/prototype, Figma wins and the docs need updating.
+
 **Without these skills**, AI-assisted development will:
 - Build components with the wrong size tiers, tokens, or states
 - Assemble dashboards that violate action hierarchy or boardlet rules
@@ -107,18 +113,20 @@ No pattern skills exist yet. No core/foundation skill exists yet.
 
 ---
 
-## Known inconsistencies — resolve before accepting components
+## Known inconsistencies — docs to be updated
 
-These are confirmed gaps between the docs site and the current prototype/Figma
-work. Each is a blocker for the affected component's acceptance.
+**Authority:** Figma and the HTML prototypes are the source of truth.
+The docs site (`e1-dev.k8s.myapp.de/help-and-resources/`) lags behind the
+design system. Inconsistencies listed here mean the **docs need updating**,
+not the prototype or Figma.
 
-| # | Component | Inconsistency | Docs says | Prototype/Figma says | Owner | Status |
-|---|---|---|---|---|---|---|
-| I-01 | Button | Size tier names | `medium`, `large`, `extra_large` | `XS`, `S`, `M`, `XL`, `3L` | Design | Open |
-| I-02 | All | Theme naming | "Astronaut" (light) / "Tokyo" (dark) | ADK / TDK | — | Cosmetic — both in use |
-| I-03 | All | Spacing token names | CSS gap/padding class strings (`row-gap-4`) | SPACING collection variable names (`Gap/Gap-08`) | Design | Open |
-| I-04 | Button | Icon-only variant | Docs say don't replace text with icon-only | Prototype has icon-only circular variant | Design | Needs decision |
-| I-05 | All | Token values in docs | No token values published in docs | Figma is source of truth | — | Docs gap |
+| # | Component | Inconsistency | Docs (outdated) | Figma / Prototype (authoritative) | Action |
+|---|---|---|---|---|---|
+| I-01 | Button | Size tier names | `medium`, `large`, `extra_large` | `XS`, `S`, `M`, `XL`, `3L` | Update docs to match Figma size scale |
+| I-02 | All | Theme naming | "Astronaut" (light) / "Tokyo" (dark) | ADK (light) / TDK (dark) | Cosmetic — both in use; docs may use either, prototypes use ADK/TDK |
+| I-03 | All | Spacing token names | CSS class strings (`row-gap-4`, `p-4`) | SPACING collection variables (`Gap/Gap-08`, `Padding/Padding-24`) | Update docs to reference token names, not raw class strings |
+| I-04 | Button | Icon-only variant | Docs say don't replace text with icon-only | Prototype has icon-only circular variant as a supported sub-variant | Update docs to document icon-only as a valid pattern |
+| I-05 | All | Token values | No token values or color hex values in docs | Figma SHARED SEMANTIC and COMPONENTS collections | Docs should link to or reference the token system |
 
 ---
 
