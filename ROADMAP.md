@@ -71,20 +71,25 @@ with other designers on the UX Guild for feedback before expanding. Goals:
 **Action:** Share the GitHub Pages live demos and the README as the entry point.
 Collect feedback before writing the next component skill.
 
-### 2. Button style propagation — update system components
-The Primary / Secondary / Ghost button styles established in the button prototype
-need to be applied consistently across components that use similar interactive
-elements.
+### 2. Component style updates — full list
+These components need Figma updates before skills can be written for them.
+Ordered by priority. Run `/inspect-spacing` and the full 9-check acceptance
+check on each after updating.
 
-| Component | Figma ID | What needs updating |
-|---|---|---|
-| Content Switch | ID 2.3 · [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11524-14777) | Active/hover/focus states should follow button style language |
-| Toggle Switch | ID 3.4 | **A11y update** — remove brand yellow from "on" state (1.07:1 contrast fails WCAG AA 3:1 minimum); replace with high-contrast indicator independent of yellow token |
+> **Overflow Menu (ID 4.2) — already updated ✅**
 
-> **Overflow Menu (ID 4.2) — already updated.** Remove from task list.
-
-This is a Figma-first task: update the component definitions in the ADS file,
-then run `/inspect-spacing` and the acceptance check (including Check 9) on each.
+| Priority | Component | ID | Figma | What needs updating |
+|---|---|---|---|---|
+| 1 | Content Switch | 2.3 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11524-14777) | Active/hover/focus states to follow button style language |
+| 1 | Toggle Switch | 3.4 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11600-78630) | **A11y:** remove brand yellow from "on" state (#fcd515 = 1.07:1 contrast, fails WCAG AA 3:1); replace with high-contrast indicator |
+| 1 | Dialog & Modal | 4.1 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11550-252669) | Update buttons and button groups to current Primary/Secondary/Ghost styles |
+| 2 | Cell Component | 2.7 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11563-253111) | Style update — review Figma for specifics |
+| 2 | Dropdown | 3.3 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11528-200611) | Style update — review Figma for specifics |
+| 2 | Checkbox | 3.6 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11523-164008) | Dark theme (TDK) update |
+| 2 | Radio | 3.7 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11600-77344) | Style update — review Figma for specifics |
+| 2 | Card | 5.4 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11550-252909) | Update selected-state pattern |
+| 2 | Code Editor | 3.12 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=20241-292) | Ensure Toggle Switch a11y update propagates to downstream usage here |
+| 3 | File Upload | 3.8 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11528-202526) | Lower priority — style update, review Figma for specifics |
 
 ### 3. Font substitution — GermanedgeSans → Inter in Figma
 Prototypes and specs already use `Inter Tight` (for GermanedgeSansCn) and
