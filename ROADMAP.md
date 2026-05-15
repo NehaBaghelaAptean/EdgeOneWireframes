@@ -74,16 +74,17 @@ Collect feedback before writing the next component skill.
 ### 2. Button style propagation — update system components
 The Primary / Secondary / Ghost button styles established in the button prototype
 need to be applied consistently across components that use similar interactive
-elements. Components confirmed to need updates:
+elements.
 
-| Component | What needs updating |
-|---|---|
-| Content Tabs | Active/hover/focus states should follow button style language |
-| Overflow Menu | Action items need consistent hover/active treatment |
-| Toggle Switch | On/off states should align with Primary button active token |
+| Component | Figma ID | What needs updating |
+|---|---|---|
+| Content Switch | ID 2.3 · [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11524-14777) | Active/hover/focus states should follow button style language |
+| Toggle Switch | ID 3.4 | **A11y update** — remove brand yellow from "on" state (1.07:1 contrast fails WCAG AA 3:1 minimum); replace with high-contrast indicator independent of yellow token |
+
+> **Overflow Menu (ID 4.2) — already updated.** Remove from task list.
 
 This is a Figma-first task: update the component definitions in the ADS file,
-then re-run `/inspect-spacing` and the acceptance check on each.
+then run `/inspect-spacing` and the acceptance check (including Check 9) on each.
 
 ### 3. Font substitution — GermanedgeSans → Inter in Figma
 Prototypes and specs already use `Inter Tight` (for GermanedgeSansCn) and
@@ -433,7 +434,7 @@ Every component skill must follow this structure:
 
 ## What this roadmap does not cover (yet)
 
-- Accessibility requirements — not yet specified in docs or Figma
+- Accessibility requirements — WCAG 2.1 AA baseline now encoded in `inspire-core` (Check 9); component-specific keyboard maps and ARIA specs belong in each component skill
 - Responsive/mobile behavior — App Composer is primarily desktop
 - Animation and transition tokens — not yet defined in the system
 - Contribution workflow — how components move from Draft → Accepted

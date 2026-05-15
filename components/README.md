@@ -72,7 +72,7 @@ Run the acceptance check on this page as a whole: https://www.figma.com/design/[
 
 The agent will fetch variable definitions and design context directly from Figma, cross-reference all color tokens against the shared semantic token set, and output a pass/fail report.
 
-**The 8 checks (all are blockers if failed):**
+**The 9 checks (contrast failures and color-only state are hard blockers; remaining a11y items are flags):**
 1. **Semantic variable compliance** — color tokens must use shared semantic vars where a direct replacement exists
 2. **Spacing compliance** — gap and padding values must reference SPACING collection aliases
 3. **Cross-component variable borrowing** — a component may only reference its own vars and shared semantic vars
@@ -81,5 +81,6 @@ The agent will fetch variable definitions and design context directly from Figma
 6. **Dark mode completeness** — every color token must have a TDK value
 7. **Token naming convention** — `--[component]-[element]-[property]-[state]`; generic palette aliases are not acceptable
 8. **Auto-layout & resize compliance** — Figma layers must use auto-layout; sizing modes (`Fill`/`Hug`/`Fixed`) must be correct
+9. **Accessibility baseline** — WCAG 2.1 AA: 4.5:1 text contrast, 3:1 UI element contrast, color never sole state communicator, `aria-label` on icon-only elements, keyboard accessible
 
 > A component is not accepted until all ⛔ blockers are resolved. ⚠️ warnings flag drift or unconfirmed values that need a design decision.

@@ -215,6 +215,78 @@ and note `SPACING primitive — no semantic alias yet`.
 
 ---
 
+## Accessibility requirements
+
+**Baseline: WCAG 2.1 Level AA.** This is the minimum for all Inspire components.
+No specific WCAG level is currently stated in the Edge.One docs site — we are
+setting AA as the explicit floor.
+
+The docs site (`e1-dev.k8s.myapp.de/help-and-resources/`) contains the following
+a11y guidance that aligns with these rules. Reference it for component-specific
+notes:
+- **Boardlet:** provide localized `boardletNameTranslations` + `titleTranslations`
+  for assistive technology; supplement color with recognizable icons and text;
+  keep overflow actions reachable via `moreIconVisible`
+- **Accordion / Accordion Item:** meaningful unique titles; avoid icon-only labels;
+  predictable expansion order; avoid color-only meaning
+
+---
+
+### Design-level rules (Figma audit)
+
+These apply when auditing or creating components in Figma.
+
+| Rule | Standard | Notes |
+|---|---|---|
+| Text contrast | 4.5:1 minimum against background | WCAG 2.1 AA — normal text |
+| Large text contrast | 3:1 minimum | 18px+ regular or 14px+ bold |
+| UI element contrast | 3:1 minimum against adjacent color | Applies to borders, icons, focus rings, toggle states |
+| Color-only state | Never use color as the sole communicator | Pair with shape, icon, pattern, or text. Docs: Boardlet, Accordion |
+| Focus indicator | Visible, 3:1 contrast against adjacent colors | Our focus ring (`2px dashed --border/focus`) satisfies this |
+| Touch targets | 24×24px minimum for interactive elements | Already our icon-only button floor |
+| Text labels | All interactive elements have visible text or a paired icon+label | Docs: "avoid icon-only labels" (Accordion) |
+| Localized strings | Provide translations for all text exposed to assistive technology | Docs: Boardlet `boardletNameTranslations`, Accordion `titleTranslations` |
+
+**Known violation to resolve — Toggle Switch:**
+The "on" state currently uses brand yellow `#fcd515` against white `#ffffff`.
+Contrast ratio ≈ 1.07:1. This fails the 3:1 UI element threshold by a wide
+margin. The on-state indicator must use a high-contrast approach independent
+of the yellow token. This is the primary reason Toggle Switch is in the
+component update list.
+
+---
+
+### Code-level rules (HTML/CSS audit)
+
+These apply when auditing or building HTML prototypes before engineer handoff.
+
+| Rule | Implementation | Notes |
+|---|---|---|
+| Icon-only buttons | Must have `aria-label` | Applies to all icon-only variants in every component |
+| Form fields | Must have an associated `<label>` (via `for`/`id`) or `aria-label` | No unlabelled inputs |
+| Keyboard access | Tab, Enter/Space, and Arrow keys must work for all interactive elements | Per-component keyboard map belongs in each component's spec |
+| ARIA state | Use `aria-expanded`, `aria-selected`, `aria-current`, `aria-live` where applicable | Do not omit state ARIA on disclosure, selection, and live-update patterns |
+| Focus ring | `outline: 2px dashed var(--border/focus); outline-offset: 0px` | Already required in styling rules — the a11y rationale is visible focus |
+| Disabled elements | `cursor: not-allowed` + visual muting; never `pointer-events: none` alone | Disabled ≠ hidden — element must still be perceivable and announced |
+| Color-only state | Never rely on color alone — pair with icon, pattern, or text | Docs: Boardlet, Accordion. Applies to all interactive and status states |
+| `dataTestId` | Expose on all interactive elements | Docs: Boardlet, Accordion. Enables automated a11y regression testing |
+
+---
+
+### Severity in acceptance reports
+
+| Failure type | Severity | Rationale |
+|---|---|---|
+| Contrast failure (text or UI element) | ⛔ BLOCKER | Hard barrier for users with low vision; not resolvable by the user |
+| Color-only state | ⛔ BLOCKER | Excludes color-blind users; resolvable at design time |
+| Missing `aria-label` on icon-only | ⚠️ FLAG | Screen reader fails silently; must be resolved before production |
+| Missing form field label | ⚠️ FLAG | Must be resolved before production |
+| Missing keyboard access | ⚠️ FLAG | Must be resolved before production |
+| Missing ARIA state | ⚠️ FLAG | Must be resolved before production |
+| Missing `dataTestId` | ⚠️ NOTE | Best practice; does not block production |
+
+---
+
 ## Production codebase vs Figma tokens — important distinction
 
 The production Edge.One codebase uses a Bootstrap-derived utility class spacing
@@ -445,6 +517,34 @@ Not a Check 7 violation:
 | ⚠️ PARTIAL | Auto-layout applied but sizing modes wrong or min/max missing |
 | N/A | Single-layer or purely decorative component |
 
+### Check 9 — Accessibility Baseline
+
+Run design-level checks when auditing Figma. Run code-level checks when
+auditing an HTML prototype. Both sets run on a full acceptance check.
+
+**Design-level:**
+
+| Item | Rule | Status |
+|---|---|---|
+| Text contrast | 4.5:1 minimum | ✅ / ⛔ |
+| UI element contrast | 3:1 minimum (borders, icons, toggle states) | ✅ / ⛔ |
+| Color-only state | Paired with icon, shape, or text | ✅ / ⛔ |
+| Text labels | All interactive elements have visible or announced label | ✅ / ⚠️ |
+| Touch targets | 24×24px minimum | ✅ / ⚠️ |
+
+**Code-level:**
+
+| Item | Rule | Status |
+|---|---|---|
+| Icon-only `aria-label` | Present on all icon-only buttons | ✅ / ⚠️ |
+| Form field labels | `<label>` or `aria-label` on all inputs | ✅ / ⚠️ |
+| Keyboard access | Tab/Enter/Space/Arrow work as expected | ✅ / ⚠️ |
+| ARIA state | `aria-expanded`, `aria-selected`, etc. where applicable | ✅ / ⚠️ |
+| Focus ring | `outline: 2px dashed var(--border/focus)` visible | ✅ / ⚠️ |
+| Disabled behavior | `cursor: not-allowed`, no `pointer-events: none` | ✅ / ⚠️ |
+
+---
+
 ### Acceptance report format
 
 ```
@@ -479,6 +579,14 @@ Compliant ✅  OR  ⛔ [token] — uses generic alias directly
 
 ## 8. Auto-layout & Resize
 | Sub-check | Status | Notes |
+...
+
+## 9. Accessibility Baseline
+### Design
+| Item | Status | Notes |
+...
+### Code
+| Item | Status | Notes |
 ...
 
 ## Summary
