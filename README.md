@@ -58,6 +58,8 @@ See [components/README.md](components/README.md) for the full registry, live dem
 
 ## Quick start
 
+`Checkbox` and the DevExtreme URL below are examples — replace with your actual component and library URL.
+
 ```
 /new-component
 Component: Checkbox

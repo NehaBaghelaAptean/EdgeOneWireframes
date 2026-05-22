@@ -33,21 +33,27 @@ Runs the full new-component workflow for Edge One / Germanedge. Produces a visua
 | 3 | **States** | Infer | Derive from library docs and present to user for confirmation before building. |
 | 4 | **Figma URL** | Optional | Existing Figma node to reference for variable values. If provided, use Figma MCP to extract bindings. |
 | 5 | **Create Figma frames?** | Opt-in | Ask explicitly. If yes, use the `figma-use` skill after spec and prototype are complete. |
+| 6 | **Jira context** | Optional | Paste the Jira ticket description and acceptance criteria into the prompt. Used to inform scope confirmation (Step 3) and cross-referenced against the spec's Acceptance Criteria (Step 5 §7). |
+
+> **Jira note:** Jira is behind authentication, so ticket content is pasted manually. A future option is to connect a Jira MCP server, or write a Claude Code `UserPromptSubmit` hook that detects `/new-component` and calls the Jira REST API with a stored personal access token to fetch ticket content automatically. When Jira context is provided, use the ticket description to confirm component scope and map ticket acceptance criteria to spec §7 — flagging any gaps between the two.
+
+> **The examples below use `Checkbox` as the component name and a DevExtreme Checkbox URL as the library source. Replace both with the actual component you are building.**
 
 **Minimum invocation:**
 ```
 /new-component
-Component: Checkbox
-Library URL: https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxCheckBox/
+Component: Checkbox (example — replace with your component)
+Library URL: https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxCheckBox/ (example — replace with your library URL)
 ```
 
 **With all optional inputs:**
 ```
 /new-component
-Component: Checkbox
-Library URL: https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxCheckBox/
+Component: Checkbox (example — replace with your component)
+Library URL: https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxCheckBox/ (example — replace with your library URL)
 Figma URL: https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089
 Create Figma frames? Yes
+Jira: [paste ticket description and acceptance criteria here]
 ```
 
 ---
@@ -173,6 +179,8 @@ Spacing variables live in the **SPACING collection** in the ADS Figma file. The 
 - Visual (Designer · Agent): per-state checklist for light and dark
 - Functional (Front End · Agent): interaction and spacing checklist
 - Figma Binding (Designer · Agent): variable binding completeness checklist
+
+If Jira context was provided in Step 1, cross-reference the ticket's acceptance criteria here. Add any ticket AC items not already covered by the three subsections above, and flag gaps where the spec AC does not satisfy a ticket requirement.
 
 **8. Open Questions** — table: `# | Question | Owner | Status`
 

@@ -40,6 +40,8 @@ Use `/new-component` in Claude Code CLI. Provide a component name and a library 
 3. Build `components/[id]/[id].html` and `components/[id]/[id].md`
 4. Optionally create Figma frames via the Figma MCP
 
+`Checkbox` and the DevExtreme URL below are examples — replace with your actual component and library URL.
+
 **Minimum invocation:**
 ```
 /new-component
@@ -54,6 +56,7 @@ Component: Checkbox
 Library URL: https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxCheckBox/
 Figma URL: https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089
 Create Figma frames? Yes
+Jira: [paste ticket description and acceptance criteria here]
 ```
 
 > **CLI only.** Skills don't run in Claude Desktop or the Claude.ai web UI. See `.claude/skills/new-component/SKILL.md` for prerequisites and full guidance.
