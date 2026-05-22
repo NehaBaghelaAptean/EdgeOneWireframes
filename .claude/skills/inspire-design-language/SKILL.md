@@ -2,9 +2,11 @@
 name: inspire-design-language
 description: >
   Design language reference for the Inspire design system. Covers the as-built
-  snapshot (corner radii, focus states, action hierarchy, stroke tokens) and
-  WIP proposals for standardization. Load for design-decision work, Figma audits,
-  and component authoring where visual language choices need justification.
+  visual design philosophy, overall look and feel, and as-built system state.
+  Covers shape language, stroke tokens, focus states, action hierarchy, known
+  violations, and WIP proposals for standardization. Load for design-decision
+  work, Figma audits, and component authoring where visual language choices
+  need justification.
 type: reference
 skill-type: design-language
 version: 1.0.0

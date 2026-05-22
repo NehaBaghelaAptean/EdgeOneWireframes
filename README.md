@@ -22,7 +22,7 @@ As the component library grows, separating the two into distinct repos (skills r
 | Skill | Command | Type | What it does |
 |---|---|---|---|
 | **inspire-core** | (reference) | Foundation | System rules loaded by all other skills — token architecture, typography scale, spacing, grid, elevation, design philosophy, WCAG 2.1 AA a11y baseline, 9-check acceptance process |
-| **inspire-design-language** | (reference) | Design Language | As-built corner radius audit, proposed token scale (WIP), stroke tokens, focus state rules, full action hierarchy with decision framework and placement patterns |
+| **inspire-design-language** | (reference) | Design Language | Visual design philosophy, overall look and feel, and as-built system state — shape language, stroke tokens, focus states, action hierarchy with decision framework, known violations, and WIP proposals |
 | **new-component** | `/new-component` | Generator | Builds a new design system component — HTML prototype + machine-authoritative spec. Optionally creates Figma frames. |
 | **inspect-spacing** | `/inspect-spacing` | Validator | Audits spacing token usage in Figma designs (Mode A) or HTML prototypes before engineer handoff (Mode B). Includes confirmed global layout rules and grid system. |
 | **inspire-compliance** | `/inspire-compliance` | Auditor | 7-pass A→G compliance audit for any Figma component: context, tokens, typography, spacing, elevation, focus, component-specific rules. |

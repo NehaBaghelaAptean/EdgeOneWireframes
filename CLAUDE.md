@@ -7,7 +7,7 @@
 | Inspire Core | (reference) | Foundation rules loaded by all other skills — token architecture, ADK/TDK, acceptance checks, styling constraints. |
 | New Component | `/new-component` | Builds a new ADK/TDK design system component — HTML prototype + spec. |
 | Inspect Spacing | `/inspect-spacing` | Validates spacing token usage in Figma designs (Mode A) or HTML prototypes before engineer handoff (Mode B). Flags mismatches, never halts. |
-| Inspire Design Language | (reference) | Design language philosophy, current state, WIP proposals — corner radii, stroke tokens, focus state, action hierarchy. Load for design-decision work. |
+| Inspire Design Language | (reference) | Visual design philosophy, overall look and feel, and as-built system state — shape language, stroke tokens, focus states, action hierarchy, known violations, WIP proposals. Load for design-decision work. |
 | Inspire Compliance | `/inspire-compliance` | 7-pass compliance checklist (A→G) for auditing Inspire components in Figma: context, tokens, typography, spacing, elevation, focus, component-specific rules. |
 
 Skills are CLI-only. They don't run in Claude Desktop or the Claude.ai web UI.

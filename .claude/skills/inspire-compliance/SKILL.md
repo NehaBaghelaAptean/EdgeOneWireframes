@@ -17,7 +17,7 @@ last-updated: 2026-05-22
 Use this skill to evaluate any Inspire component in Figma for compliance in a repeatable, evidence-based way.
 
 **Primary spec:** `inspire-core/SKILL.md` (token architecture, spacing, grid, elevation, acceptance checks)  
-**Design language:** `inspire-design-language/SKILL.md` (corner radii, focus states, action hierarchy, stroke tokens)  
+**Design language:** `inspire-design-language/SKILL.md` (visual philosophy, shape language, focus states, action hierarchy, stroke tokens)  
 **Figma source:** `GE---Astronaut-Design-System` (file key `yck1tcUXgdQ5aYX6iUAwrO`)
 
 ---
