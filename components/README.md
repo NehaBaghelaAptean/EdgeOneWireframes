@@ -16,10 +16,10 @@ Each component lives in its own subdirectory: `components/[id]/`.
 
 | Component | ID | Status | Live Demo | Spec | Figma |
 |---|---|---|---|---|---|
-| Slider | `slider` | Draft | [slider.html](https://germanedge.github.io/Inspire-Design-System/components/slider/slider.html) | [slider.md](slider/slider.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089) |
-| FilterBuilder | `filter-builder` | Draft | [filter-builder.html](https://germanedge.github.io/Inspire-Design-System/components/filter-builder/filter-builder.html) | [filter-builder.md](filter-builder/filter-builder.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752) |
-| Button | `button` | Draft | [button.html](https://germanedge.github.io/Inspire-Design-System/components/button/button.html) | [button.md](button/button.md) | [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573) |
-| Rich Popover | `rich-popover` | Draft | [rich-popover.html](https://germanedge.github.io/Inspire-Design-System/components/rich-popover/rich-popover.html) | [rich-popover.md](rich-popover/rich-popover.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22592-3) |
+| Slider | `slider` | Draft | [slider.html](https://studious-waddle-p376j5k.pages.github.io/components/slider/slider.html) | [slider.md](slider/slider.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089) |
+| FilterBuilder | `filter-builder` | Draft | [filter-builder.html](https://studious-waddle-p376j5k.pages.github.io/components/filter-builder/filter-builder.html) | [filter-builder.md](filter-builder/filter-builder.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752) |
+| Button | `button` | Draft | [button.html](https://studious-waddle-p376j5k.pages.github.io/components/button/button.html) | [button.md](button/button.md) | [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573) |
+| Rich Popover | `rich-popover` | Draft | [rich-popover.html](https://studious-waddle-p376j5k.pages.github.io/components/rich-popover/rich-popover.html) | [rich-popover.md](rich-popover/rich-popover.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22592-3) |
 
 ---
 
@@ -30,7 +30,7 @@ This repo serves two purposes: it houses the **Inspire skill library** (Claude C
 As the component library grows, separating the two into distinct repos (skills repo / component repo) is a likely next step. When that happens, the skills repo will reference the component repo as the canonical example set rather than containing it directly. This note exists so that decision is made deliberately, not discovered as a mess.
 
 **Repo:** [Germanedge/Inspire-Design-System](https://github.com/Germanedge/Inspire-Design-System)  
-**Live demos:** [germanedge.github.io/Inspire-Design-System](https://germanedge.github.io/Inspire-Design-System/)
+**Live demos:** [studious-waddle-p376j5k.pages.github.io](https://studious-waddle-p376j5k.pages.github.io/)
 
 ---
 

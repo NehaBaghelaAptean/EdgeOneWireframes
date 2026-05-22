@@ -1,7 +1,7 @@
 # Inspire Design System
 
 **Repo:** [Germanedge/Inspire-Design-System](https://github.com/Germanedge/Inspire-Design-System)  
-**Live demos:** [germanedge.github.io/Inspire-Design-System](https://germanedge.github.io/Inspire-Design-System/)
+**Live demos:** [studious-waddle-p376j5k.pages.github.io](https://studious-waddle-p376j5k.pages.github.io/)
 
 A Claude Code skill library for the Edge.One design system (ADK = Astronaut / TDK = Tokyo). Each component ships as a self-contained HTML prototype and a machine-authoritative markdown spec. Figma is the source of truth — prototypes and specs are validated against it.
 
