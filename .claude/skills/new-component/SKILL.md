@@ -282,7 +282,7 @@ git commit -m "Add .nojekyll to disable Jekyll on GitHub Pages"
 ```
 
 ```md
-| [Name] | `[id]` | Draft | [Figma]([figma-url]) | [Live demo](https://[github-username].github.io/inspire-design-system/components/[id]/[id].html) | [id].md]([id]/[id].md) |
+| [Name] | `[id]` | Draft | [Figma]([figma-url]) | [Live demo](https://germanedge.github.io/Inspire-Design-System/components/[id]/[id].html) | [id].md]([id]/[id].md) |
 ```
 
 ### Live demo URL — optional but recommended

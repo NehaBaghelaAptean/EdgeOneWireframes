@@ -16,9 +16,21 @@ Each component lives in its own subdirectory: `components/[id]/`.
 
 | Component | ID | Status | Live Demo | Spec | Figma |
 |---|---|---|---|---|---|
-| Slider | `slider` | Draft | [slider.html](https://matt-trice-aptean.github.io/inspire-components/components/slider/slider.html) | [slider.md](slider/slider.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089) |
-| FilterBuilder | `filter-builder` | Draft | [filter-builder.html](https://matt-trice-aptean.github.io/inspire-components/components/filter-builder/filter-builder.html) | [filter-builder.md](filter-builder/filter-builder.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752) |
-| Button | `button` | Draft | [button.html](https://matt-trice-aptean.github.io/inspire-components/components/button/button.html) | [button.md](button/button.md) | [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573) |
+| Slider | `slider` | Draft | [slider.html](https://germanedge.github.io/Inspire-Design-System/components/slider/slider.html) | [slider.md](slider/slider.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089) |
+| FilterBuilder | `filter-builder` | Draft | [filter-builder.html](https://germanedge.github.io/Inspire-Design-System/components/filter-builder/filter-builder.html) | [filter-builder.md](filter-builder/filter-builder.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752) |
+| Button | `button` | Draft | [button.html](https://germanedge.github.io/Inspire-Design-System/components/button/button.html) | [button.md](button/button.md) | [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573) |
+| Rich Popover | `rich-popover` | Draft | [rich-popover.html](https://germanedge.github.io/Inspire-Design-System/components/rich-popover/rich-popover.html) | [rich-popover.md](rich-popover/rich-popover.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22592-3) |
+
+---
+
+## About this repository
+
+This repo serves two purposes: it houses the **Inspire skill library** (Claude Code skills that encode design system rules) and the **component output** those skills produce (HTML prototypes + specs). Both live here by design — components are the proof-of-work for the skills, and having them together makes cross-referencing easy during development.
+
+As the component library grows, separating the two into distinct repos (skills repo / component repo) is a likely next step. When that happens, the skills repo will reference the component repo as the canonical example set rather than containing it directly. This note exists so that decision is made deliberately, not discovered as a mess.
+
+**Repo:** [Germanedge/Inspire-Design-System](https://github.com/Germanedge/Inspire-Design-System)  
+**Live demos:** [germanedge.github.io/Inspire-Design-System](https://germanedge.github.io/Inspire-Design-System/)
 
 ---
 
@@ -77,7 +89,7 @@ The agent will fetch variable definitions and design context directly from Figma
 2. **Spacing compliance** — gap and padding values must reference SPACING collection aliases
 3. **Cross-component variable borrowing** — a component may only reference its own vars and shared semantic vars
 4. **State completeness** — all states must be present or explicitly documented as out of scope
-5. **Border radius compliance** — 0px everywhere; any deviation must be documented
+5. **Border radius compliance** — multi-value system (0px, 2px, 4px, 8px, fully-rounded by component); verify against the as-built audit in `inspire-design-language`
 6. **Dark mode completeness** — every color token must have a TDK value
 7. **Token naming convention** — `--[component]-[element]-[property]-[state]`; generic palette aliases are not acceptable
 8. **Auto-layout & resize compliance** — Figma layers must use auto-layout; sizing modes (`Fill`/`Hug`/`Fixed`) must be correct

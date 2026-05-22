@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Inspire Design System — Component Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+
+    :root {
+      --color-page-bg:        #f2f2f2;
+      --color-surface:        #ffffff;
+      --color-border:         #e7e6e6;
+      --color-border-subtle:  #f2f2f2;
+      --color-text-default:   #3f3e3d;
+      --color-text-subtle:    #6f6e6d;
+      --color-text-disabled:  #cfcece;
+      --color-brand:          #fcd515;
+      --color-brand-hover:    #fae164;
+      --color-link:           #1a88b7;
+      --color-link-hover:     #009ec0;
+      --color-tag-bg:         #f2f2f2;
+      --color-tag-text:       #6f6e6d;
+    }
+
+    html[data-theme="dark"] {
+      --color-page-bg:        #202026;
+      --color-surface:        #31313b;
+      --color-border:         #292930;
+      --color-border-subtle:  #292930;
+      --color-text-default:   #d4d4d5;
+      --color-text-subtle:    #a9a9ac;
+      --color-text-disabled:  #50505d;
+      --color-brand:          #ffd14a;
+      --color-brand-hover:    #f5dd66;
+      --color-link:           #7c79ff;
+      --color-link-hover:     #534ffd;
+      --color-tag-bg:         #292930;
+      --color-tag-text:       #a9a9ac;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--color-page-bg);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--color-text-default);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .site-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      background: var(--color-brand);
+      flex-shrink: 0;
+    }
+
+    .site-title {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-default);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .site-subtitle {
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: none;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-subtle);
+      padding: 4px 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      white-space: nowrap;
+      transition: color 0.1s, border-color 0.1s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--color-text-default);
+      border-color: var(--color-text-subtle);
+    }
+
+    /* ── Main layout ── */
+    .page-body {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .page-intro {
+      margin-bottom: 40px;
+    }
+
+    .page-intro h1 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: var(--color-text-default);
+    }
+
+    .page-intro p {
+      font-size: 14px;
+      color: var(--color-text-subtle);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ── Section heading ── */
+    .section-label {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-disabled);
+      margin: 0 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* ── Component grid ── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .component-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.1s;
+    }
+
+    .component-card:hover {
+      border-color: var(--color-text-subtle);
+    }
+
+    .component-card:focus-visible {
+      outline: 2px dashed var(--color-link);
+      outline-offset: 0;
+    }
+
+    .card-preview {
+      height: 140px;
+      background: var(--color-page-bg);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Inline preview iframes */
+    .card-preview iframe {
+      width: 200%;
+      height: 200%;
+      border: none;
+      transform: scale(0.5);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    .card-preview-placeholder {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--color-text-disabled);
+      letter-spacing: 0.04em;
+    }
+
+    .card-body {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-name {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-default);
+      margin: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      padding: 2px 6px;
+    }
+
+    .tag-draft {
+      background: var(--color-tag-bg);
+      color: var(--color-text-disabled);
+    }
+
+    .card-links {
+      display: flex;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .card-link {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-link);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-link:hover { color: var(--color-link-hover); }
+
+    /* Figma icon inline */
+    .figma-icon {
+      flex-shrink: 0;
+    }
+
+    /* ── Skills section ── */
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      margin-bottom: 48px;
+      border: 1px solid var(--color-border);
+    }
+
+    .skill-row {
+      background: var(--color-surface);
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      align-items: start;
+      gap: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .skill-row:last-child { border-bottom: none; }
+
+    .skill-name {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-default);
+    }
+
+    .skill-command {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--color-link);
+      margin-top: 4px;
+    }
+
+    .skill-desc {
+      font-size: 13px;
+      color: var(--color-text-subtle);
+      line-height: 1.5;
+    }
+
+    .skill-type {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-disabled);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--color-border);
+      padding: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--color-text-disabled);
+    }
+
+    .site-footer a {
+      color: var(--color-link);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { color: var(--color-link-hover); }
+
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-left">
+    <div class="brand-mark"></div>
+    <div>
+      <p class="site-title">Inspire Design System</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <a href="https://github.com/Germanedge/Inspire-Design-System" target="_blank" rel="noopener" class="btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System" target="_blank" rel="noopener" class="btn-ghost">
+      <svg class="figma-icon" width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
+        <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
+        <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/>
+        <path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/>
+        <path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/>
+      </svg>
+      Figma
+    </a>
+    <button id="theme-toggle" class="btn-ghost">Dark Mode</button>
+  </div>
+</header>
+
+<main class="page-body">
+
+  <div class="page-intro">
+    <h1>Component Gallery</h1>
+    <p>HTML prototypes and machine-authoritative specs for Inspire (ADK/TDK). Each component is validated against the GE — Astronaut Design System Figma file. Skills run in Claude Code CLI.</p>
+  </div>
+
+  <!-- Components -->
+  <p class="section-label">Components</p>
+
+  <div class="component-grid">
+
+    <a href="components/slider/slider.html" class="component-card">
+      <div class="card-preview">
+        <span class="card-preview-placeholder">Slider</span>
+      </div>
+      <div class="card-body">
+        <p class="card-name">Slider</p>
+        <div class="card-meta">
+          <span class="tag tag-draft">Draft</span>
+          <span class="tag">ADK · TDK</span>
+        </div>
+        <div class="card-links">
+          <span class="card-link">View demo →</span>
+          <a href="components/slider/slider.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
+          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
+            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
+            Figma
+          </a>
+        </div>
+      </div>
+    </a>
+
+    <a href="components/button/button.html" class="component-card">
+      <div class="card-preview">
+        <span class="card-preview-placeholder">Button</span>
+      </div>
+      <div class="card-body">
+        <p class="card-name">Button</p>
+        <div class="card-meta">
+          <span class="tag tag-draft">Draft</span>
+          <span class="tag">ADK · TDK</span>
+        </div>
+        <div class="card-links">
+          <span class="card-link">View demo →</span>
+          <a href="components/button/button.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
+          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
+            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
+            Figma
+          </a>
+        </div>
+      </div>
+    </a>
+
+    <a href="components/filter-builder/filter-builder.html" class="component-card">
+      <div class="card-preview">
+        <span class="card-preview-placeholder">Filter Builder</span>
+      </div>
+      <div class="card-body">
+        <p class="card-name">Filter Builder</p>
+        <div class="card-meta">
+          <span class="tag tag-draft">Draft</span>
+          <span class="tag">ADK · TDK</span>
+        </div>
+        <div class="card-links">
+          <span class="card-link">View demo →</span>
+          <a href="components/filter-builder/filter-builder.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
+          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
+            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
+            Figma
+          </a>
+        </div>
+      </div>
+    </a>
+
+    <a href="components/rich-popover/rich-popover.html" class="component-card">
+      <div class="card-preview">
+        <span class="card-preview-placeholder">Rich Popover</span>
+      </div>
+      <div class="card-body">
+        <p class="card-name">Rich Popover</p>
+        <div class="card-meta">
+          <span class="tag tag-draft">Draft</span>
+          <span class="tag">ADK · TDK</span>
+        </div>
+        <div class="card-links">
+          <span class="card-link">View demo →</span>
+          <a href="components/rich-popover/rich-popover.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
+          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22592-3" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
+            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
+            Figma
+          </a>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Skills -->
+  <p class="section-label">Skills — Claude Code CLI</p>
+
+  <div class="skill-list">
+    <div class="skill-row">
+      <div>
+        <p class="skill-name">inspire-core</p>
+        <p class="skill-command">reference</p>
+      </div>
+      <p class="skill-desc">Foundation rules loaded by all other skills — token architecture, typography scale, spacing primitives, grid, elevation, design philosophy, WCAG 2.1 AA a11y baseline, 9-check acceptance process.</p>
+      <span class="skill-type">Foundation</span>
+    </div>
+    <div class="skill-row">
+      <div>
+        <p class="skill-name">inspire-design-language</p>
+        <p class="skill-command">reference</p>
+      </div>
+      <p class="skill-desc">As-built corner radius audit across all ADK components, proposed 4-step token scale (WIP), stroke token system, focus state rules, full action hierarchy with decision framework and placement patterns.</p>
+      <span class="skill-type">Design Language</span>
+    </div>
+    <div class="skill-row">
+      <div>
+        <p class="skill-name">new-component</p>
+        <p class="skill-command">/new-component</p>
+      </div>
+      <p class="skill-desc">Builds a new design system component from scratch — HTML prototype + machine-authoritative markdown spec. Fetches live values from the Figma ADS file. Optionally creates Figma frames.</p>
+      <span class="skill-type">Generator</span>
+    </div>
+    <div class="skill-row">
+      <div>
+        <p class="skill-name">inspect-spacing</p>
+        <p class="skill-command">/inspect-spacing</p>
+      </div>
+      <p class="skill-desc">Two modes: (A) Figma Audit — validates spacing token bindings in a Figma design; (B) Code Handoff — cross-references prototype CSS against Figma values. Includes confirmed global layout rules.</p>
+      <span class="skill-type">Validator</span>
+    </div>
+    <div class="skill-row">
+      <div>
+        <p class="skill-name">inspire-compliance</p>
+        <p class="skill-command">/inspire-compliance</p>
+      </div>
+      <p class="skill-desc">7-pass A→G audit for any Figma component: context, tokens/color, typography, spacing/layout, elevation, focus indication, component-specific rules. Outputs structured findings classified as Compliant, Minor Drift, Spec Mismatch, or Open Question.</p>
+      <span class="skill-type">Auditor</span>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    <a href="https://github.com/Germanedge/Inspire-Design-System" target="_blank" rel="noopener">Germanedge/Inspire-Design-System</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System" target="_blank" rel="noopener">GE — Astronaut Design System</a>
+    &nbsp;·&nbsp;
+    ADK (light) + TDK (dark)
+  </p>
+</footer>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const stored = localStorage.getItem('inspire-theme');
+  if (stored === 'dark') { html.setAttribute('data-theme', 'dark'); toggle.textContent = 'Light Mode'; }
+  toggle.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? '' : 'dark');
+    toggle.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    localStorage.setItem('inspire-theme', isDark ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>
