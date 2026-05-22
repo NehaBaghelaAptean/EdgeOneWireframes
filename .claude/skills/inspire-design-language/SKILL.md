@@ -15,11 +15,11 @@ last-updated: 2026-05-22
 
 Human-readable design language statement for Inspire. Documents what the system currently is, what's broken, and where it's going.
 
-**Source files (keep in sync):**
-- `DESIGN.md` — canonical tokens, component inventory, Figma node IDs
-- `DESIGN-SYSTEM-REFERENCE.md` — Figma component names, node IDs, focus state specs
-- `COMPLIANCE-CHECKLIST.md` — audit framework (passes A→G)
-- `GOVERNANCE.md` — mismatches and open questions
+**Related files:**
+- `inspire-core/SKILL.md` — token architecture, typography, spacing, grid, elevation, acceptance checks
+- `inspire-compliance/SKILL.md` — 7-pass A→G audit framework
+- `components/README.md` — component registry with Figma node links
+- `ROADMAP.md` — component inventory, known inconsistencies, prioritized build plan
 
 ---
 
@@ -44,7 +44,7 @@ Human-readable design language statement for Inspire. Documents what the system 
 
 ## Corner radii — as-built audit
 
-Manual inspection of published ADK components. Source: `DESIGN-SYSTEM-REFERENCE.md`.
+Manual inspection of published ADK components in the Figma ADS file (`yck1tcUXgdQ5aYX6iUAwrO`).
 
 | Component / area | Corner radius | Notes |
 |---|---|---|
@@ -233,7 +233,7 @@ ADK: `#1a88b7` · TDK: `#7c79ff` (via `--border/focus`).
 
 | Issue | Status | Notes |
 |---|---|---|
-| Primary button yellow on white | ⚠️ WCAG fail | Contrast ~1.07:1 for UI element; fails 3:1 threshold. Tracked in GOVERNANCE.md |
+| Primary button yellow on white | ⚠️ WCAG fail | Contrast ~1.07:1 for UI element; fails 3:1 threshold. Tracked in `ROADMAP.md`. |
 | Toggle "on" state brand yellow on white | ⚠️ WCAG fail | Same yellow on white issue |
 | Secondary button visually overpowers Primary | ⚠️ Hierarchy inversion | Dark/heavy secondary competes with yellow primary |
 | Inset focus indicator | ⚠️ Visibility | Dashed ring inside component boundary competes with component fill |
