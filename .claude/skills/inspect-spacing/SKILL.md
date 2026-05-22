@@ -176,6 +176,34 @@ Patterns promoted: [list any new patterns added to the library, or "none"]
 
 ---
 
+## Global layout rules
+
+Confirmed 2026-05-22. These are the baseline rules for all Inspire layouts.
+Reference these in Step 5 of Mode A before checking component-specific patterns.
+
+| Rule | Value | Token | Notes |
+|---|---|---|---|
+| Page padding — desktop/tablet | 24px | `Padding/Padding-24` | All four sides |
+| Page padding — mobile | 16px | `Padding/Padding-16` | All four sides |
+| Universal gap (major layout zones, boardlet grid) | 8px | `Gap/Gap-08` | |
+| Navigation sidebar — open width | 340px | structural constant | No token |
+| Navigation sidebar — default state | hidden | — | Open or closed only; no collapsed/icon state |
+| Header height — desktop/tablet | 72px | structural constant | No token |
+| Header height — mobile | 64px | structural constant | No token |
+| Content width | Always full-bleed | — | No max-width cap at any breakpoint |
+| Bottom padding (docs: 72px desktop / 64px mobile) | ⚠️ FLAGGED | do not use | Source mismatch; revisit when footer/action bar behavior is defined |
+
+### Grid system reference
+
+| Orientation | Grid | Gutter |
+|---|---|---|
+| Landscape (desktop, tablet landscape) | 24 columns × 12 rows | 8px |
+| Portrait (tablet portrait, mobile) | 12 columns × 24 rows | 8px |
+
+⚠️ **Conflict D29:** Dashboard docs reference a 16-column / 9-row grid. The canonical spec (`DESIGN.md §5`) defines 24×12 landscape / 12×24 portrait. Use the DESIGN.md values. Flag deviations as ⚠️ DRIFT in audit reports.
+
+---
+
 ## Pattern Library
 
 Each entry is a named spacing pattern derived from a validated Figma layout.

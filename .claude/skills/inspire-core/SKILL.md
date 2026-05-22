@@ -3,12 +3,12 @@ name: inspire-core
 description: >
   Foundation reference for all Inspire design system skills. Encodes system
   philosophy, token architecture, ADK/TDK rules, Germanedge styling constraints,
-  Figma file references, GitHub Pages requirements, and the 8-check acceptance
+  Figma file references, GitHub Pages requirements, and the 9-check acceptance
   process. Load this before any component or pattern skill runs.
 type: reference
 skill-type: foundation
-version: 1.0.0
-last-updated: 2026-05-15
+version: 2.0.0
+last-updated: 2026-05-22
 ---
 
 # Inspire Core — Foundation Reference
@@ -31,6 +31,54 @@ Skills in this library serve two directions:
 - **Toward code** — HTML prototypes and `.md` specs that developers implement
 - **Toward App Composer** — component and pattern definitions that govern how
   dashboards are built in the no-code environment
+
+---
+
+## Creative North Star
+
+**"The Architectural Editor."** Screens built from Inspire building blocks should feel like **deliberately composed structures** — not ad-hoc control dumps. Boardlets, dashboards, and dialogs read as editorial, trustworthy spaces where data and actions are arranged with intent.
+
+**Experience intent:** Inspire avoids heavy border boxing in favor of **surface nesting** and **semantic color** so applications feel calm, premium, and scannable — for both App Composers at work in the editor and end users in the experiences they publish.
+
+---
+
+## Design philosophy
+
+**Voice of the UI:**
+- **Clear over clever** — labels and actions are immediately scannable and unambiguous
+- **Confident and calm** — steady spacing and grouping so rich, control-heavy surfaces read as ordered, not noisy
+- **Hierarchy-first** — the interface communicates priority through structure + emphasis, not borders or clutter
+
+**Visual style:**
+- Flat design — clean surfaces, strong typography, restrained depth; no skeuomorphic effects
+- Elevation via shadows (surface-on-surface) — shadows communicate **layering**, not decoration; use sparingly
+
+**Interaction philosophy:**
+- One obvious next step — each screen/dialog should ideally have one Primary action
+- Secondary actions are supportive — available but not competing with Primary
+- Tertiary actions stay contextual — inline, low-emphasis, or in overflow
+
+---
+
+## Personas
+
+Three primary personas optimized for in App Composer products:
+
+| Persona | Focus |
+|---|---|
+| **Application Administrator** | Multitaskers, troubleshooters — precision and prioritization |
+| **Internal Stakeholders** | Collaboration, clarity, alignment, growth |
+| **Application Users (End Customers)** | Usability, satisfaction, outcome-focused flows |
+
+---
+
+## Product anatomy (composition hierarchy)
+
+Namespace → Applications → Dashboard → Boardlet & Dialog → UI Elements
+
+The **Home Dashboard** is the epicenter for visibility into status and metrics. This hierarchy governs naming and component placement decisions.
+
+---
 
 ---
 
@@ -287,6 +335,163 @@ These apply when auditing or building HTML prototypes before engineer handoff.
 
 ---
 
+## Typography
+
+**Fonts:** `Inter Tight` (substitutes for GermanedgeSansCn — condensed/headings) and `Inter` (substitutes for GermanedgeSans — body). Load both from Google Fonts in every prototype.
+
+**Figma page:** `Typeface` (page `0:1`), guideline frame `5423:304180`.
+
+### Focus headlines — `Headline-focus/*` (communication / hero-style)
+
+Uses **Inter Bold (700)**.
+
+| Token | Size / line-height |
+|---|---|
+| `headline-focus-header` | 24px / 24px |
+| `headline-focus-01` | 24px / 30px |
+| `headline-focus-02` | 32px / 40px |
+| `headline-focus-03` | 42px / 50px |
+| `headline-focus-04` | 72px / 80px |
+
+### Product headlines — `Headline/*` (UI content headings)
+
+Uses **Inter SemiBold (600)**.
+
+| Token | Size / line-height |
+|---|---|
+| `headline-01` | 12px / 16px |
+| `headline-02` | 14px / 18px |
+| `headline-03` | 18px / 24px |
+
+### Body — `Body/*`
+
+Uses **Inter Tight** (Regular 400 or SemiBold 600).
+
+| Token | Weight | Size / line-height |
+|---|---|---|
+| `body-01` | Regular / SemiBold | 12px / 16px |
+| `body-02` | Regular / SemiBold | 14px / 18px |
+| `body-03` | Regular / SemiBold | 16px / 20px |
+| `body-05` | Regular / SemiBold | 20px / 24px |
+
+Underline variants (`body-underline-*`) exist for all sizes — use for inline linked body text.
+
+### Caption — `Caption/*`
+
+Uses **Inter Tight Regular**.
+
+| Token | Size / line-height |
+|---|---|
+| `caption-01` | 8px / 8px |
+| `caption-02` | 12px / 12px |
+
+### Controls (buttons, inputs)
+
+Default: `Body/Regular/body-02` (Inter Tight, 14px Regular, 18px line-height) unless the variant specifies SemiBold.
+
+---
+
+## Spacing
+
+**Figma page:** `Spacings` (page `24:1995`), guideline frame `5517:220986`.
+
+### Spacing primitive scale — `Spacing-01` → `Spacing-14`
+
+| Token | Value |
+|---|---|
+| Spacing-01 | 2px |
+| Spacing-02 | 4px |
+| Spacing-03 | 8px |
+| Spacing-04 | 12px |
+| Spacing-05 | 16px |
+| Spacing-06 | 20px |
+| Spacing-07 | 24px |
+| Spacing-08 | 32px |
+| Spacing-09 | 48px |
+| Spacing-10 | 64px |
+| Spacing-11 | 80px |
+| Spacing-12 | 96px |
+| Spacing-13 | 112px |
+| Spacing-14 | 128px |
+
+Use Spacing-* tokens for layout between regions. For component internal spacing, prefer component-specific tokens (e.g. `Button/paddingInline`, `Input/paddingBlock`).
+
+### Row tokens — fixed vertical heights
+
+Row tokens define fixed vertical heights for layout rhythm across breakpoints. Button variants also use row-scale size values (§row-XS through §row-3L).
+
+| Token | Value |
+|---|---|
+| §row-01 | 24px |
+| §row-02 | 32px |
+| §row-03 | 40px |
+| §row-04 | 48px |
+| §row-05 | 56px |
+| §row-06 | 64px |
+| §row-07 | 72px |
+
+---
+
+## Grid
+
+**Figma page:** `Grid` (page `1044:137823`), guideline frame `5423:311928`.
+
+> *"The grid is fundamental to everything we design. The 24/12 fluid grid is the geometric foundation of all of Inspire's visual elements."*
+
+### Orientation rules
+
+| Orientation | Grid | Use |
+|---|---|---|
+| Landscape (desktop, tablet landscape) | **24 columns × 12 rows** | Width is the longer side |
+| Portrait (tablet portrait, mobile) | **12 columns × 24 rows** | Height is the longer side |
+
+### Gutters and margins
+
+| | Value |
+|---|---|
+| Gutter (between columns) | **8px** |
+| Margin — mobile | **8px** left/right |
+| Margin — tablet/desktop | **24px** left/right |
+
+### Global layout rules (confirmed 2026-05-22)
+
+| Rule | Value | Token |
+|---|---|---|
+| Page padding — desktop/tablet | 24px | `Padding/Padding-24` |
+| Page padding — mobile | 16px | `Padding/Padding-16` |
+| Universal gap between major layout zones | 8px | `Gap/Gap-08` |
+| Navigation sidebar — open width | 340px | structural constant (no token) |
+| Navigation sidebar — default state | hidden | — |
+| Navigation sidebar — states | open or closed only (no collapsed/icon state) | — |
+| Header height — desktop/tablet | 72px | structural constant (no token) |
+| Header height — mobile | 64px | structural constant (no token) |
+| Content width | Always full-bleed — no max-width cap | — |
+| Bottom padding (72px desktop / 64px mobile) | ⚠️ FLAGGED — source conflict, do not use | see GOVERNANCE |
+
+### Grid conflict flag (D29)
+
+⚠️ **D29:** Dashboard docs reference a 16-column / 9-row grid. The canonical spec (`DESIGN.md §5`) defines **24×12 landscape / 12×24 portrait**. Use the DESIGN.md values. Flag D29 is tracked in GOVERNANCE.md.
+
+---
+
+## Elevation
+
+**Figma page:** `Elevation ` (trailing space in file name — page `244:11803`).
+
+Inspire encodes elevation as **named shadow effect styles** in Figma, not ad-hoc blur/opacity rules. Use these names — do not invent shadow values.
+
+| Style name | Type | Summary |
+|---|---|---|
+| `Elevation/ADK Base` | Drop shadow | `#000000` ~18% alpha, offset (0, 1), blur 4 |
+| `Elevation/ADK Height` | Drop shadow | `#0F0E0D` ~18% alpha, offset (0, 1), blur 8 |
+| `Elevation/ADK Level 3` | Drop shadow | `#0F0E0D` ~24% alpha, offset (0, 8), blur 16 |
+| `Elevation/ADK Level 4` | Drop shadow | `#0F0E0D` ~18% alpha, offset (0, 1), blur 32 |
+| `Elevation/ADK Depth` | Inner shadow | `#0F0E0D` ~10% alpha, offset (0, 1), blur 5 |
+
+Use depth primarily through tonal nesting (surface shifts). Reserve stronger elevation steps for overlays, popovers, and modals. TDK may reuse ADK elevation names — confirm per component before assuming separate TDK-only effect tokens.
+
+---
+
 ## Production codebase vs Figma tokens — important distinction
 
 The production Edge.One codebase uses a Bootstrap-derived utility class spacing
@@ -316,15 +521,19 @@ without an explicit design decision captured in the spec's Open Questions.
 
 ### Border radius
 
-**Global rule: `0px` everywhere — square corners.**
+**The system uses multiple radius values — not `0px` everywhere.** See `inspire-design-language/SKILL.md` for the full as-built component audit.
 
-Documented exceptions (do not re-litigate these):
-- Slider track: `2px`
-- Chat list item: `2px`
-- Button icon-only variant: `9999px` (circular)
+Quick reference (as-built):
 
-Any new deviation must be documented in the spec's Open Questions with a reason
-before it can be accepted.
+| Value | Components |
+|---|---|
+| 0px | Labeled buttons (Primary, Secondary, Ghost) |
+| 2px | Checkbox, Tag, Tooltip, Quick Filters, Calendar day cell |
+| 4px | Cards, Boardlets, Dialog shells, Toolbar (top corners), Progress bar linear, Bottom Sheet, Tray Card → except 8px |
+| 8px | Tray Card |
+| 9999px / fully rounded | Icon-only buttons, Toggle switch, Progress bar capsule |
+
+Any new radius value must be documented in the spec's Open Questions with a reason before it can be accepted. When the proposed 4-step token scale (radius-xs/sm/md/full) is adopted, update this reference.
 
 ### Focus rings
 
@@ -480,9 +689,11 @@ Open Questions. Silent omissions are blockers.
 
 ### Check 5 — Border Radius Compliance ⛔
 
-Global rule: `0px` everywhere.
-Any deviation must be documented in the spec with a reason.
-Known documented exceptions: slider track (2px), chat list item (2px), button icon-only (9999px).
+The system uses multiple radius values. Verify the component's radius matches the as-built audit in `inspire-design-language/SKILL.md`.
+
+Quick reference: 0px (labeled buttons) · 2px (checkbox, tag, tooltip, quick filters, calendar day) · 4px (cards, boardlets, dialog, toolbar top, progress linear, bottom sheet) · 8px (tray card) · 9999px (icon-only buttons, toggle, progress capsule).
+
+Any deviation from the as-built table must be documented in the spec with a reason.
 
 ### Check 6 — Dark Mode Completeness ⛔
 
@@ -615,4 +826,6 @@ These are explicitly deferred — do not flag them as blockers in acceptance che
 | inspire-core | (reference only) | Foundation | ✅ Active |
 | new-component | `/new-component` | Generator | ✅ Active |
 | inspect-spacing | `/inspect-spacing` | Validator | ✅ Active |
+| inspire-design-language | (reference only) | Design Language | ✅ Active |
+| inspire-compliance | `/inspire-compliance` | Auditor | ✅ Active |
 | inspire-patterns | TBD | Pattern | 🔲 Planned (Phase 2) |
