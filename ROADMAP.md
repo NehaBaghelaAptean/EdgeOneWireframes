@@ -91,49 +91,28 @@ check on each after updating.
 | 2 | Code Editor | 3.12 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=20241-292) | Ensure Toggle Switch a11y update propagates to downstream usage here |
 | 3 | File Upload | 3.8 | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=11528-202526) | Lower priority — style update, review Figma for specifics |
 
-### 3. Font substitution — GermanedgeSans → Inter in Figma
-Prototypes and specs already use `Inter Tight` (for GermanedgeSansCn) and
-`Inter` (for GermanedgeSans) as confirmed substitutes. The Figma file still
-references the proprietary font names. This needs to be aligned:
+### 3. Font substitution — GermanedgeSans → Inter in Figma ✅
+**Completed 2026-05-22.** All TYPOGRAPHY collection variables and text styles in
+the ADS Figma file have been migrated: `GermanedgeSans` → `Inter`,
+`GermanedgeSansCn` → `Inter Tight`. Changelog entry published in Figma.
+Specs and prototypes were already correct.
 
-- In Figma: swap `GermanedgeSans` → `Inter`, `GermanedgeSansCn` → `Inter Tight`
-  across all components in the ADS file
-- In specs: already correct — `Inter` / `Inter Tight` are the documented names
-- In prototypes: already correct — Google Fonts loaded in every prototype
+### 4. Design language — formalize and document ✅
+**Completed 2026-05-22.** Delivered as `.claude/skills/inspire-design-language/SKILL.md`.
 
-**Note:** This is a Figma authoring task, not a skill change. The font
-substitution rule is already encoded in `inspire-core` and `new-component`.
+**What was delivered:**
+- Full as-built corner radius audit (20+ components — 0px, 2px, 4px, 8px, fully-rounded; the "0px everywhere" assumption is incorrect and has been corrected across all skill files)
+- Proposed 4-step radius token scale (`radius-xs/sm/md/full`) — WIP, pending team alignment
+- Six-token stroke system (`stroke-default` through `stroke-divider`)
+- Focus state rules — current as-built spec + proposed offset dashed approach with open questions
+- Full action hierarchy: decision framework, placement patterns (dialogs, toolbars, destructive actions), ADK Figma component names, copy guidance
+- Known as-built violations (primary button contrast, toggle contrast, hierarchy inversion)
+- Industry alignment notes (Material 3, Ant Design 5, Carbon, Apple HIG)
 
-### 4. Design language — formalize and document
-The design language defines the visual rules that span all components — not
-just the token values but the principles behind them. Corner radius is the
-clearest example: the global rule is `0px` (square corners), but there is a
-richer set of intentional exceptions that need to be formally documented
-rather than scattered across individual component specs.
-
-**Corner radius rules (complete):**
-
-| Context | Value | Rationale |
-|---|---|---|
-| Global default | `0px` | Square corners are the Inspire/Germanedge identity |
-| Slider track | `2px` | Subtle rounding to soften the track without breaking the language |
-| Chat list item | `2px` | Same rationale as slider track |
-| Button — icon-only | `9999px` | Circular shape for icon-only variants; intentional break from the square language to signal a distinct interaction model |
-| *(additional rules TBD)* | | Review Figma for any further documented exceptions |
-
-**What design language documentation covers beyond corner radius:**
-- Elevation and shadow tokens (`Elevation/ADK Base`, `Elevation/ADK Height`)
-- Iconography rules — sizing, weight, usage contexts
-- Motion and transition guidelines (currently undefined — see "not yet covered")
-- Typography scale and when to use each style
-- Color usage principles beyond token assignment
-
-**Output:** A dedicated `design-language` reference document (or Figma page)
-that `inspire-core` and every component skill can point to. Not a skill that
-runs interactively — a living reference like `inspire-core`.
-
-**Status:** Not yet started. Formalizing corner radius exceptions is the
-first step.
+**Still pending from this section:**
+- Motion and transition guidelines — not yet defined; no source material exists to document
+- Iconography guidelines — sizing rules captured in `inspire-core` v2.0.0; deeper usage context (when to use which icon, icon + label pairing rules) not yet written
+- Color usage principles beyond token assignment — partially covered in `inspire-core` (No-Line Rule, surface hierarchy); further depth deferred
 
 ---
 
