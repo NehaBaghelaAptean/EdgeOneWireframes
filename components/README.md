@@ -18,6 +18,7 @@ Each component lives in its own subdirectory: `components/[id]/`.
 |---|---|---|---|---|---|
 | Slider | `slider` | Draft | [slider.html](https://studious-waddle-p376j5k.pages.github.io/components/slider/slider.html) | [slider.md](slider/slider.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089) |
 | Button | `button` | Draft | [button.html](https://studious-waddle-p376j5k.pages.github.io/components/button/button.html) | [button.md](button/button.md) | [Primary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972) · [Secondary](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-51015) · [Ghost](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=639-53573) |
+| Rich Popover | `rich-popover` | Draft — In Review | [rich-popover.html](https://studious-waddle-p376j5k.pages.github.io/components/rich-popover/rich-popover.html) | [rich-popover.md](rich-popover/rich-popover.md) | [Figma](https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22582-1562) |
 
 ---
 

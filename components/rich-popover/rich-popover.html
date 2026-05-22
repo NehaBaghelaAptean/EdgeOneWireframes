@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>ADK / Rich Popover — Component Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+
+    /* ==========================================================
+       SEMANTIC LAYER — Light Mode (ADK)
+       Source of truth: Figma file yck1tcUXgdQ5aYX6iUAwrO
+       Collection: SHARED SEMANTIC, ADK mode
+    ========================================================== */
+    :root {
+      /* Surface */
+      --color-surface-default:        #ffffff;
+      --color-surface-subtle:         #fafafa;
+      --color-surface-hover:          #e7e6e6;
+      --color-surface-disabled:       #f2f2f2;
+      --color-surface-selected:       #fffbe4;
+      --color-surface-selected-alt:   #fff7ca;
+      --color-surface-selected-hover: #fbe67e;
+      --color-surface-highlight:      #fae164;
+      --color-surface-overlay:        #ffffff;
+      --color-surface-page:           #f2f2f2;
+
+      /* Text */
+      --color-text-default:           #3f3e3d;
+      --color-text-subtle:            #6f6e6d;
+      --color-text-disabled:          #cfcece;
+      --color-text-placeholder:       #cfcece;
+      --color-text-inverse:           #ffffff;
+      --color-text-on-selected:       #3f3e3d;
+      --color-text-on-highlight:      #3f3e3d;
+      --color-text-link:              #fcd515;
+
+      /* Border */
+      --color-border-subtle:          #fafafa;
+      --color-border-default:         #e7e6e6;
+      --color-border-strong:          #3f3e3d;
+      --color-border-focus:           #878686;
+      --color-border-emphasis:        #575655;
+
+      /* Icon */
+      --color-icon-default:           #878686;
+      --color-icon-subtle:            #cfcece;
+      --color-icon-hover:             #3f3e3d;
+      --color-icon-disabled:          #cfcece;
+      --color-icon-inverse:           #ffffff;
+      --color-icon-on-selected:       #3f3e3d;
+
+      /* Status */
+      --color-status-success:         #8fda34;
+      --color-status-success-surface: #f0fad9;
+      --color-status-warning:         #ffb23f;
+      --color-status-warning-surface: #fff4e0;
+      --color-status-error:           #e53e3e;
+      --color-status-error-surface:   #fef2f2;
+      --color-status-info:            #3b82f6;
+      --color-status-info-surface:    #eff6ff;
+
+      /* Brand */
+      --color-brand-default:          #fcd515;
+      --color-brand-subtle:           #fae164;
+      --color-brand-strong:           #ab900e;
+      --color-brand-hover:            #fbe67e;
+      --color-brand-on-brand:         #3f3e3d;
+
+      /* Inline link */
+      --color-link-default:           #1a88b7;
+      --color-link-hover:             #009ec0;
+    }
+
+    /* ==========================================================
+       RICH POPOVER COMPONENT VARIABLES
+       Tier 1 component — nearly all roles cascade from SHARED SEMANTIC.
+       Tier 2 exception: --rich-popover-shadow (no semantic elevation token).
+       Naming: --rich-popover-[element]-[property]-[state]
+       Figma path: Rich Popover/[Element]/[State] in COMPONENTS collection
+    ========================================================== */
+    :root {
+      /* Panel */
+      --rich-popover-surface:          var(--color-surface-default);   /* → #ffffff */
+      --rich-popover-border:           var(--color-border-default);    /* → #e7e6e6 */
+      --rich-popover-border-width:     1px;
+      --rich-popover-border-radius:    0px;
+      --rich-popover-min-width:        200px;
+      --rich-popover-max-width:        320px;
+
+      /* Elevation — Tier 2: no semantic elevation token */
+      --rich-popover-shadow:           0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+
+      /* Arrow */
+      --rich-popover-arrow-size:       8px;
+      --rich-popover-arrow-bg:         var(--color-surface-default);   /* → #ffffff */
+      --rich-popover-arrow-border:     var(--color-border-default);    /* → #e7e6e6 */
+
+      /* Header */
+      --rich-popover-title-color:      var(--color-text-default);      /* Text/Default → #3f3e3d */
+      --rich-popover-header-divider:   var(--color-border-default);    /* → #e7e6e6 */
+      --rich-popover-header-padding-v: 10px;
+      --rich-popover-header-padding-h: 16px;
+
+      /* Body */
+      --rich-popover-body-color:       var(--color-text-default);      /* Text/Default → #3f3e3d */
+      --rich-popover-body-color-subtle:var(--color-text-subtle);       /* Text/Subtle → #6f6e6d */
+      --rich-popover-content-padding-v:12px;
+      --rich-popover-content-padding-h:16px;
+
+      /* Footer */
+      --rich-popover-footer-divider:   var(--color-border-default);    /* → #e7e6e6 */
+      --rich-popover-footer-padding-v: 8px;
+      --rich-popover-footer-padding-h: 16px;
+
+      /* Close button */
+      --rich-popover-close-size:       24px;
+      --rich-popover-close-font-size:  16px;
+      --rich-popover-close-icon:       var(--color-icon-default);      /* → #878686 */
+      --rich-popover-close-icon-hover: var(--color-icon-hover);        /* → #3f3e3d */
+      --rich-popover-close-bg-hover:   var(--color-surface-hover);     /* → #e7e6e6 */
+      --rich-popover-close-focus-ring: #1a88b7;                        /* Border/Focus (SHARED SEMANTIC) */
+
+      /* Typography — title */
+      --rich-popover-title-font-family:   'Inter Tight', Arial, sans-serif;
+      --rich-popover-title-font-size:     14px;
+      --rich-popover-title-line-height:   20px;
+      --rich-popover-title-font-weight:   600;
+      --rich-popover-title-letter-spacing:0;
+
+      /* Typography — body */
+      --rich-popover-body-font-family:   'Inter', Arial, sans-serif;
+      --rich-popover-body-font-size:     14px;
+      --rich-popover-body-line-height:   20px;
+      --rich-popover-body-font-weight:   400;
+      --rich-popover-body-letter-spacing:0;
+    }
+
+    /* ==========================================================
+       DARK MODE — TDK
+       Semantic overrides + component explicit overrides.
+       † = does not cascade from semantic layer, must be set directly.
+    ========================================================== */
+    html[data-theme="dark"] {
+      /* Surface */
+      --color-surface-subtle:           #202026;
+      --color-surface-default:          #31313b;
+      --color-surface-disabled:         #3c3c44;
+      --color-surface-hover:            #3c3c44;
+      --color-surface-overlay:          #31313b;
+
+      /* Text */
+      --color-text-default:             #d4d4d5;
+      --color-text-subtle:              #a9a9ac;
+      --color-text-disabled:            #50505d;
+      --color-text-placeholder:         #50505d;
+      --color-text-inverse:             #202026;
+
+      /* Border */
+      --color-border-default:           #3c3c44;
+      --color-border-subtle:            #31313b;
+      --color-border-strong:            #d4d4d5;
+      --color-border-focus:             #bcbcbe;
+      --color-border-emphasis:          #bcbcbe;
+
+      /* Icon */
+      --color-icon-default:             #bcbcbe;
+      --color-icon-subtle:              #50505d;
+      --color-icon-hover:               #d4d4d5;
+      --color-icon-disabled:            #50505d;
+
+      /* Inline link */
+      --color-link-default:             #7c79ff;
+      --color-link-hover:               #534ffd;
+
+      /* Rich Popover — explicit dark overrides (†) */
+      --rich-popover-shadow:            0 4px 16px rgba(0, 0, 0, 0.32), 0 1px 4px rgba(0, 0, 0, 0.20); /* † */
+      --rich-popover-close-focus-ring:  #7c79ff;                        /* † Border/Focus TDK */
+    }
+
+    html[data-theme="dark"] body {
+      background: #202026; /* explicit — matches --color-surface-subtle TDK */
+    }
+
+    /* ==========================================================
+       BASE / RESET
+    ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 40px 24px;
+      background: var(--color-surface-subtle);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--color-text-default);
+    }
+
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 4px;
+      color: var(--color-text-default);
+    }
+
+    .page-subtitle {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin: 0 0 48px;
+    }
+
+    /* State section layout */
+    .state-group {
+      background: var(--color-surface-default);
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--color-border-default);
+    }
+
+    .state-label {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-subtle);
+      margin: 0 0 24px;
+    }
+
+    /* ==========================================================
+       ANT-POPOVER — BASE STRUCTURE
+    ========================================================== */
+    .ant-popover {
+      position: relative;
+      display: inline-block;
+    }
+
+    .ant-popover-content {
+      position: relative;
+    }
+
+    .ant-popover-inner {
+      background: var(--rich-popover-surface);
+      border: var(--rich-popover-border-width) solid var(--rich-popover-border);
+      border-radius: var(--rich-popover-border-radius);
+      box-shadow: var(--rich-popover-shadow);
+      min-width: var(--rich-popover-min-width);
+      max-width: var(--rich-popover-max-width);
+      overflow: hidden;
+    }
+
+    /* Header row (title + optional close button) */
+    .ant-popover-inner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--rich-popover-header-padding-v) var(--rich-popover-header-padding-h);
+      border-bottom: var(--rich-popover-border-width) solid var(--rich-popover-header-divider);
+    }
+
+    .ant-popover-title {
+      font-family: var(--rich-popover-title-font-family);
+      font-size: var(--rich-popover-title-font-size);
+      line-height: var(--rich-popover-title-line-height);
+      font-weight: var(--rich-popover-title-font-weight);
+      letter-spacing: var(--rich-popover-title-letter-spacing);
+      color: var(--rich-popover-title-color);
+      margin: 0;
+    }
+
+    /* Body content */
+    .ant-popover-inner-content {
+      padding: var(--rich-popover-content-padding-v) var(--rich-popover-content-padding-h);
+      font-family: var(--rich-popover-body-font-family);
+      font-size: var(--rich-popover-body-font-size);
+      line-height: var(--rich-popover-body-line-height);
+      font-weight: var(--rich-popover-body-font-weight);
+      letter-spacing: var(--rich-popover-body-letter-spacing);
+      color: var(--rich-popover-body-color);
+    }
+
+    .ant-popover-inner-content p {
+      margin: 0;
+    }
+
+    .ant-popover-inner-content .text-subtle {
+      color: var(--rich-popover-body-color-subtle);
+    }
+
+    /* No-header variant: content gets direct top padding, no divider */
+    .ant-popover-no-header .ant-popover-inner-content {
+      padding-top: var(--rich-popover-header-padding-v);
+    }
+
+    /* Footer action row */
+    .ant-popover-inner-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: var(--rich-popover-footer-padding-v) var(--rich-popover-footer-padding-h);
+      border-top: var(--rich-popover-border-width) solid var(--rich-popover-footer-divider);
+    }
+
+    /* Footer action buttons — prototype only; production uses Button component */
+    .ant-popover-action {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border: var(--rich-popover-border-width) solid var(--rich-popover-border);
+      background: var(--rich-popover-surface);
+      color: var(--color-text-default);
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.1s;
+    }
+
+    .ant-popover-action:hover {
+      background: var(--color-surface-hover);
+    }
+
+    .ant-popover-action-primary {
+      background: var(--color-brand-default);
+      border-color: var(--color-brand-default);
+      color: var(--color-brand-on-brand);
+    }
+
+    .ant-popover-action-primary:hover {
+      background: var(--color-brand-hover);
+      border-color: var(--color-brand-hover);
+    }
+
+    /* ==========================================================
+       CLOSE BUTTON
+    ========================================================== */
+    .ant-popover-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--rich-popover-close-size);
+      height: var(--rich-popover-close-size);
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--rich-popover-close-icon);
+      flex-shrink: 0;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .ant-popover-close:hover,
+    .ant-popover-close.is-hover {
+      background: var(--rich-popover-close-bg-hover);
+      color: var(--rich-popover-close-icon-hover);
+    }
+
+    .ant-popover-close:focus-visible,
+    .ant-popover-close.is-focus {
+      outline: 2px dashed var(--rich-popover-close-focus-ring);
+      outline-offset: 0px;
+      color: var(--rich-popover-close-icon-hover);
+    }
+
+    /* ==========================================================
+       ARROW — PLACEMENT VARIANTS
+       Arrow is a rotated square with selective borders on the
+       outward-facing edges only. Positioned at half the arrow
+       size from the panel edge.
+    ========================================================== */
+    .ant-popover-arrow {
+      position: absolute;
+      width: var(--rich-popover-arrow-size);
+      height: var(--rich-popover-arrow-size);
+      background: var(--rich-popover-arrow-bg);
+      z-index: 1;
+    }
+
+    /* placement-bottom: arrow at top of panel, points up toward trigger */
+    .ant-popover-placement-bottom .ant-popover-content {
+      padding-top: calc(var(--rich-popover-arrow-size) / 2 + 2px);
+    }
+    .ant-popover-placement-bottom .ant-popover-arrow {
+      top: 1px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      border-top: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+      border-left: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+    }
+
+    /* placement-top: arrow at bottom of panel, points down toward trigger */
+    .ant-popover-placement-top .ant-popover-content {
+      padding-bottom: calc(var(--rich-popover-arrow-size) / 2 + 2px);
+    }
+    .ant-popover-placement-top .ant-popover-arrow {
+      bottom: 1px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      border-bottom: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+      border-right: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+    }
+
+    /* placement-right: arrow at left of panel, points left toward trigger */
+    .ant-popover-placement-right .ant-popover-content {
+      padding-left: calc(var(--rich-popover-arrow-size) / 2 + 2px);
+    }
+    .ant-popover-placement-right .ant-popover-arrow {
+      left: 1px;
+      top: 24px;
+      transform: translateY(0) rotate(45deg);
+      border-left: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+      border-bottom: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+    }
+
+    /* placement-left: arrow at right of panel, points right toward trigger */
+    .ant-popover-placement-left .ant-popover-content {
+      padding-right: calc(var(--rich-popover-arrow-size) / 2 + 2px);
+    }
+    .ant-popover-placement-left .ant-popover-arrow {
+      right: 1px;
+      top: 24px;
+      transform: translateY(0) rotate(45deg);
+      border-top: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+      border-right: var(--rich-popover-border-width) solid var(--rich-popover-arrow-border);
+    }
+
+    /* ==========================================================
+       PLACEMENT DEMO ROW
+    ========================================================== */
+    .placement-demo-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .placement-demo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .placement-demo-label {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-subtle);
+    }
+
+    .placement-demo-item .ant-popover-inner {
+      min-width: 160px;
+      max-width: 180px;
+    }
+
+    /* Draft notice banner */
+    .draft-notice {
+      border-left: 3px solid var(--color-status-warning);
+      padding: 10px 16px;
+      margin-bottom: 32px;
+      background: var(--color-status-warning-surface);
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 12px;
+      color: var(--color-text-default);
+      line-height: 18px;
+    }
+
+    html[data-theme="dark"] .draft-notice {
+      background: rgba(255, 178, 63, 0.10);
+    }
+
+    /* ==========================================================
+       SPEC TAB — INLINE LINK COLORS
+    ========================================================== */
+    #tab-spec .spec-body a       { color: var(--color-link-default); }
+    #tab-spec .spec-body a:hover { color: var(--color-link-hover); }
+
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Page header -->
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+    <h1>ADK / Rich Popover</h1>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22582-1562"
+         target="_blank" rel="noopener"
+         style="
+           display: inline-flex;
+           align-items: center;
+           gap: 6px;
+           font-family: 'Inter Tight', Arial, sans-serif;
+           font-size: 11px;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 0.06em;
+           text-decoration: none;
+           background: none;
+           border: 1px solid var(--color-border-default);
+           color: var(--color-text-subtle);
+           padding: 4px 12px;
+           cursor: pointer;
+         ">
+        <svg width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+          <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
+          <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
+          <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/>
+          <path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/>
+          <path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/>
+        </svg>
+        Open in Figma
+      </a>
+      <button id="theme-toggle" style="
+        font-family: 'Inter Tight', Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        background: none;
+        border: 1px solid var(--color-border-default);
+        color: var(--color-text-subtle);
+        padding: 4px 12px;
+        cursor: pointer;
+        border-radius: 0;
+      ">Dark Mode</button>
+    </div>
+  </div>
+  <p class="page-subtitle">Component draft · 6 states · Light (ADK) + Dark (TDK)</p>
+
+  <div class="draft-notice">
+    <strong>In review — not final.</strong> Token values, spacing, and typography are estimated pending Figma inspection. Do not implement in production.
+  </div>
+
+  <!-- ========================================================
+       STATE 1: Default
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Default — Title + Body</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner">
+          <div class="ant-popover-inner-header">
+            <div class="ant-popover-title">Configuration Details</div>
+          </div>
+          <div class="ant-popover-inner-content">
+            <p>This action will apply the selected configuration to all matching records. Review the details before proceeding.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 2: With Close Button
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">With Close Button</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner">
+          <div class="ant-popover-inner-header">
+            <div class="ant-popover-title">Configuration Details</div>
+            <button class="ant-popover-close" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </button>
+          </div>
+          <div class="ant-popover-inner-content">
+            <p>This action will apply the selected configuration to all matching records. Review the details before proceeding.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 3: With Actions Footer
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">With Actions Footer</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner">
+          <div class="ant-popover-inner-header">
+            <div class="ant-popover-title">Confirm Action</div>
+            <button class="ant-popover-close" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </button>
+          </div>
+          <div class="ant-popover-inner-content">
+            <p>This action cannot be undone. All linked records will be updated to reflect the new configuration settings.</p>
+          </div>
+          <div class="ant-popover-inner-footer">
+            <button class="ant-popover-action">Cancel</button>
+            <button class="ant-popover-action ant-popover-action-primary">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 4: No Title
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">No Title</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner ant-popover-no-header">
+          <div class="ant-popover-inner-content">
+            <p>Select a user to assign this task. Changes are saved automatically when a selection is made.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 5: Close Button — Hover
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Close Button — Hover</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner">
+          <div class="ant-popover-inner-header">
+            <div class="ant-popover-title">Configuration Details</div>
+            <button class="ant-popover-close is-hover" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </button>
+          </div>
+          <div class="ant-popover-inner-content">
+            <p>This action will apply the selected configuration to all matching records.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 6: Close Button — Focus
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Close Button — Focus</p>
+    <div class="ant-popover ant-popover-placement-bottom">
+      <div class="ant-popover-content">
+        <div class="ant-popover-arrow"></div>
+        <div class="ant-popover-inner">
+          <div class="ant-popover-inner-header">
+            <div class="ant-popover-title">Configuration Details</div>
+            <button class="ant-popover-close is-focus" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </button>
+          </div>
+          <div class="ant-popover-inner-content">
+            <p>This action will apply the selected configuration to all matching records.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PLACEMENT DEMO — All 4 Arrow Directions
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Placement Variants (Arrow Direction)</p>
+    <div class="placement-demo-row">
+
+      <div class="placement-demo-item">
+        <span class="placement-demo-label">placement-bottom</span>
+        <div class="ant-popover ant-popover-placement-bottom">
+          <div class="ant-popover-content">
+            <div class="ant-popover-arrow"></div>
+            <div class="ant-popover-inner">
+              <div class="ant-popover-inner-header">
+                <div class="ant-popover-title">Below trigger</div>
+              </div>
+              <div class="ant-popover-inner-content">
+                <p>Arrow at top.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placement-demo-item">
+        <span class="placement-demo-label">placement-top</span>
+        <div class="ant-popover ant-popover-placement-top">
+          <div class="ant-popover-content">
+            <div class="ant-popover-inner">
+              <div class="ant-popover-inner-header">
+                <div class="ant-popover-title">Above trigger</div>
+              </div>
+              <div class="ant-popover-inner-content">
+                <p>Arrow at bottom.</p>
+              </div>
+            </div>
+            <div class="ant-popover-arrow"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placement-demo-item">
+        <span class="placement-demo-label">placement-right</span>
+        <div class="ant-popover ant-popover-placement-right">
+          <div class="ant-popover-content">
+            <div class="ant-popover-arrow"></div>
+            <div class="ant-popover-inner">
+              <div class="ant-popover-inner-header">
+                <div class="ant-popover-title">Right of trigger</div>
+              </div>
+              <div class="ant-popover-inner-content">
+                <p>Arrow at left.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placement-demo-item">
+        <span class="placement-demo-label">placement-left</span>
+        <div class="ant-popover ant-popover-placement-left">
+          <div class="ant-popover-content">
+            <div class="ant-popover-inner">
+              <div class="ant-popover-inner-header">
+                <div class="ant-popover-title">Left of trigger</div>
+              </div>
+              <div class="ant-popover-inner-content">
+                <p>Arrow at right.</p>
+              </div>
+            </div>
+            <div class="ant-popover-arrow"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================
+       CODE REFERENCE
+  ========================================================= -->
+  <div class="state-group code-reference">
+    <p class="state-label">Code Reference</p>
+
+    <div class="code-tabs">
+      <button class="code-tab active" id="tab-spec-btn" data-target="tab-spec">rich-popover-spec.md</button>
+      <button class="code-tab" data-target="tab-html">HTML</button>
+      <button class="code-tab" data-target="tab-css">CSS Variables</button>
+      <button class="code-tab" data-target="tab-vars">Variable Reference</button>
+      <a id="spec-download-link" href="rich-popover.md" download
+         style="margin-left: auto; font-family: 'Inter Tight', Arial, sans-serif; font-size: 11px; color: var(--color-text-subtle); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 0 4px 0 12px; white-space: nowrap;">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+        <span>Download rich-popover-spec.md</span>
+      </a>
+    </div>
+
+    <!-- HTML Snippet -->
+    <div class="code-panel" id="tab-html">
+      <pre><code><span class="code-comment">&lt;!-- Default — Title + Body --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover ant-popover-placement-bottom"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-content"</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-arrow"</span>&gt;&lt;/<span class="code-tag">div</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner"</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner-header"</span>&gt;
+        &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-title"</span>&gt;Popover Title&lt;/<span class="code-tag">div</span>&gt;
+      &lt;/<span class="code-tag">div</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner-content"</span>&gt;
+        &lt;<span class="code-tag">p</span>&gt;Content text describing the item or context.&lt;/<span class="code-tag">p</span>&gt;
+      &lt;/<span class="code-tag">div</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- With Close Button — add .ant-popover-close to header --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner-header"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-title"</span>&gt;Popover Title&lt;/<span class="code-tag">div</span>&gt;
+  &lt;<span class="code-tag">button</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-close"</span> <span class="code-attr">aria-label</span>=<span class="code-string">"Close"</span>&gt;
+    &lt;<span class="code-tag">svg</span> <span class="code-attr">width</span>=<span class="code-string">"16"</span> <span class="code-attr">height</span>=<span class="code-string">"16"</span> <span class="code-attr">viewBox</span>=<span class="code-string">"0 0 16 16"</span> <span class="code-attr">fill</span>=<span class="code-string">"none"</span>&gt;
+      &lt;<span class="code-tag">path</span> <span class="code-attr">d</span>=<span class="code-string">"M3 3L13 13M13 3L3 13"</span> <span class="code-attr">stroke</span>=<span class="code-string">"currentColor"</span>
+            <span class="code-attr">stroke-width</span>=<span class="code-string">"1.5"</span> <span class="code-attr">stroke-linecap</span>=<span class="code-string">"square"</span>/&gt;
+    &lt;/<span class="code-tag">svg</span>&gt;
+  &lt;/<span class="code-tag">button</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- With Actions Footer — add .ant-popover-inner-footer after content --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner-footer"</span>&gt;
+  &lt;<span class="code-tag">button</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-action"</span>&gt;Cancel&lt;/<span class="code-tag">button</span>&gt;
+  &lt;<span class="code-tag">button</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-action ant-popover-action-primary"</span>&gt;Proceed&lt;/<span class="code-tag">button</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- No Title — omit header, add .ant-popover-no-header to inner --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner ant-popover-no-header"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"ant-popover-inner-content"</span>&gt;
+    &lt;<span class="code-tag">p</span>&gt;Content text only.&lt;/<span class="code-tag">p</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Placement — add modifier class to root --&gt;</span>
+<span class="code-comment">&lt;!-- .ant-popover-placement-bottom  (arrow top)    --&gt;</span>
+<span class="code-comment">&lt;!-- .ant-popover-placement-top     (arrow bottom) --&gt;</span>
+<span class="code-comment">&lt;!-- .ant-popover-placement-right   (arrow left)   --&gt;</span>
+<span class="code-comment">&lt;!-- .ant-popover-placement-left    (arrow right)  --&gt;</span></code></pre>
+    </div>
+
+    <!-- CSS Variables Snippet -->
+    <div class="code-panel" id="tab-css">
+      <pre><code><span class="code-comment">/* Rich Popover component variables
+   Tier 1 component — nearly all roles cascade from SHARED SEMANTIC.
+   Tier 2 exception: --rich-popover-shadow (no semantic elevation token).
+   Figma collection: COMPONENTS · Path prefix: Rich Popover/ */</span>
+<span class="code-tag">:root</span> {
+  <span class="code-comment">/* Panel */</span>
+  <span class="code-attr">--rich-popover-surface</span>:           <span class="code-string">var(--color-surface-default)</span>;    <span class="code-comment">/* → #ffffff */</span>
+  <span class="code-attr">--rich-popover-border</span>:            <span class="code-string">var(--color-border-default)</span>;     <span class="code-comment">/* → #e7e6e6 */</span>
+  <span class="code-attr">--rich-popover-shadow</span>:            <span class="code-string">0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)</span>;
+
+  <span class="code-comment">/* Arrow */</span>
+  <span class="code-attr">--rich-popover-arrow-bg</span>:          <span class="code-string">var(--color-surface-default)</span>;
+  <span class="code-attr">--rich-popover-arrow-border</span>:      <span class="code-string">var(--color-border-default)</span>;
+
+  <span class="code-comment">/* Header */</span>
+  <span class="code-attr">--rich-popover-title-color</span>:       <span class="code-string">var(--color-text-default)</span>;       <span class="code-comment">/* Text/Default → #3f3e3d */</span>
+  <span class="code-attr">--rich-popover-header-divider</span>:    <span class="code-string">var(--color-border-default)</span>;
+
+  <span class="code-comment">/* Body */</span>
+  <span class="code-attr">--rich-popover-body-color</span>:        <span class="code-string">var(--color-text-default)</span>;       <span class="code-comment">/* Text/Default → #3f3e3d */</span>
+  <span class="code-attr">--rich-popover-body-color-subtle</span>: <span class="code-string">var(--color-text-subtle)</span>;        <span class="code-comment">/* Text/Subtle  → #6f6e6d */</span>
+
+  <span class="code-comment">/* Footer */</span>
+  <span class="code-attr">--rich-popover-footer-divider</span>:    <span class="code-string">var(--color-border-default)</span>;
+
+  <span class="code-comment">/* Close button */</span>
+  <span class="code-attr">--rich-popover-close-icon</span>:        <span class="code-string">var(--color-icon-default)</span>;       <span class="code-comment">/* → #878686 */</span>
+  <span class="code-attr">--rich-popover-close-icon-hover</span>:  <span class="code-string">var(--color-icon-hover)</span>;         <span class="code-comment">/* → #3f3e3d */</span>
+  <span class="code-attr">--rich-popover-close-bg-hover</span>:    <span class="code-string">var(--color-surface-hover)</span>;      <span class="code-comment">/* → #e7e6e6 */</span>
+  <span class="code-attr">--rich-popover-close-focus-ring</span>:  <span class="code-string">#1a88b7</span>;                         <span class="code-comment">/* Border/Focus (SHARED SEMANTIC) */</span>
+}
+
+<span class="code-comment">/* Dark mode — TDK. † = explicit override (does not cascade) */</span>
+<span class="code-tag">html[data-theme="dark"]</span> {
+  <span class="code-attr">--color-surface-default</span>:          <span class="code-string">#31313b</span>;
+  <span class="code-attr">--color-surface-hover</span>:            <span class="code-string">#3c3c44</span>;
+  <span class="code-attr">--color-text-default</span>:             <span class="code-string">#d4d4d5</span>;
+  <span class="code-attr">--color-text-subtle</span>:              <span class="code-string">#a9a9ac</span>;
+  <span class="code-attr">--color-border-default</span>:           <span class="code-string">#3c3c44</span>;
+  <span class="code-attr">--color-icon-default</span>:             <span class="code-string">#bcbcbe</span>;
+  <span class="code-attr">--color-icon-hover</span>:               <span class="code-string">#d4d4d5</span>;
+
+  <span class="code-attr">--rich-popover-shadow</span>:            <span class="code-string">0 4px 16px rgba(0,0,0,0.32), 0 1px 4px rgba(0,0,0,0.20)</span>; <span class="code-comment">/* † */</span>
+  <span class="code-attr">--rich-popover-close-focus-ring</span>:  <span class="code-string">#7c79ff</span>; <span class="code-comment">/* † Border/Focus TDK */</span>
+}</code></pre>
+    </div>
+
+    <!-- Variable Reference Table -->
+    <div class="code-panel" id="tab-vars">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>CSS Variable</th>
+            <th>Figma Variable</th>
+            <th>ADK (Light)</th>
+            <th></th>
+            <th>TDK (Dark)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="var-group-row"><td colspan="6">Panel</td></tr>
+          <tr>
+            <td><code>--rich-popover-surface</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#ffffff <span class="alias">White</span></td>
+            <td><span class="swatch" style="background:#ffffff;"></span></td>
+            <td>#31313b <span class="alias">TDK 30</span></td>
+            <td><span class="swatch" style="background:#31313b; border-color:#555;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-border</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Elevation — Tier 2 exception</td></tr>
+          <tr>
+            <td><code>--rich-popover-shadow</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td colspan="2">0 4px 16px rgba(0,0,0,0.12)</td>
+            <td colspan="2">0 4px 16px rgba(0,0,0,0.32) †</td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Header — title text binds to SHARED SEMANTIC</td></tr>
+          <tr>
+            <td><code>--rich-popover-title-color</code></td>
+            <td><code>Text/Default</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-header-divider</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Body — binds to SHARED SEMANTIC</td></tr>
+          <tr>
+            <td><code>--rich-popover-body-color</code></td>
+            <td><code>Text/Default</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-body-color-subtle</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Footer</td></tr>
+          <tr>
+            <td><code>--rich-popover-footer-divider</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Close Button</td></tr>
+          <tr>
+            <td><code>--rich-popover-close-icon</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#878686 <span class="alias">ADK 50</span></td>
+            <td><span class="swatch" style="background:#878686;"></span></td>
+            <td>#bcbcbe <span class="alias">TDK 70</span></td>
+            <td><span class="swatch" style="background:#bcbcbe;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-close-icon-hover</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-close-bg-hover</code></td>
+            <td><code>Unknown</code> <span class="alias">COMPONENTS</span></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--rich-popover-close-focus-ring</code></td>
+            <td><code>Border/Focus</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#1a88b7 <span class="alias">ADK Inline Link</span></td>
+            <td><span class="swatch" style="background:#1a88b7;"></span></td>
+            <td>#7c79ff <span class="alias">TDK Inline Link †</span></td>
+            <td><span class="swatch" style="background:#7c79ff;"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:11px; color:var(--color-text-subtle); margin-top:12px; line-height:1.6;">
+        † TDK value does not cascade from the same semantic token as ADK — overridden directly in <code>html[data-theme="dark"]</code>.<br>
+        Unknown = Figma COMPONENTS variable not yet defined; requires design system work to name and assign.
+      </p>
+    </div>
+
+    <!-- Spec tab (default active) -->
+    <div class="code-panel active" id="tab-spec">
+      <div class="markdown-body" id="spec-rendered"></div>
+    </div>
+
+  </div>
+
+</div><!-- /.page-wrap -->
+
+  <style>
+    .code-tabs {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+
+    .code-tab {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 8px 16px;
+      cursor: pointer;
+      color: var(--color-text-subtle);
+      margin-bottom: -1px;
+      transition: color 0.1s, border-color 0.1s;
+    }
+
+    .code-tab:hover { color: var(--color-text-default); }
+
+    .code-tab.active {
+      color: var(--color-text-default);
+      border-bottom-color: var(--color-brand-default);
+      font-weight: 600;
+    }
+
+    .code-panel { display: none; padding-top: 24px; }
+    .code-panel.active { display: block; }
+
+    pre {
+      margin: 0;
+      background: #1e1e1e;
+      border-radius: 2px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+    }
+
+    .code-comment { color: #6a9955; }
+    .code-tag     { color: #4ec9b0; }
+    .code-attr    { color: #9cdcfe; }
+    .code-string  { color: #ce9178; }
+
+    .var-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .var-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+
+    .var-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      color: var(--color-text-default);
+      vertical-align: middle;
+    }
+
+    .var-table code {
+      font-size: 12px;
+      color: var(--color-text-default);
+      background: var(--color-surface-subtle);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .var-group-row td {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      background: var(--color-surface-subtle);
+      padding: 6px 12px;
+    }
+
+    .swatch {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      border: 1px solid var(--color-border-default);
+      vertical-align: middle;
+    }
+
+    .alias {
+      font-size: 10px;
+      color: var(--color-text-subtle);
+      font-family: 'Consolas', 'Courier New', monospace;
+      margin-left: 4px;
+    }
+
+    /* ── Spec tab — rendered markdown ─────────────────────── */
+    .markdown-body {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--color-text-default);
+    }
+
+    .markdown-body h1 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 4px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border-default);
+      color: var(--color-text-default);
+    }
+
+    .markdown-body h2 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      margin: 32px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+
+    .markdown-body h3 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-subtle);
+      margin: 24px 0 8px;
+    }
+
+    .markdown-body p { margin: 0 0 12px; }
+
+    .markdown-body blockquote {
+      margin: 0 0 16px;
+      padding: 10px 16px;
+      border-left: 3px solid var(--color-brand-default);
+      background: var(--color-surface-subtle);
+      color: var(--color-text-subtle);
+      font-size: 12px;
+    }
+
+    .markdown-body blockquote p { margin: 0; }
+
+    .markdown-body code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      background: var(--color-surface-subtle);
+      color: var(--color-text-default);
+      padding: 1px 5px;
+      border-radius: 2px;
+      border: 1px solid var(--color-border-default);
+    }
+
+    .markdown-body pre {
+      background: #1e1e1e;
+      border-radius: 2px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 0 0 16px;
+    }
+
+    .markdown-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+    }
+
+    .markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 0 0 20px;
+    }
+
+    .markdown-body th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-subtle);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--color-border-default);
+      white-space: nowrap;
+    }
+
+    .markdown-body td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      color: var(--color-text-default);
+      vertical-align: top;
+    }
+
+    .markdown-body td code, .markdown-body th code { font-size: 11px; }
+
+    .markdown-body ul, .markdown-body ol {
+      margin: 0 0 12px;
+      padding-left: 20px;
+    }
+
+    .markdown-body li { margin-bottom: 4px; }
+
+    .markdown-body input[type="checkbox"] {
+      margin-right: 6px;
+      accent-color: var(--color-brand-default);
+    }
+
+    .markdown-body hr {
+      border: none;
+      border-top: 1px solid var(--color-border-default);
+      margin: 24px 0;
+    }
+
+    .markdown-body strong {
+      font-weight: 600;
+      color: var(--color-text-default);
+    }
+
+    .markdown-body a       { color: var(--color-link-default); text-decoration: underline; text-underline-offset: 2px; }
+    .markdown-body a:hover { color: var(--color-link-hover); }
+
+    /* Hide YAML frontmatter block */
+    .markdown-body .frontmatter { display: none; }
+
+    a { color: var(--color-link-default); }
+  </style>
+
+  <script>
+    document.querySelectorAll('.code-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const panel = document.getElementById(tab.dataset.target);
+        document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        panel.classList.add('active');
+      });
+    });
+  </script>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    toggle.addEventListener('click', () => {
+      const isDark = document.documentElement.dataset.theme === 'dark';
+      document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
+      toggle.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    });
+  </script>
+
+  <!-- Spec content embedded inline — strip YAML frontmatter before rendering -->
+  <script type="text/markdown" id="spec-source">
+---
+component: Rich Popover
+id: rich-popover
+version: 0.1.0
+status: draft
+source-library: Ant Design Popover
+source-url: https://ant.design/components/popover
+figma-file: yck1tcUXgdQ5aYX6iUAwrO
+figma-node: TBD
+figma-page: "ADK / Rich Popover"
+figma-collection: COMPONENTS
+prototype: components/rich-popover/rich-popover.html
+spec: components/rich-popover/rich-popover.md
+modes:
+  light: ADK
+  dark: TDK
+last-updated: 2026-05-20
+---
+
+# Rich Popover
+
+**Status:** Draft · **Modes:** ADK (Light) + TDK (Dark) · **Library:** Ant Design Popover
+**Prototype:** `components/rich-popover/rich-popover.html` · **Figma:** TBD (frames pending — target page node `22582:1562`)
+
+## Who reads what
+
+| Section | Designer | Front End | Product | Agent |
+|---|:---:|:---:|:---:|:---:|
+| States | ✓ | ✓ | ✓ | ✓ |
+| Color Tokens | ✓ | ✓ | — | ✓ |
+| Dimension Tokens | — | ✓ | — | ✓ |
+| HTML Structure | — | ✓ | — | ✓ |
+| Variable Architecture | — | ✓ | — | ✓ |
+| Acceptance Criteria — Visual | ✓ | — | ✓ | ✓ |
+| Acceptance Criteria — Functional | — | ✓ | ✓ | ✓ |
+| Acceptance Criteria — Figma Binding | ✓ | — | — | ✓ |
+| Open Questions | ✓ | ✓ | ✓ | ✓ |
+
+---
+
+## States
+
+| id | Label | CSS Trigger | Figma Variant | Notes |
+|---|---|---|---|---|
+| `default` | Default | base styles (no modifier) | Variant=Default, Footer=None | Title + body; arrow at top (`placement-bottom`) |
+| `with-close` | With Close Button | `.ant-popover-close` present in DOM | Variant=With-Close, Footer=None | Title row includes close button |
+| `with-actions` | With Actions Footer | `.ant-popover-inner-footer` present in DOM | Variant=With-Close, Footer=Actions | Title + close + body + footer action buttons |
+| `no-title` | No Title | `.ant-popover-inner-header` absent | Variant=No-Title, Footer=None | Body content only; no header or divider |
+| `close-hover` | Close Button — Hover | `.ant-popover-close:hover` | State=Hover | Hover background fill on close button |
+| `close-focus` | Close Button — Focus | `.ant-popover-close:focus-visible` | State=Focus | Dashed focus ring at close button edge |
+
+**Out of scope:** trigger animation, 12 placement variants as states, Popconfirm variant, nested popovers.
+
+---
+
+## Color Tokens
+
+### Panel
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-surface` | `.ant-popover-inner → background` | Unknown — requires Figma inspection | COMPONENTS | `#ffffff` · White | `#31313b` · TDK 30 | cascades via `--color-surface-default` |
+| `--rich-popover-border` | `.ant-popover-inner → border-color` | Unknown — requires Figma inspection | COMPONENTS | `#e7e6e6` · ADK 20 | `#3c3c44` · TDK 40 | cascades via `--color-border-default` |
+
+### Elevation
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-shadow` | `.ant-popover-inner → box-shadow` | Unknown — requires Figma inspection | COMPONENTS | `0 4px 16px rgba(0,0,0,0.12)` | `0 4px 16px rgba(0,0,0,0.32)` | explicit: `0 4px 16px rgba(0,0,0,0.32)` † |
+
+### Arrow
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-arrow-bg` | `.ant-popover-arrow → background` | Unknown — requires Figma inspection | COMPONENTS | `#ffffff` · White | `#31313b` · TDK 30 | cascades via `--color-surface-default` |
+| `--rich-popover-arrow-border` | `.ant-popover-arrow → border-color` | Unknown — requires Figma inspection | COMPONENTS | `#e7e6e6` · ADK 20 | `#3c3c44` · TDK 40 | cascades via `--color-border-default` |
+
+### Header
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-title-color` | `.ant-popover-title → color` | `Text/Default` | SHARED SEMANTIC | `#3f3e3d` · ADK 80 | `#d4d4d5` · TDK 80 | cascades via `--color-text-default` |
+| `--rich-popover-header-divider` | `.ant-popover-inner-header → border-bottom-color` | Unknown — requires Figma inspection | COMPONENTS | `#e7e6e6` · ADK 20 | `#3c3c44` · TDK 40 | cascades via `--color-border-default` |
+
+### Body
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-body-color` | `.ant-popover-inner-content → color` | `Text/Default` | SHARED SEMANTIC | `#3f3e3d` · ADK 80 | `#d4d4d5` · TDK 80 | cascades via `--color-text-default` |
+| `--rich-popover-body-color-subtle` | `.ant-popover-inner-content .text-subtle → color` | `Text/Subtle` | SHARED SEMANTIC | `#6f6e6d` · ADK 60 | `#a9a9ac` · TDK 60 | cascades via `--color-text-subtle` |
+
+### Footer
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-footer-divider` | `.ant-popover-inner-footer → border-top-color` | Unknown — requires Figma inspection | COMPONENTS | `#e7e6e6` · ADK 20 | `#3c3c44` · TDK 40 | cascades via `--color-border-default` |
+
+### Close Button
+
+| CSS Variable | Selector → Property | Figma Variable | Collection | ADK Light | TDK Dark | Dark Mode |
+|---|---|---|---|---|---|---|
+| `--rich-popover-close-icon` | `.ant-popover-close → color` | Unknown — requires Figma inspection | COMPONENTS | `#878686` · ADK 50 | `#bcbcbe` · TDK 70 | cascades via `--color-icon-default` |
+| `--rich-popover-close-icon-hover` | `.ant-popover-close:hover → color` | Unknown — requires Figma inspection | COMPONENTS | `#3f3e3d` · ADK 80 | `#d4d4d5` · TDK 80 | cascades via `--color-icon-hover` |
+| `--rich-popover-close-bg-hover` | `.ant-popover-close:hover → background` | Unknown — requires Figma inspection | COMPONENTS | `#e7e6e6` · ADK 20 | `#3c3c44` · TDK 40 | cascades via `--color-surface-hover` |
+| `--rich-popover-close-focus-ring` | `.ant-popover-close:focus-visible → outline-color` | `Border/Focus` | SHARED SEMANTIC | `#1a88b7` · Inline Link ADK | `#7c79ff` · Inline Link TDK | explicit: `#7c79ff` † |
+
+---
+
+## Dimension Tokens
+
+| CSS Variable | Selector → Property | Value | Figma Variable | Notes |
+|---|---|---|---|---|
+| `--rich-popover-min-width` | `.ant-popover-inner → min-width` | `200px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-max-width` | `.ant-popover-inner → max-width` | `320px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-border-width` | `.ant-popover-inner → border-width` | `1px` | — | — |
+| `--rich-popover-border-radius` | `.ant-popover-inner → border-radius` | `0px` | — | Square corners per Germanedge rule |
+| `--rich-popover-header-padding-v` | `.ant-popover-inner-header → padding-top/bottom` | `10px` | Unknown — requires Figma inspection | SPACING primitive — no semantic alias yet |
+| `--rich-popover-header-padding-h` | `.ant-popover-inner-header → padding-left/right` | `16px` | `Padding/Padding-16` | Estimated |
+| `--rich-popover-content-padding-v` | `.ant-popover-inner-content → padding-top/bottom` | `12px` | Unknown — requires Figma inspection | SPACING primitive — no semantic alias yet |
+| `--rich-popover-content-padding-h` | `.ant-popover-inner-content → padding-left/right` | `16px` | `Padding/Padding-16` | Estimated |
+| `--rich-popover-footer-padding-v` | `.ant-popover-inner-footer → padding-top/bottom` | `8px` | Unknown — requires Figma inspection | SPACING primitive — no semantic alias yet |
+| `--rich-popover-footer-padding-h` | `.ant-popover-inner-footer → padding-left/right` | `16px` | `Padding/Padding-16` | Estimated |
+| `--rich-popover-close-size` | `.ant-popover-close → width, height` | `24px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-arrow-size` | `.ant-popover-arrow → width, height` | `8px` | — | Visual size of the rotated square caret |
+| `--rich-popover-title-font-family` | `.ant-popover-title → font-family` | `'Inter Tight'` | Unknown — requires Figma inspection | Condensed heading font |
+| `--rich-popover-title-font-size` | `.ant-popover-title → font-size` | `14px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-title-line-height` | `.ant-popover-title → line-height` | `20px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-title-font-weight` | `.ant-popover-title → font-weight` | `600` | Unknown — requires Figma inspection | SemiBold |
+| `--rich-popover-body-font-family` | `.ant-popover-inner-content → font-family` | `'Inter'` | Unknown — requires Figma inspection | Body font |
+| `--rich-popover-body-font-size` | `.ant-popover-inner-content → font-size` | `14px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-body-line-height` | `.ant-popover-inner-content → line-height` | `20px` | Unknown — requires Figma inspection | Estimated |
+| `--rich-popover-body-font-weight` | `.ant-popover-inner-content → font-weight` | `400` | Unknown — requires Figma inspection | Regular |
+
+---
+
+## HTML Structure
+
+```html
+<!-- Default -->
+<div class="ant-popover ant-popover-placement-bottom">
+  <div class="ant-popover-content">
+    <div class="ant-popover-arrow"></div>
+    <div class="ant-popover-inner">
+      <div class="ant-popover-inner-header">
+        <div class="ant-popover-title">Title</div>
+      </div>
+      <div class="ant-popover-inner-content"><p>Body text.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- With Close Button -->
+<div class="ant-popover-inner-header">
+  <div class="ant-popover-title">Title</div>
+  <button class="ant-popover-close" aria-label="Close">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M3 3L13 13M13 3L3 13" stroke="currentColor"
+            stroke-width="1.5" stroke-linecap="square"/>
+    </svg>
+  </button>
+</div>
+
+<!-- With Actions Footer -->
+<div class="ant-popover-inner-footer">
+  <button class="ant-popover-action">Cancel</button>
+  <button class="ant-popover-action ant-popover-action-primary">Proceed</button>
+</div>
+
+<!-- No Title -->
+<div class="ant-popover-inner ant-popover-no-header">
+  <div class="ant-popover-inner-content"><p>Body only.</p></div>
+</div>
+```
+
+---
+
+## Variable Architecture
+
+The Rich Popover is a **Tier 1 component** — nearly all visual roles map cleanly to shared semantic tokens. Panel background, border, dividers, text, icon, and focus ring all cascade from the SHARED SEMANTIC layer without component-scoped overrides. The single Tier 2 exception is `--rich-popover-shadow`: elevation values have no semantic equivalent and must be defined at the component level. In dark mode the shadow opacity deepens and is set explicitly (`†`).
+
+**Rules:** All `--rich-popover-*` color variables in `:root` must reference semantic tokens — no raw hex. Raw hex only in `html[data-theme="dark"]` for non-cascading values. Footer action buttons use the Button component in production; do not reference `--button-*` variables here.
+
+---
+
+## Acceptance Criteria
+
+### Visual (Designer · Agent)
+
+**Light mode (ADK):**
+- [ ] Panel: `#ffffff` background, `1px solid #e7e6e6` border, elevation shadow
+- [ ] Arrow: `#ffffff` fill, `#e7e6e6` border on outward-facing edges only
+- [ ] Title: `#3f3e3d`, Inter Tight SemiBold 14px/20px
+- [ ] Header divider: `1px solid #e7e6e6`
+- [ ] Body: `#3f3e3d`, Inter Regular 14px/20px
+- [ ] Close icon: `#878686`; hover: icon `#3f3e3d`, bg `#e7e6e6`
+- [ ] Close focus: `2px dashed #1a88b7` at button edge (no offset)
+- [ ] Footer divider: `1px solid #e7e6e6`
+
+**Dark mode (TDK):**
+- [ ] Panel: `#31313b` background, `1px solid #3c3c44` border, deeper shadow
+- [ ] Title: `#d4d4d5`; Body: `#d4d4d5`
+- [ ] Close icon: `#bcbcbe`; hover: icon `#d4d4d5`, bg `#3c3c44`
+- [ ] Close focus: `2px dashed #7c79ff`
+- [ ] Page background: `#202026`
+
+### Functional (Front End · Agent)
+
+- [ ] All 4 placement variants render correct arrow direction
+- [ ] Arrow borders show only on outward-facing edges
+- [ ] Close button reachable via Tab; `aria-label="Close"` present
+- [ ] Focus ring at close button edge, `outline-offset: 0`
+- [ ] Footer: primary (brand fill) vs secondary (outlined) visually distinct
+
+### Figma Binding (Designer · Agent)
+
+- [ ] All fills bound to Figma variables
+- [ ] COMPONENTS variables created for all component-scoped roles
+- [ ] SHARED SEMANTIC used for `Text/Default`, `Text/Subtle`, `Border/Focus`
+- [ ] ADK + TDK mode values set on every COMPONENTS variable
+- [ ] `Border/Focus` confirmed: `#1a88b7` ADK / `#7c79ff` TDK
+
+---
+
+## Open Questions
+
+| # | Question | Owner | Status |
+|---|---|---|---|
+| 1 | Panel min/max-width — are `200px` / `320px` correct? | Design | Open |
+| 2 | Footer action buttons — prototype uses semantic styling only; confirm Button component usage in production | Design + FE | Open |
+| 3 | Arrow shadow treatment — inherit panel shadow or separate? | Design | Open |
+| 4 | COMPONENTS Figma variable paths — all Unknown; requires Figma design work | Design | Open |
+| 5 | Spacing values — header/content/footer padding estimated; confirm in Figma | Design | Open |
+| 6 | Font sizes — `14px/20px` estimated; confirm against Figma text styles | Design | Open |
+| 7 | `figma-node` — update frontmatter once frames created at page `22582:1562` | Agent | Open |
+  </script>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const raw = document.getElementById('spec-source').textContent;
+      const stripped = raw.replace(/^---[\s\S]*?---\s*\n/, '');
+      document.getElementById('spec-rendered').innerHTML = marked.parse(stripped);
+    });
+  </script>
+
+</body>
+</html>
