@@ -54,7 +54,7 @@ Before running passes, confirm:
 - Confirm component purpose aligns with product intent in `inspire-core` §1 (product context, Creative North Star).
 - Confirm usage context is correct (dashboard, boardlet, dialog, form, etc.).
 - Confirm no scope drift from related components (for example link vs button vs content action).
-- Cross-reference the component's ID against the atoms/molecules index in `DESIGN-SYSTEM-REFERENCE.md`.
+- Cross-reference the component's ID against the component registry in `components/README.md`.
 
 ### B. Tokens and Color Semantics
 

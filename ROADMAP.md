@@ -213,8 +213,6 @@ Data Lines · Data Points · Label · Planning Board · Charts · Karma
 | Filter Builder | — | ✅ Draft | ✅ Draft | ✅ |
 | Button | — | ✅ Draft | ✅ Draft | ✅ |
 
-No pattern skills exist yet. No core/foundation skill exists yet.
-
 ---
 
 ## Figma library — confirmed component inventory
