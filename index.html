@@ -16,32 +16,24 @@
       --color-page-bg:        #f2f2f2;
       --color-surface:        #ffffff;
       --color-border:         #e7e6e6;
-      --color-border-subtle:  #f2f2f2;
       --color-text-default:   #3f3e3d;
       --color-text-subtle:    #6f6e6d;
       --color-text-disabled:  #cfcece;
       --color-brand:          #fcd515;
-      --color-brand-hover:    #fae164;
       --color-link:           #1a88b7;
       --color-link-hover:     #009ec0;
-      --color-tag-bg:         #f2f2f2;
-      --color-tag-text:       #6f6e6d;
     }
 
     html[data-theme="dark"] {
       --color-page-bg:        #202026;
       --color-surface:        #31313b;
       --color-border:         #292930;
-      --color-border-subtle:  #292930;
       --color-text-default:   #d4d4d5;
       --color-text-subtle:    #a9a9ac;
       --color-text-disabled:  #50505d;
       --color-brand:          #ffd14a;
-      --color-brand-hover:    #f5dd66;
       --color-link:           #7c79ff;
       --color-link-hover:     #534ffd;
-      --color-tag-bg:         #292930;
-      --color-tag-text:       #a9a9ac;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -91,12 +83,6 @@
       letter-spacing: -0.01em;
     }
 
-    .site-subtitle {
-      font-size: 12px;
-      color: var(--color-text-subtle);
-      margin: 0;
-    }
-
     .header-actions {
       display: flex;
       align-items: center;
@@ -130,7 +116,7 @@
 
     /* ── Main layout ── */
     .page-body {
-      max-width: 1120px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 40px 24px 80px;
     }
@@ -167,125 +153,40 @@
       border-bottom: 1px solid var(--color-border);
     }
 
-    /* ── Component grid ── */
-    .component-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 8px;
-      margin-bottom: 48px;
-    }
-
-    .component-card {
-      background: var(--color-surface);
+    /* ── Component list ── */
+    .component-list {
+      list-style: none;
+      margin: 0 0 48px;
+      padding: 0;
       border: 1px solid var(--color-border);
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.1s;
     }
 
-    .component-card:hover {
-      border-color: var(--color-text-subtle);
-    }
-
-    .component-card:focus-visible {
-      outline: 2px dashed var(--color-link);
-      outline-offset: 0;
-    }
-
-    .card-preview {
-      height: 140px;
-      background: var(--color-page-bg);
+    .component-list li {
       border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
     }
 
-    /* Inline preview iframes */
-    .card-preview iframe {
-      width: 200%;
-      height: 200%;
-      border: none;
-      transform: scale(0.5);
-      transform-origin: top left;
-      pointer-events: none;
+    .component-list li:last-child {
+      border-bottom: none;
     }
 
-    .card-preview-placeholder {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 11px;
-      color: var(--color-text-disabled);
-      letter-spacing: 0.04em;
-    }
-
-    .card-body {
-      padding: 16px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .card-name {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--color-text-default);
-      margin: 0;
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      padding: 2px 6px;
-    }
-
-    .tag-draft {
-      background: var(--color-tag-bg);
-      color: var(--color-text-disabled);
-    }
-
-    .card-links {
-      display: flex;
-      gap: 16px;
-      margin-top: auto;
-      padding-top: 8px;
-      border-top: 1px solid var(--color-border-subtle);
-    }
-
-    .card-link {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-link);
+    .component-list a {
+      display: block;
+      padding: 12px 16px;
+      background: var(--color-surface);
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      font-size: 14px;
+      color: var(--color-link);
+      transition: background 0.1s, color 0.1s;
     }
 
-    .card-link:hover { color: var(--color-link-hover); }
+    .component-list a:hover {
+      background: var(--color-page-bg);
+      color: var(--color-link-hover);
+    }
 
-    /* Figma icon inline */
-    .figma-icon {
-      flex-shrink: 0;
+    .component-list a:focus-visible {
+      outline: 2px dashed var(--color-link);
+      outline-offset: -2px;
     }
 
     /* ── Skills section ── */
@@ -314,19 +215,21 @@
       font-size: 13px;
       font-weight: 600;
       color: var(--color-text-default);
+      margin: 0;
     }
 
     .skill-command {
       font-family: 'Consolas', 'Courier New', monospace;
       font-size: 12px;
       color: var(--color-link);
-      margin-top: 4px;
+      margin: 4px 0 0;
     }
 
     .skill-desc {
       font-size: 13px;
       color: var(--color-text-subtle);
       line-height: 1.5;
+      margin: 0;
     }
 
     .skill-type {
@@ -373,7 +276,7 @@
       GitHub
     </a>
     <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System" target="_blank" rel="noopener" class="btn-ghost">
-      <svg class="figma-icon" width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
         <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
         <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/>
@@ -396,93 +299,12 @@
   <!-- Components -->
   <p class="section-label">Components</p>
 
-  <div class="component-grid">
-
-    <a href="components/slider/slider.html" class="component-card">
-      <div class="card-preview">
-        <span class="card-preview-placeholder">Slider</span>
-      </div>
-      <div class="card-body">
-        <p class="card-name">Slider</p>
-        <div class="card-meta">
-          <span class="tag tag-draft">Draft</span>
-          <span class="tag">ADK · TDK</span>
-        </div>
-        <div class="card-links">
-          <span class="card-link">View demo →</span>
-          <a href="components/slider/slider.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
-          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22145-141089" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
-            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
-            Figma
-          </a>
-        </div>
-      </div>
-    </a>
-
-    <a href="components/button/button.html" class="component-card">
-      <div class="card-preview">
-        <span class="card-preview-placeholder">Button</span>
-      </div>
-      <div class="card-body">
-        <p class="card-name">Button</p>
-        <div class="card-meta">
-          <span class="tag tag-draft">Draft</span>
-          <span class="tag">ADK · TDK</span>
-        </div>
-        <div class="card-links">
-          <span class="card-link">View demo →</span>
-          <a href="components/button/button.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
-          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=273-11972" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
-            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
-            Figma
-          </a>
-        </div>
-      </div>
-    </a>
-
-    <a href="components/filter-builder/filter-builder.html" class="component-card">
-      <div class="card-preview">
-        <span class="card-preview-placeholder">Filter Builder</span>
-      </div>
-      <div class="card-body">
-        <p class="card-name">Filter Builder</p>
-        <div class="card-meta">
-          <span class="tag tag-draft">Draft</span>
-          <span class="tag">ADK · TDK</span>
-        </div>
-        <div class="card-links">
-          <span class="card-link">View demo →</span>
-          <a href="components/filter-builder/filter-builder.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
-          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22271-11752" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
-            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
-            Figma
-          </a>
-        </div>
-      </div>
-    </a>
-
-    <a href="components/rich-popover/rich-popover.html" class="component-card">
-      <div class="card-preview">
-        <span class="card-preview-placeholder">Rich Popover</span>
-      </div>
-      <div class="card-body">
-        <p class="card-name">Rich Popover</p>
-        <div class="card-meta">
-          <span class="tag tag-draft">Draft</span>
-          <span class="tag">ADK · TDK</span>
-        </div>
-        <div class="card-links">
-          <span class="card-link">View demo →</span>
-          <a href="components/rich-popover/rich-popover.md" class="card-link" onclick="event.stopPropagation()">Spec</a>
-          <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22592-3" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">
-            <svg class="figma-icon" width="7" height="11" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/></svg>
-            Figma
-          </a>
-        </div>
-      </div>
-    </a>
-
-  </div>
+  <ul class="component-list">
+    <li><a href="components/slider/slider.html">Slider</a></li>
+    <li><a href="components/button/button.html">Button</a></li>
+    <li><a href="components/filter-builder/filter-builder.html">Filter Builder</a></li>
+    <li><a href="components/rich-popover/rich-popover.html">Rich Popover</a></li>
+  </ul>
 
   <!-- Skills -->
   <p class="section-label">Skills — Claude Code CLI</p>
