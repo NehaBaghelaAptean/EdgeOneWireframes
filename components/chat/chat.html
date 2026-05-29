@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>ADK / Chat — Component Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+
+    /* ==========================================================
+       SEMANTIC LAYER — Light Mode (ADK)
+       Source: Figma ADS file yck1tcUXgdQ5aYX6iUAwrO
+       SHARED SEMANTIC collection, ADK mode
+    ========================================================== */
+    :root {
+      /* Surface */
+      --color-surface-page:             #f2f2f2;
+      --color-surface-default:          #ffffff;
+      --color-surface-subtle:           #fafafa;
+      --color-surface-disabled:         #f2f2f2;
+
+      /* Text */
+      --color-text-default:             #3f3e3d;   /* ADK 80 */
+      --color-text-subtle:              #6f6e6d;   /* ADK 60 */
+      --color-text-disabled:            #cfcece;   /* ADK 30 */
+      --color-text-placeholder:         #cfcece;
+      --color-text-inverse:             #ffffff;
+
+      /* Border */
+      --color-border-default:           #e7e6e6;   /* ADK 20 */
+      --color-border-subtle:            #fafafa;
+      --color-border-emphasis:          #575655;   /* ADK 70 */
+      --color-border-focus:             #1a88b7;   /* ADK Inline Link */
+
+      /* Theme scale — ADK */
+      --color-theme-10:                 #f2f2f2;
+      --color-theme-20:                 #e7e6e6;
+      --color-theme-30:                 #cfcece;
+      --color-theme-40:                 #b7b6b6;
+      --color-theme-50:                 #878686;
+      --color-theme-60:                 #6f6e6d;
+      --color-theme-70:                 #575655;
+      --color-theme-80:                 #3f3e3d;
+
+      /* Brand */
+      --color-brand-default:            #fcd515;
+      --color-brand-hover:              #fbe67e;
+      --color-brand-on-brand:           #3f3e3d;
+
+      /* Inline links */
+      --color-inline-link:              #1a88b7;
+      --color-inline-link-hover:        #009ec0;
+    }
+
+    /* ==========================================================
+       CHAT COMPONENT VARIABLES
+       Tier 2 exception — bubble surfaces, avatar, and border
+       treatments have no direct SHARED SEMANTIC equivalent.
+       All vars reference semantic tokens in :root.
+       Raw hex only in html[data-theme="dark"] for cascade breaks.
+       Naming: --chat-[element]-[property]-[state]
+       Figma path: Chat/[Element]/[State] in COMPONENTS collection
+    ========================================================== */
+    :root {
+      /* Container */
+      --chat-bg:                         var(--color-surface-default);
+      --chat-border:                     var(--color-border-default);
+
+      /* Message list */
+      --chat-messagelist-bg:             var(--color-surface-default);
+
+      /* Received bubble (alignment-start / other user) */
+      --chat-bubble-received-bg:         var(--color-theme-10);          /* Chat/Bubble/Received/Default → ADK 10 → #f2f2f2 */
+      --chat-bubble-received-text:       var(--color-text-default);      /* Chat/Bubble/Received/Text → ADK 80 → #3f3e3d */
+
+      /* Sent bubble (alignment-end / current user) */
+      --chat-bubble-sent-bg:             var(--color-brand-default);     /* Chat/Bubble/Sent/Default → Brand 100 → #fcd515 */
+      --chat-bubble-sent-text:           var(--color-theme-80);          /* Chat/Bubble/Sent/Text → ADK 80 → #3f3e3d */
+
+      /* Message metadata */
+      --chat-avatar-bg:                  var(--color-theme-30);          /* Chat/Avatar/Default → ADK 30 → #cfcece */
+      --chat-avatar-text:                var(--color-text-default);
+      --chat-username-text:              var(--color-text-subtle);       /* Text/Subtle (SHARED SEMANTIC) */
+      --chat-timestamp-text:             var(--color-text-subtle);
+
+      /* Day header */
+      --chat-dayheader-text:             var(--color-text-subtle);       /* Text/Subtle (SHARED SEMANTIC) */
+      --chat-dayheader-line:             var(--color-border-default);
+
+      /* Message box */
+      --chat-messagebox-bg:              var(--color-surface-default);
+      --chat-messagebox-border:          var(--color-theme-30);          /* Chat/MessageBox/Border → ADK 30 → #cfcece */
+      --chat-input-border:               var(--color-theme-30);
+      --chat-input-border-focus:         var(--color-border-focus);      /* Border/Focus (SHARED SEMANTIC) → #1a88b7 */
+      --chat-input-text:                 var(--color-text-default);
+      --chat-input-placeholder:          var(--color-text-subtle);
+      --chat-focus-ring:                 var(--color-border-focus);      /* Border/Focus (SHARED SEMANTIC) → #1a88b7 */
+
+      /* Send button */
+      --chat-send-bg:                    var(--color-brand-default);     /* Chat/SendButton/Default → Brand 100 → #fcd515 */
+      --chat-send-bg-hover:              var(--color-brand-hover);       /* Chat/SendButton/Hover → Brand 40 → #fbe67e */
+      --chat-send-icon:                  var(--color-theme-80);          /* Chat/SendButton/Icon → ADK 80 → #3f3e3d */
+
+      /* Empty state */
+      --chat-empty-icon:                 var(--color-text-disabled);     /* Text/Disabled (SHARED SEMANTIC) → #cfcece */
+      --chat-empty-text:                 var(--color-text-subtle);       /* Text/Subtle (SHARED SEMANTIC) → #6f6e6d */
+
+      /* Disabled */
+      --chat-disabled-input-bg:          var(--color-theme-10);
+      --chat-disabled-input-text:        var(--color-text-disabled);
+      --chat-disabled-send-bg:           var(--color-border-default);
+      --chat-disabled-send-icon:         var(--color-text-disabled);
+    }
+
+    /* ==========================================================
+       DARK MODE — TDK
+       Semantic overrides + component vars that don't cascade.
+       † = explicit override (does not cascade from semantic layer)
+    ========================================================== */
+    html[data-theme="dark"] {
+      /* Surface */
+      --color-surface-page:             #202026;
+      --color-surface-default:          #31313b;
+      --color-surface-subtle:           #24242b;
+      --color-surface-disabled:         #3c3c44;
+
+      /* Text */
+      --color-text-default:             #d4d4d5;
+      --color-text-subtle:              #a9a9ac;
+      --color-text-disabled:            #50505d;
+      --color-text-placeholder:         #50505d;
+      --color-text-inverse:             #31313b;
+
+      /* Border */
+      --color-border-default:           #3c3c44;
+      --color-border-subtle:            #31313b;
+      --color-border-emphasis:          #bcbcbe;
+      --color-border-focus:             #7c79ff;
+
+      /* Theme scale — TDK */
+      --color-theme-10:                 #24242b;
+      --color-theme-20:                 #292930;
+      --color-theme-30:                 #31313b;
+      --color-theme-40:                 #3c3c44;
+      --color-theme-50:                 #50505d;
+      --color-theme-60:                 #a9a9ac;
+      --color-theme-70:                 #bcbcbe;
+      --color-theme-80:                 #d4d4d5;
+
+      /* Brand */
+      --color-brand-default:            #ffd14a;
+      --color-brand-hover:              #fceb98;
+
+      /* Inline links */
+      --color-inline-link:              #7c79ff;
+      --color-inline-link-hover:        #534ffd;
+
+      /* Chat — explicit overrides (cascade failures in TDK) */
+
+      /* Sent bubble text: fixed dark on yellow, not TDK 80 (#d4d4d5) */
+      --chat-bubble-sent-text:          #3f3e3d;                         /* † ADK 80 — contrast on #ffd14a */
+
+      /* Avatar: theme-30 = #31313b = surface-default in TDK → invisible */
+      --chat-avatar-bg:                 #3c3c44;                         /* † TDK 40 */
+
+      /* Message box borders: theme-30 = #31313b = surface-default in TDK → invisible */
+      --chat-messagebox-border:         #3c3c44;                         /* † TDK 40 */
+      --chat-input-border:              #3c3c44;                         /* † TDK 40 */
+      --chat-input-border-focus:        #7c79ff;                         /* † TDK Inline Link */
+
+      /* Focus ring */
+      --chat-focus-ring:                #7c79ff;                         /* † TDK Inline Link */
+
+      /* Send icon: fixed dark on yellow */
+      --chat-send-icon:                 #3f3e3d;                         /* † ADK 80 — contrast on #ffd14a */
+    }
+
+    html[data-theme="dark"] body {
+      background: #202026;  /* explicit — matches --color-surface-page TDK */
+    }
+
+    /* ==========================================================
+       BASE / RESET
+    ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 40px 24px;
+      background: var(--color-surface-page);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--color-text-default);
+    }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; }
+
+    h1 {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 4px;
+      color: var(--color-text-default);
+    }
+
+    .page-subtitle {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin: 0 0 48px;
+    }
+
+    .state-group {
+      background: var(--color-surface-default);
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--color-border-default);
+    }
+
+    .state-label {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-subtle);
+      margin: 0 0 24px;
+    }
+
+    a { color: var(--color-inline-link); }
+    a:hover { color: var(--color-inline-link-hover); }
+
+    /* ==========================================================
+       dx-chat — BASE STRUCTURE
+    ========================================================== */
+    .dx-chat {
+      display: flex;
+      flex-direction: column;
+      height: 380px;
+      background: var(--chat-bg);
+      border: 1px solid var(--chat-border);
+      overflow: hidden;
+    }
+
+    /* ==========================================================
+       MESSAGE LIST
+    ========================================================== */
+    .dx-chat-messagelist {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      background: var(--chat-messagelist-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dx-chat-messagelist::-webkit-scrollbar { width: 4px; }
+    .dx-chat-messagelist::-webkit-scrollbar-track { background: transparent; }
+    .dx-chat-messagelist::-webkit-scrollbar-thumb { background: var(--color-theme-30); }
+
+    /* ==========================================================
+       EMPTY STATE
+    ========================================================== */
+    .dx-chat-messagelist-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 200px;
+    }
+
+    .dx-chat-messagelist-empty-image {
+      color: var(--chat-empty-icon);
+    }
+
+    .dx-chat-messagelist-empty-message {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--chat-empty-text);
+      text-align: center;
+    }
+
+    /* ==========================================================
+       DAY HEADER
+    ========================================================== */
+    .dx-chat-dayheader {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dx-chat-dayheader::before,
+    .dx-chat-dayheader::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--chat-dayheader-line);
+    }
+
+    .dx-chat-dayheader-text {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--chat-dayheader-text);
+      white-space: nowrap;
+    }
+
+    /* ==========================================================
+       MESSAGE GROUPS
+    ========================================================== */
+    .dx-chat-messagegroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 72%;
+    }
+
+    .dx-chat-messagegroup-alignment-start {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .dx-chat-messagegroup-alignment-end {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .dx-chat-messagegroup-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    /* ==========================================================
+       AVATAR
+    ========================================================== */
+    .dx-chat-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: var(--chat-avatar-bg);
+      color: var(--chat-avatar-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .dx-chat-messagegroup-sender {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--chat-username-text);
+    }
+
+    /* ==========================================================
+       MESSAGE BUBBLES
+    ========================================================== */
+    .dx-chat-messagebubble {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dx-chat-messagebubble-content {
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+    .dx-chat-messagegroup-alignment-start .dx-chat-messagebubble-content {
+      background: var(--chat-bubble-received-bg);
+      color: var(--chat-bubble-received-text);
+    }
+
+    .dx-chat-messagegroup-alignment-end .dx-chat-messagebubble-content {
+      background: var(--chat-bubble-sent-bg);
+      color: var(--chat-bubble-sent-text);
+    }
+
+    .dx-chat-messagebubble-time {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 11px;
+      line-height: 14px;
+      color: var(--chat-timestamp-text);
+      padding: 0 2px;
+    }
+
+    .dx-chat-messagegroup-alignment-end .dx-chat-messagebubble-time {
+      text-align: right;
+    }
+
+    /* ==========================================================
+       MESSAGE BOX (INPUT AREA)
+    ========================================================== */
+    .dx-chat-messagebox {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--chat-messagebox-bg);
+      border-top: 1px solid var(--chat-messagebox-border);
+      flex-shrink: 0;
+    }
+
+    .dx-chat-messagebox-input {
+      flex: 1;
+      border: 1px solid var(--chat-input-border);
+      background: var(--chat-messagebox-bg);
+      color: var(--chat-input-text);
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 10px 12px;
+      resize: none;
+      min-height: 40px;
+      max-height: 120px;
+      outline: none;
+      border-radius: 0;
+    }
+
+    .dx-chat-messagebox-input::placeholder {
+      color: var(--chat-input-placeholder);
+    }
+
+    .dx-chat-messagebox-input:focus {
+      border-color: var(--chat-input-border-focus);
+      outline: 2px dashed var(--chat-focus-ring);
+      outline-offset: 0px;
+    }
+
+    .dx-chat-messagebox-button {
+      width: 40px;
+      height: 40px;
+      background: var(--chat-send-bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 0;
+      color: var(--chat-send-icon);
+      transition: background 0.1s ease;
+    }
+
+    .dx-chat-messagebox-button:hover {
+      background: var(--chat-send-bg-hover);
+    }
+
+    .dx-chat-messagebox-button:focus-visible {
+      outline: 2px dashed var(--chat-focus-ring);
+      outline-offset: 0px;
+    }
+
+    /* ==========================================================
+       STATE: FOCUS (simulated for prototype)
+    ========================================================== */
+    .dx-chat.is-focused .dx-chat-messagebox-input {
+      border-color: var(--chat-input-border-focus);
+      outline: 2px dashed var(--chat-focus-ring);
+      outline-offset: 0px;
+    }
+
+    /* ==========================================================
+       STATE: DISABLED
+    ========================================================== */
+    .dx-state-disabled {
+      cursor: not-allowed;
+    }
+
+    .dx-state-disabled .dx-chat-messagelist {
+      opacity: 0.4;
+    }
+
+    .dx-state-disabled .dx-chat-messagebox-input {
+      background: var(--chat-disabled-input-bg);
+      color: var(--chat-disabled-input-text);
+      border-color: var(--color-border-default);
+      cursor: not-allowed;
+    }
+
+    .dx-state-disabled .dx-chat-messagebox-input::placeholder {
+      color: var(--chat-disabled-input-text);
+    }
+
+    .dx-state-disabled .dx-chat-messagebox-button {
+      background: var(--chat-disabled-send-bg);
+      color: var(--chat-disabled-send-icon);
+      cursor: not-allowed;
+    }
+
+    .dx-state-disabled .dx-chat-messagebox-button:hover {
+      background: var(--chat-disabled-send-bg);
+    }
+
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+    <h1>ADK / Chat</h1>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <a href="https://www.figma.com/design/yck1tcUXgdQ5aYX6iUAwrO/GE---Astronaut-Design-System?node-id=22619-2"
+         target="_blank" rel="noopener"
+         style="
+           display: inline-flex;
+           align-items: center;
+           gap: 6px;
+           font-family: 'Inter Tight', Arial, sans-serif;
+           font-size: 11px;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 0.06em;
+           text-decoration: none;
+           background: none;
+           border: 1px solid var(--color-border-default);
+           color: var(--color-text-subtle);
+           padding: 4px 12px;
+           cursor: pointer;
+         ">
+        <svg width="9" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+          <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/>
+          <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/>
+          <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19V0z" fill="#FF7262"/>
+          <path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/>
+          <path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/>
+        </svg>
+        Open in Figma
+      </a>
+      <button id="theme-toggle" style="
+        font-family: 'Inter Tight', Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        background: none;
+        border: 1px solid var(--color-border-default);
+        color: var(--color-text-subtle);
+        padding: 4px 12px;
+        cursor: pointer;
+        border-radius: 0;
+      ">Dark Mode</button>
+    </div>
+  </div>
+  <p class="page-subtitle">Component draft · 4 states · Light (ADK) + Dark (TDK)</p>
+
+  <!-- ========================================================
+       STATE 1: Default — Empty
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Default — Empty</p>
+    <div class="dx-chat">
+      <div class="dx-chat-messagelist">
+        <div class="dx-chat-messagelist-empty">
+          <div class="dx-chat-messagelist-empty-image">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="10" width="32" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M16 34l4 4 12-12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" opacity="0"/>
+              <path d="M8 32l8 6v-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              <line x1="14" y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              <line x1="14" y1="23" x2="28" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <span class="dx-chat-messagelist-empty-message">No messages yet.<br>Start a conversation below.</span>
+        </div>
+      </div>
+      <div class="dx-chat-messagebox">
+        <textarea class="dx-chat-messagebox-input" placeholder="Message..." rows="1" aria-label="Message input"></textarea>
+        <button class="dx-chat-messagebox-button" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 2: Default — With Messages
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Default — With Messages</p>
+    <div class="dx-chat">
+      <div class="dx-chat-messagelist">
+        <div class="dx-chat-dayheader">
+          <span class="dx-chat-dayheader-text">Today</span>
+        </div>
+        <!-- Received -->
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-start">
+          <div class="dx-chat-messagegroup-info">
+            <div class="dx-chat-avatar">AI</div>
+            <span class="dx-chat-messagegroup-sender">AI Assistant</span>
+          </div>
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">Hello! How can I help you with your Edge.One dashboard today?</div>
+            <span class="dx-chat-messagebubble-time">09:41</span>
+          </div>
+        </div>
+        <!-- Sent -->
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-end">
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">Can you explain how boardlets work?</div>
+            <span class="dx-chat-messagebubble-time">09:42</span>
+          </div>
+        </div>
+        <!-- Received -->
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-start">
+          <div class="dx-chat-messagegroup-info">
+            <div class="dx-chat-avatar">AI</div>
+            <span class="dx-chat-messagegroup-sender">AI Assistant</span>
+          </div>
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">Boardlets are the building blocks of your dashboard. You can arrange them in a 24-column grid and configure each one independently using App Composer.</div>
+            <span class="dx-chat-messagebubble-time">09:42</span>
+          </div>
+        </div>
+        <!-- Sent -->
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-end">
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">Got it, thank you!</div>
+            <span class="dx-chat-messagebubble-time">09:43</span>
+          </div>
+        </div>
+      </div>
+      <div class="dx-chat-messagebox">
+        <textarea class="dx-chat-messagebox-input" placeholder="Message..." rows="1" aria-label="Message input"></textarea>
+        <button class="dx-chat-messagebox-button" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 3: Focus (input active)
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Focus — Input Active</p>
+    <div class="dx-chat is-focused">
+      <div class="dx-chat-messagelist">
+        <div class="dx-chat-dayheader">
+          <span class="dx-chat-dayheader-text">Today</span>
+        </div>
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-start">
+          <div class="dx-chat-messagegroup-info">
+            <div class="dx-chat-avatar">AI</div>
+            <span class="dx-chat-messagegroup-sender">AI Assistant</span>
+          </div>
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">What else would you like to know?</div>
+            <span class="dx-chat-messagebubble-time">09:44</span>
+          </div>
+        </div>
+      </div>
+      <div class="dx-chat-messagebox">
+        <textarea class="dx-chat-messagebox-input" placeholder="Message..." rows="1" aria-label="Message input">Tell me about the navigation sidebar</textarea>
+        <button class="dx-chat-messagebox-button" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STATE 4: Disabled
+  ========================================================= -->
+  <div class="state-group">
+    <p class="state-label">Disabled</p>
+    <div class="dx-chat dx-state-disabled" aria-disabled="true">
+      <div class="dx-chat-messagelist">
+        <div class="dx-chat-dayheader">
+          <span class="dx-chat-dayheader-text">Today</span>
+        </div>
+        <div class="dx-chat-messagegroup dx-chat-messagegroup-alignment-start">
+          <div class="dx-chat-messagegroup-info">
+            <div class="dx-chat-avatar">AI</div>
+            <span class="dx-chat-messagegroup-sender">AI Assistant</span>
+          </div>
+          <div class="dx-chat-messagebubble">
+            <div class="dx-chat-messagebubble-content">Processing your request…</div>
+            <span class="dx-chat-messagebubble-time">09:45</span>
+          </div>
+        </div>
+      </div>
+      <div class="dx-chat-messagebox">
+        <textarea class="dx-chat-messagebox-input" placeholder="Message..." rows="1" aria-label="Message input" disabled></textarea>
+        <button class="dx-chat-messagebox-button" aria-label="Send message" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       CODE REFERENCE
+  ========================================================= -->
+  <div class="state-group code-reference">
+    <p class="state-label">Code Reference</p>
+
+    <div class="code-tabs">
+      <button class="code-tab active" id="tab-spec-btn" data-target="tab-spec">chat-spec.md</button>
+      <button class="code-tab" data-target="tab-html">HTML</button>
+      <button class="code-tab" data-target="tab-css">CSS Variables</button>
+      <button class="code-tab" data-target="tab-vars">Variable Reference</button>
+      <a id="spec-download-link" href="chat.md" download
+         style="margin-left: auto; font-family: 'Inter Tight', Arial, sans-serif; font-size: 11px; color: var(--color-text-subtle); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 0 4px 0 12px; white-space: nowrap;">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+        <span id="spec-download-label">Download chat-spec.md</span>
+      </a>
+    </div>
+
+    <!-- HTML Snippet -->
+    <div class="code-panel" id="tab-html">
+      <pre><code><span class="code-comment">&lt;!-- Default — Empty --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagelist"</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagelist-empty"</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagelist-empty-image"</span>&gt;&lt;!-- SVG --&gt;&lt;/<span class="code-tag">div</span>&gt;
+      &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagelist-empty-message"</span>&gt;No messages yet&lt;/<span class="code-tag">span</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox"</span>&gt;
+    &lt;<span class="code-tag">textarea</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox-input"</span> <span class="code-attr">placeholder</span>=<span class="code-string">"Message..."</span>
+              <span class="code-attr">aria-label</span>=<span class="code-string">"Message input"</span>&gt;&lt;/<span class="code-tag">textarea</span>&gt;
+    &lt;<span class="code-tag">button</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox-button"</span> <span class="code-attr">aria-label</span>=<span class="code-string">"Send message"</span>&gt;&lt;!-- SVG --&gt;&lt;/<span class="code-tag">button</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- With Messages --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagelist"</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-dayheader"</span>&gt;
+      &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-dayheader-text"</span>&gt;Today&lt;/<span class="code-tag">span</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+    &lt;<span class="code-comment">&lt;!-- Received (left-aligned) --&gt;</span>
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagegroup dx-chat-messagegroup-alignment-start"</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagegroup-info"</span>&gt;
+        &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-avatar"</span>&gt;AI&lt;/<span class="code-tag">div</span>&gt;
+        &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagegroup-sender"</span>&gt;AI Assistant&lt;/<span class="code-tag">span</span>&gt;
+      &lt;/<span class="code-tag">div</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble"</span>&gt;
+        &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble-content"</span>&gt;How can I help?&lt;/<span class="code-tag">div</span>&gt;
+        &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble-time"</span>&gt;09:41&lt;/<span class="code-tag">span</span>&gt;
+      &lt;/<span class="code-tag">div</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+    &lt;<span class="code-comment">&lt;!-- Sent (right-aligned) --&gt;</span>
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagegroup dx-chat-messagegroup-alignment-end"</span>&gt;
+      &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble"</span>&gt;
+        &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble-content"</span>&gt;How do boardlets work?&lt;/<span class="code-tag">div</span>&gt;
+        &lt;<span class="code-tag">span</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebubble-time"</span>&gt;09:42&lt;/<span class="code-tag">span</span>&gt;
+      &lt;/<span class="code-tag">div</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox"</span>&gt;
+    &lt;<span class="code-tag">textarea</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox-input"</span> <span class="code-attr">placeholder</span>=<span class="code-string">"Message..."</span>
+              <span class="code-attr">aria-label</span>=<span class="code-string">"Message input"</span>&gt;&lt;/<span class="code-tag">textarea</span>&gt;
+    &lt;<span class="code-tag">button</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat-messagebox-button"</span> <span class="code-attr">aria-label</span>=<span class="code-string">"Send message"</span>&gt;&lt;!-- SVG --&gt;&lt;/<span class="code-tag">button</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- Disabled — add dx-state-disabled to root, aria-disabled, JS guard prevents interaction --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"dx-chat dx-state-disabled"</span> <span class="code-attr">aria-disabled</span>=<span class="code-string">"true"</span>&gt;
+  &lt;<span class="code-comment">&lt;!-- same inner structure --&gt;</span>
+&lt;/<span class="code-tag">div</span>&gt;</code></pre>
+    </div>
+
+    <!-- CSS Snippet -->
+    <div class="code-panel" id="tab-css">
+      <pre><code><span class="code-comment">/* Chat component variables
+   Tier 2 exception — bubble surfaces, avatar, message box border
+   have no direct SHARED SEMANTIC equivalent.
+   All vars reference semantic tokens. Raw hex only in dark override.
+   Figma collection: COMPONENTS · Path prefix: Chat/ */</span>
+<span class="code-tag">:root</span> {
+  <span class="code-comment">/* Container */</span>
+  <span class="code-attr">--chat-bg</span>:                       <span class="code-string">var(--color-surface-default)</span>;
+  <span class="code-attr">--chat-border</span>:                   <span class="code-string">var(--color-border-default)</span>;
+
+  <span class="code-comment">/* Received bubble (alignment-start) */</span>
+  <span class="code-attr">--chat-bubble-received-bg</span>:       <span class="code-string">var(--color-theme-10)</span>;         <span class="code-comment">/* → #f2f2f2 */</span>
+  <span class="code-attr">--chat-bubble-received-text</span>:     <span class="code-string">var(--color-text-default)</span>;     <span class="code-comment">/* → #3f3e3d */</span>
+
+  <span class="code-comment">/* Sent bubble (alignment-end) */</span>
+  <span class="code-attr">--chat-bubble-sent-bg</span>:           <span class="code-string">var(--color-brand-default)</span>;    <span class="code-comment">/* → #fcd515 */</span>
+  <span class="code-attr">--chat-bubble-sent-text</span>:         <span class="code-string">var(--color-theme-80)</span>;         <span class="code-comment">/* → #3f3e3d */</span>
+
+  <span class="code-comment">/* Avatar */</span>
+  <span class="code-attr">--chat-avatar-bg</span>:                <span class="code-string">var(--color-theme-30)</span>;         <span class="code-comment">/* → #cfcece */</span>
+  <span class="code-attr">--chat-avatar-text</span>:              <span class="code-string">var(--color-text-default)</span>;
+
+  <span class="code-comment">/* Metadata */</span>
+  <span class="code-attr">--chat-username-text</span>:            <span class="code-string">var(--color-text-subtle)</span>;      <span class="code-comment">/* → #6f6e6d */</span>
+  <span class="code-attr">--chat-timestamp-text</span>:           <span class="code-string">var(--color-text-subtle)</span>;
+
+  <span class="code-comment">/* Day header */</span>
+  <span class="code-attr">--chat-dayheader-text</span>:           <span class="code-string">var(--color-text-subtle)</span>;
+  <span class="code-attr">--chat-dayheader-line</span>:           <span class="code-string">var(--color-border-default)</span>;
+
+  <span class="code-comment">/* Message box */</span>
+  <span class="code-attr">--chat-messagebox-bg</span>:            <span class="code-string">var(--color-surface-default)</span>;
+  <span class="code-attr">--chat-messagebox-border</span>:        <span class="code-string">var(--color-theme-30)</span>;         <span class="code-comment">/* → #cfcece */</span>
+  <span class="code-attr">--chat-input-border</span>:             <span class="code-string">var(--color-theme-30)</span>;
+  <span class="code-attr">--chat-input-border-focus</span>:       <span class="code-string">var(--color-border-focus)</span>;     <span class="code-comment">/* → #1a88b7 */</span>
+  <span class="code-attr">--chat-input-text</span>:               <span class="code-string">var(--color-text-default)</span>;
+  <span class="code-attr">--chat-input-placeholder</span>:        <span class="code-string">var(--color-text-subtle)</span>;
+  <span class="code-attr">--chat-focus-ring</span>:               <span class="code-string">var(--color-border-focus)</span>;     <span class="code-comment">/* → #1a88b7 */</span>
+
+  <span class="code-comment">/* Send button */</span>
+  <span class="code-attr">--chat-send-bg</span>:                  <span class="code-string">var(--color-brand-default)</span>;    <span class="code-comment">/* → #fcd515 */</span>
+  <span class="code-attr">--chat-send-bg-hover</span>:            <span class="code-string">var(--color-brand-hover)</span>;      <span class="code-comment">/* → #fbe67e */</span>
+  <span class="code-attr">--chat-send-icon</span>:                <span class="code-string">var(--color-theme-80)</span>;         <span class="code-comment">/* → #3f3e3d */</span>
+}
+
+<span class="code-comment">/* Dark mode — TDK. † = explicit override (does not cascade) */</span>
+<span class="code-tag">html[data-theme="dark"]</span> {
+  <span class="code-attr">--chat-bubble-sent-text</span>:         <span class="code-string">#3f3e3d</span>;  <span class="code-comment">/* † ADK 80 — contrast on #ffd14a */</span>
+  <span class="code-attr">--chat-avatar-bg</span>:                <span class="code-string">#3c3c44</span>;  <span class="code-comment">/* † TDK 40 — theme-30 = surface-default, invisible */</span>
+  <span class="code-attr">--chat-messagebox-border</span>:        <span class="code-string">#3c3c44</span>;  <span class="code-comment">/* † TDK 40 */</span>
+  <span class="code-attr">--chat-input-border</span>:             <span class="code-string">#3c3c44</span>;  <span class="code-comment">/* † TDK 40 */</span>
+  <span class="code-attr">--chat-input-border-focus</span>:       <span class="code-string">#7c79ff</span>;  <span class="code-comment">/* † TDK Inline Link */</span>
+  <span class="code-attr">--chat-focus-ring</span>:               <span class="code-string">#7c79ff</span>;  <span class="code-comment">/* † TDK Inline Link */</span>
+  <span class="code-attr">--chat-send-icon</span>:                <span class="code-string">#3f3e3d</span>;  <span class="code-comment">/* † ADK 80 — contrast on #ffd14a */</span>
+}</code></pre>
+    </div>
+
+    <!-- Variable Reference Table -->
+    <div class="code-panel" id="tab-vars">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>CSS Variable</th>
+            <th>Figma Variable</th>
+            <th>ADK (Light)</th>
+            <th></th>
+            <th>TDK (Dark)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="var-group-row"><td colspan="6">Container</td></tr>
+          <tr>
+            <td><code>--chat-bg</code></td>
+            <td><code>Unknown</code></td>
+            <td>#ffffff <span class="alias">White</span></td>
+            <td><span class="swatch" style="background:#ffffff;"></span></td>
+            <td>#31313b <span class="alias">TDK 30</span></td>
+            <td><span class="swatch" style="background:#31313b; border-color:#555;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-border</code></td>
+            <td><code>Unknown</code></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Received Bubble (alignment-start)</td></tr>
+          <tr>
+            <td><code>--chat-bubble-received-bg</code></td>
+            <td><code>Unknown</code></td>
+            <td>#f2f2f2 <span class="alias">ADK 10</span></td>
+            <td><span class="swatch" style="background:#f2f2f2;"></span></td>
+            <td>#24242b <span class="alias">TDK 10</span></td>
+            <td><span class="swatch" style="background:#24242b; border-color:#555;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-bubble-received-text</code></td>
+            <td><code>Unknown</code></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Sent Bubble (alignment-end)</td></tr>
+          <tr>
+            <td><code>--chat-bubble-sent-bg</code></td>
+            <td><code>Unknown</code></td>
+            <td>#fcd515 <span class="alias">Brand 100</span></td>
+            <td><span class="swatch" style="background:#fcd515;"></span></td>
+            <td>#ffd14a <span class="alias">Brand 100 TDK</span></td>
+            <td><span class="swatch" style="background:#ffd14a;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-bubble-sent-text</code></td>
+            <td><code>Unknown</code></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#3f3e3d <span class="alias">ADK 80 †</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Message Metadata (Avatar, Username, Timestamp)</td></tr>
+          <tr>
+            <td><code>--chat-avatar-bg</code></td>
+            <td><code>Unknown</code></td>
+            <td>#cfcece <span class="alias">ADK 30</span></td>
+            <td><span class="swatch" style="background:#cfcece;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40 †</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-avatar-text</code></td>
+            <td><code>Unknown</code></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-username-text</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-timestamp-text</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Day Header</td></tr>
+          <tr>
+            <td><code>--chat-dayheader-text</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-dayheader-line</code></td>
+            <td><code>Unknown</code></td>
+            <td>#e7e6e6 <span class="alias">ADK 20</span></td>
+            <td><span class="swatch" style="background:#e7e6e6;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Message Box &amp; Input</td></tr>
+          <tr>
+            <td><code>--chat-messagebox-border</code></td>
+            <td><code>Unknown</code></td>
+            <td>#cfcece <span class="alias">ADK 30</span></td>
+            <td><span class="swatch" style="background:#cfcece;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40 †</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-input-border</code></td>
+            <td><code>Unknown</code></td>
+            <td>#cfcece <span class="alias">ADK 30</span></td>
+            <td><span class="swatch" style="background:#cfcece;"></span></td>
+            <td>#3c3c44 <span class="alias">TDK 40 †</span></td>
+            <td><span class="swatch" style="background:#3c3c44;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-input-border-focus</code></td>
+            <td><code>Border/Focus</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#1a88b7 <span class="alias">ADK Inline Link</span></td>
+            <td><span class="swatch" style="background:#1a88b7;"></span></td>
+            <td>#7c79ff <span class="alias">TDK Inline Link †</span></td>
+            <td><span class="swatch" style="background:#7c79ff;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-focus-ring</code></td>
+            <td><code>Border/Focus</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#1a88b7 <span class="alias">ADK Inline Link</span></td>
+            <td><span class="swatch" style="background:#1a88b7;"></span></td>
+            <td>#7c79ff <span class="alias">TDK Inline Link †</span></td>
+            <td><span class="swatch" style="background:#7c79ff;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-input-text</code></td>
+            <td><code>Text/Default</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#d4d4d5 <span class="alias">TDK 80</span></td>
+            <td><span class="swatch" style="background:#d4d4d5;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-input-placeholder</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Send Button</td></tr>
+          <tr>
+            <td><code>--chat-send-bg</code></td>
+            <td><code>Unknown</code></td>
+            <td>#fcd515 <span class="alias">Brand 100</span></td>
+            <td><span class="swatch" style="background:#fcd515;"></span></td>
+            <td>#ffd14a <span class="alias">Brand 100 TDK</span></td>
+            <td><span class="swatch" style="background:#ffd14a;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-send-bg-hover</code></td>
+            <td><code>Unknown</code></td>
+            <td>#fbe67e <span class="alias">Brand 40</span></td>
+            <td><span class="swatch" style="background:#fbe67e;"></span></td>
+            <td>#fceb98 <span class="alias">Brand 40 TDK</span></td>
+            <td><span class="swatch" style="background:#fceb98;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-send-icon</code></td>
+            <td><code>Unknown</code></td>
+            <td>#3f3e3d <span class="alias">ADK 80</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+            <td>#3f3e3d <span class="alias">ADK 80 †</span></td>
+            <td><span class="swatch" style="background:#3f3e3d;"></span></td>
+          </tr>
+          <tr class="var-group-row"><td colspan="6">Empty State</td></tr>
+          <tr>
+            <td><code>--chat-empty-icon</code></td>
+            <td><code>Text/Disabled</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#cfcece <span class="alias">ADK 30</span></td>
+            <td><span class="swatch" style="background:#cfcece;"></span></td>
+            <td>#50505d <span class="alias">TDK 50</span></td>
+            <td><span class="swatch" style="background:#50505d;"></span></td>
+          </tr>
+          <tr>
+            <td><code>--chat-empty-text</code></td>
+            <td><code>Text/Subtle</code> <span class="alias">SHARED SEMANTIC</span></td>
+            <td>#6f6e6d <span class="alias">ADK 60</span></td>
+            <td><span class="swatch" style="background:#6f6e6d;"></span></td>
+            <td>#a9a9ac <span class="alias">TDK 60</span></td>
+            <td><span class="swatch" style="background:#a9a9ac;"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:11px; color:var(--color-text-subtle); margin-top:12px; line-height:1.6;">
+        † TDK value requires explicit override in <code>html[data-theme="dark"]</code> — does not cascade correctly from the semantic layer.<br>
+        Unknown = Figma variable path not yet confirmed; requires <code>get_variable_defs(yck1tcUXgdQ5aYX6iUAwrO, 22619:2)</code>.
+      </p>
+    </div>
+
+    <!-- Spec tab (default active) -->
+    <div class="code-panel active" id="tab-spec">
+      <div class="markdown-body" id="spec-rendered"></div>
+    </div>
+
+  </div>
+
+</div><!-- /.page-wrap -->
+
+  <style>
+    .code-tabs {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    .code-tab {
+      font-family: 'Inter Tight', Arial, sans-serif;
+      font-size: 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 8px 16px;
+      cursor: pointer;
+      color: var(--color-text-subtle);
+      margin-bottom: -1px;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    .code-tab:hover { color: var(--color-text-default); }
+    .code-tab.active {
+      color: var(--color-text-default);
+      border-bottom-color: var(--color-brand-default);
+      font-weight: 600;
+    }
+    .code-panel { display: none; padding-top: 24px; }
+    .code-panel.active { display: block; }
+    pre {
+      margin: 0;
+      background: #1e1e1e;
+      border-radius: 2px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+    }
+    .code-comment { color: #6a9955; }
+    .code-tag     { color: #4ec9b0; }
+    .code-attr    { color: #9cdcfe; }
+    .code-string  { color: #ce9178; }
+
+    .var-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .var-table th {
+      text-align: left; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--color-text-subtle); padding: 8px 12px;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    .var-table td {
+      padding: 8px 12px; border-bottom: 1px solid var(--color-border-subtle);
+      color: var(--color-text-default); vertical-align: middle;
+    }
+    .var-table code {
+      font-size: 12px; color: var(--color-text-default);
+      background: var(--color-surface-subtle); padding: 2px 6px; border-radius: 2px;
+    }
+    .var-group-row td {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--color-text-subtle);
+      background: var(--color-surface-subtle); padding: 6px 12px;
+    }
+    .swatch {
+      display: inline-block; width: 20px; height: 20px;
+      border-radius: 2px; border: 1px solid var(--color-border-default); vertical-align: middle;
+    }
+    .alias { font-size: 10px; color: var(--color-text-subtle); font-family: 'Consolas','Courier New',monospace; margin-left: 4px; }
+
+    /* Spec tab rendered markdown */
+    .markdown-body { font-family: 'Inter', Arial, sans-serif; font-size: 13px; line-height: 1.7; color: var(--color-text-default); }
+    .markdown-body h1 { font-family: 'Inter Tight', Arial, sans-serif; font-size: 16px; font-weight: 600; margin: 0 0 4px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border-default); color: var(--color-text-default); }
+    .markdown-body h2 { font-family: 'Inter Tight', Arial, sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-subtle); margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-default); }
+    .markdown-body h3 { font-family: 'Inter Tight', Arial, sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-subtle); margin: 24px 0 8px; }
+    .markdown-body p { margin: 0 0 12px; }
+    .markdown-body blockquote { margin: 0 0 16px; padding: 10px 16px; border-left: 3px solid var(--color-brand-default); background: var(--color-surface-subtle); color: var(--color-text-subtle); font-size: 12px; }
+    .markdown-body blockquote p { margin: 0; }
+    .markdown-body code { font-family: 'Consolas','Courier New',monospace; font-size: 12px; background: var(--color-surface-subtle); color: var(--color-text-default); padding: 1px 5px; border-radius: 2px; border: 1px solid var(--color-border-default); }
+    .markdown-body pre { background: #1e1e1e; border-radius: 2px; padding: 20px 24px; overflow-x: auto; margin: 0 0 16px; }
+    .markdown-body pre code { background: none; border: none; padding: 0; font-size: 13px; line-height: 1.7; color: #d4d4d4; }
+    .markdown-body table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 0 0 20px; }
+    .markdown-body th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-subtle); padding: 6px 12px; border-bottom: 1px solid var(--color-border-default); white-space: nowrap; }
+    .markdown-body td { padding: 7px 12px; border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-default); vertical-align: top; }
+    .markdown-body td code, .markdown-body th code { font-size: 11px; }
+    .markdown-body ul, .markdown-body ol { margin: 0 0 12px; padding-left: 20px; }
+    .markdown-body li { margin-bottom: 4px; }
+    .markdown-body input[type="checkbox"] { margin-right: 6px; accent-color: var(--color-brand-default); }
+    .markdown-body hr { border: none; border-top: 1px solid var(--color-border-default); margin: 24px 0; }
+    .markdown-body strong { font-weight: 600; color: var(--color-text-default); }
+    .markdown-body a { color: var(--color-inline-link); text-decoration: underline; text-underline-offset: 2px; }
+    .markdown-body a:hover { color: var(--color-inline-link-hover); }
+    .markdown-body .frontmatter { display: none; }
+    a { color: var(--color-inline-link); }
+  </style>
+
+  <script>
+    /* Tab switching */
+    document.querySelectorAll('.code-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const panel = document.getElementById(tab.dataset.target);
+        document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        panel.classList.add('active');
+      });
+    });
+
+    /* Theme toggle */
+    const toggle = document.getElementById('theme-toggle');
+    toggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+      toggle.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    });
+
+    /* Load and render spec markdown */
+    fetch('chat.md')
+      .then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(md => {
+        /* Hide YAML frontmatter block */
+        const stripped = md.replace(/^---[\s\S]*?---\n/, '');
+        document.getElementById('spec-rendered').innerHTML = marked.parse(stripped);
+        /* Render task-list checkboxes */
+        document.querySelectorAll('#spec-rendered li').forEach(li => {
+          if (li.textContent.trimStart().startsWith('[ ]')) {
+            li.innerHTML = '<input type="checkbox" disabled> ' + li.textContent.replace('[ ] ', '');
+          } else if (li.textContent.trimStart().startsWith('[x]')) {
+            li.innerHTML = '<input type="checkbox" checked disabled> ' + li.textContent.replace('[x] ', '');
+          }
+        });
+      })
+      .catch(() => {
+        document.getElementById('spec-rendered').innerHTML =
+          '<p style="color:var(--color-text-subtle); font-size:12px;">Spec not loaded — serve this file from a local server or GitHub Pages to enable the spec tab.<br><br>CLI: <code>npx serve .</code> from the repo root, then open <code>http://localhost:3000/components/chat/chat.html</code></p>';
+      });
+
+    /* Disabled state JS guard */
+    document.querySelectorAll('.dx-chat.dx-state-disabled').forEach(chat => {
+      chat.addEventListener('click', e => e.preventDefault(), true);
+      chat.addEventListener('keydown', e => e.preventDefault(), true);
+    });
+  </script>
+
+</body>
+</html>
