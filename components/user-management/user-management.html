@@ -1,544 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>User Management — Edge.One</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* ── Tokens ─────────────────────────────────────────────── */
-    :root {
-      --color-page-bg:        #f2f2f2;
-      --color-surface:        #ffffff;
-      --color-surface-subtle: #fafafa;
-      --color-border:         #e7e6e6;
-      --color-border-strong:  #cfcece;
-      --color-text-default:   #3f3e3d;
-      --color-text-subtle:    #6f6e6d;
-      --color-text-disabled:  #cfcece;
-      --color-brand:          #fcd515;
-      --color-brand-hover:    #fae164;
-      --color-brand-border:   #ab900e;
-      --color-link:           #1a88b7;
-      --color-link-hover:     #009ec0;
-      --color-danger:         #d9534f;
-      --color-danger-hover:   #c9302c;
-      --color-tag-bg:         #f2f2f2;
-      --color-tag-border:     #e7e6e6;
-      --color-row-hover:      #fafafa;
-      --color-nav-active-bg:  #fff8d6;
-      --color-nav-active-border: #fcd515;
-      --sidebar-width: 200px;
-      --topbar-height: 48px;
-    }
-    html[data-theme="dark"] {
-      --color-page-bg:        #202026;
-      --color-surface:        #31313b;
-      --color-surface-subtle: #24242b;
-      --color-border:         #3c3c44;
-      --color-border-strong:  #50505d;
-      --color-text-default:   #d4d4d5;
-      --color-text-subtle:    #a9a9ac;
-      --color-text-disabled:  #50505d;
-      --color-brand:          #ffd14a;
-      --color-brand-hover:    #ffe380;
-      --color-brand-border:   #c49a00;
-      --color-link:           #7c79ff;
-      --color-link-hover:     #534ffd;
-      --color-danger:         #e06c6c;
-      --color-danger-hover:   #d94f4f;
-      --color-tag-bg:         #2a2a33;
-      --color-tag-border:     #3c3c44;
-      --color-row-hover:      #2a2a33;
-      --color-nav-active-bg:  #2f2c18;
-      --color-nav-active-border: #ffd14a;
-    }
+  /* ── Tokens ── */
+  :root {
+    --pg:    #f2f2f2;
+    --sur:   #ffffff;
+    --sur2:  #fafafa;
+    --bd:    #e7e6e6;
+    --bd2:   #cfcece;
+    --tx:    #3f3e3d;
+    --tx2:   #6f6e6d;
+    --tx3:   #cfcece;
+    --brand: #fcd515;
+    --brand-h:#fae164;
+    --brand-b:#ab900e;
+    --link:  #1a88b7;
+    --link-h:#009ec0;
+    --danger:#d9534f;
+    --nav-w: 220px;
+    --top-h: 48px;
+  }
+  html[data-theme="dark"] {
+    --pg:    #202026;
+    --sur:   #31313b;
+    --sur2:  #24242b;
+    --bd:    #3c3c44;
+    --bd2:   #50505d;
+    --tx:    #d4d4d5;
+    --tx2:   #a9a9ac;
+    --tx3:   #50505d;
+    --brand: #ffd14a;
+    --brand-h:#ffe380;
+    --brand-b:#c49a00;
+    --link:  #7c79ff;
+    --link-h:#534ffd;
+    --danger:#e06c6c;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--pg);font-family:'Inter',Arial,sans-serif;font-size:13px;color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* ── Topbar ── */
+  .topbar{height:var(--top-h);background:var(--sur);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;position:sticky;top:0;z-index:100;flex-shrink:0}
+  .tb-breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2);flex:1}
+  .tb-crumb{cursor:pointer;color:var(--tx2)}
+  .tb-crumb:hover{color:var(--link);text-decoration:underline}
+  .tb-sep{color:var(--bd2)}
+  .tb-current{color:var(--tx);font-weight:500}
+  .tb-date{display:flex;align-items:center;gap:5px;color:var(--tx2);font-size:12px;padding:0 12px;border-left:1px solid var(--bd);border-right:1px solid var(--bd)}
+  .tb-right{display:flex;align-items:center;gap:14px;padding-left:12px}
+  .tb-title{font-family:'Inter Tight',Arial,sans-serif;font-size:15px;font-weight:600}
+  .tb-title span{color:var(--tx2);font-weight:400;margin-left:4px}
+  .ib{width:28px;height:28px;background:none;border:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:4px}
+  .ib:hover{background:var(--sur2);color:var(--tx)}
 
-    body {
-      background: var(--color-page-bg);
-      font-family: 'Inter', Arial, sans-serif;
-      font-size: 13px;
-      color: var(--color-text-default);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  /* ── App body ── */
+  .app-body{display:flex;flex:1;overflow:hidden;height:calc(100vh - var(--top-h))}
 
-    /* ── Top Bar ── */
-    .topbar {
-      height: var(--topbar-height);
-      background: var(--color-surface);
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      gap: 8px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      flex-shrink: 0;
-    }
-    .topbar-breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--color-text-subtle);
-      font-size: 12px;
-      flex: 1;
-    }
-    .topbar-breadcrumb .sep { color: var(--color-border-strong); }
-    .topbar-breadcrumb .crumb { color: var(--color-text-subtle); cursor: pointer; }
-    .topbar-breadcrumb .crumb:hover { color: var(--color-link); text-decoration: underline; }
-    .topbar-breadcrumb .current { color: var(--color-text-default); font-weight: 500; }
-    .topbar-date {
-      display: flex; align-items: center; gap: 6px;
-      color: var(--color-text-subtle); font-size: 12px;
-      padding: 0 12px;
-      border-left: 1px solid var(--color-border);
-      border-right: 1px solid var(--color-border);
-    }
-    .topbar-right {
-      display: flex; align-items: center; gap: 16px; padding-left: 12px;
-    }
-    .topbar-title {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 15px; font-weight: 600;
-    }
-    .topbar-title span { color: var(--color-text-subtle); font-weight: 400; margin-left: 4px; }
-    .topbar-icon-btn {
-      width: 28px; height: 28px; background: none; border: none; cursor: pointer;
-      color: var(--color-text-subtle);
-      display: flex; align-items: center; justify-content: center; border-radius: 4px;
-    }
-    .topbar-icon-btn:hover { background: var(--color-tag-bg); color: var(--color-text-default); }
+  /* ── Left nav shell ── */
+  .left-nav{width:var(--nav-w);background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+  .lnav-collapse{display:flex;align-items:center;justify-content:center;padding:10px;border-bottom:1px solid var(--bd);cursor:pointer;color:var(--tx2)}
+  .lnav-collapse:hover{background:var(--sur2)}
 
-    /* ── App Body ── */
-    .app-body { display: flex; flex: 1; overflow: hidden; height: calc(100vh - var(--topbar-height)); }
+  /* Home nav */
+  .lnav-home-header{padding:12px 12px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+  .lnav-home-title{display:flex;align-items:center;gap:7px;font-family:'Inter Tight',Arial,sans-serif;font-size:13px;font-weight:600}
+  .lnav-home-actions{display:flex;gap:3px}
+  .lnav-btn{width:22px;height:22px;background:none;border:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:2px}
+  .lnav-btn:hover{background:var(--sur2);color:var(--tx)}
+  .lnav-items{padding:6px 0}
+  .lnav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;cursor:pointer;font-size:13px;border-left:2px solid transparent}
+  .lnav-item:hover{background:var(--sur2)}
+  .lnav-item.active{background:#fff8d6;border-left-color:var(--brand);font-weight:500}
+  html[data-theme="dark"] .lnav-item.active{background:#2f2c18;border-left-color:var(--brand)}
+  .lnav-item-l{display:flex;align-items:center;gap:8px}
+  .badge{min-width:20px;height:18px;padding:0 5px;background:var(--brand);border-radius:2px;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;color:#1a1a1a}
 
-    /* ── Left Nav ── */
-    .left-nav {
-      width: var(--sidebar-width);
-      background: var(--color-surface);
-      border-right: 1px solid var(--color-border);
-      display: flex; flex-direction: column;
-      flex-shrink: 0; overflow-y: auto;
-    }
-    .left-nav-header {
-      padding: 12px 12px 8px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--color-border);
-    }
-    .left-nav-title {
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 13px; font-weight: 600;
-    }
-    .left-nav-actions { display: flex; gap: 4px; }
-    .nav-icon-btn {
-      width: 24px; height: 24px; background: none; border: none; cursor: pointer;
-      color: var(--color-text-subtle);
-      display: flex; align-items: center; justify-content: center; border-radius: 2px;
-    }
-    .nav-icon-btn:hover { background: var(--color-tag-bg); color: var(--color-text-default); }
-    .nav-items { padding: 8px 0; }
-    .nav-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 7px 12px; cursor: pointer;
-      color: var(--color-text-default); font-size: 13px;
-      border-left: 2px solid transparent;
-    }
-    .nav-item:hover { background: var(--color-row-hover); }
-    .nav-item.active {
-      background: var(--color-nav-active-bg);
-      border-left-color: var(--color-nav-active-border);
-      font-weight: 500;
-    }
-    .nav-item-left { display: flex; align-items: center; gap: 8px; }
-    .nav-badge {
-      min-width: 20px; height: 18px; padding: 0 5px;
-      background: var(--color-brand); border-radius: 2px;
-      font-size: 11px; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; color: #1a1a1a;
-    }
+  /* Module nav (item list) */
+  .lnav-module-header{padding:12px 12px 10px;font-family:'Inter Tight',Arial,sans-serif;font-size:13px;font-weight:600;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+  .lnav-module-search{padding:8px 10px;border-bottom:1px solid var(--bd)}
+  .lnav-search-input{width:100%;padding:5px 8px;border:1px solid var(--bd);background:var(--sur);color:var(--tx);font-size:12px;border-radius:4px;outline:none;font-family:'Inter',Arial,sans-serif}
+  .lnav-search-input:focus{border-color:var(--link)}
+  .lnav-module-items{padding:4px 0}
+  .lnav-module-item{padding:8px 12px;cursor:pointer;font-size:13px;border-left:2px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnav-module-item:hover{background:var(--sur2)}
+  .lnav-module-item.active{background:#fff8d6;border-left-color:var(--brand);font-weight:500}
+  html[data-theme="dark"] .lnav-module-item.active{background:#2f2c18;border-left-color:var(--brand)}
 
-    /* ── Main Panel ── */
-    .main-panel {
-      flex: 1; overflow-y: auto; background: var(--color-page-bg);
-      display: flex; flex-direction: column;
-    }
-    .panel-header {
-      padding: 12px 16px 0;
-      background: var(--color-surface);
-      border-bottom: 1px solid var(--color-border);
-    }
-    .panel-title-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-bottom: 8px;
-    }
-    .panel-title { display: flex; align-items: center; gap: 8px; }
-    .panel-title h2 {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 14px; font-weight: 600;
-    }
-    .panel-title .subtitle { font-size: 11px; color: var(--color-text-subtle); }
-    .panel-toolbar { display: flex; align-items: center; gap: 6px; }
-    .toolbar-btn {
-      width: 28px; height: 28px; background: none;
-      border: 1px solid transparent; cursor: pointer;
-      color: var(--color-text-subtle);
-      display: flex; align-items: center; justify-content: center; border-radius: 4px;
-    }
-    .toolbar-btn:hover { background: var(--color-tag-bg); color: var(--color-text-default); border-color: var(--color-border); }
-    .toolbar-btn.primary {
-      background: var(--color-brand); color: #1a1a1a; border-color: var(--color-brand-border);
-    }
-    .toolbar-btn.primary:hover { background: var(--color-brand-hover); }
+  /* ── Content wrapper ── */
+  .content-wrap{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
-    /* ── Data Table ── */
-    .table-wrap { padding: 16px; flex: 1; }
-    .data-table {
-      width: 100%; border-collapse: collapse;
-      background: var(--color-surface); border: 1px solid var(--color-border);
-    }
-    .data-table th {
-      text-align: left; padding: 9px 12px;
-      font-size: 11px; font-weight: 600; color: var(--color-text-subtle);
-      text-transform: uppercase; letter-spacing: 0.04em;
-      border-bottom: 1px solid var(--color-border);
-      background: var(--color-surface-subtle); white-space: nowrap;
-    }
-    .data-table td {
-      padding: 9px 12px; border-bottom: 1px solid var(--color-border);
-      font-size: 13px; color: var(--color-text-default);
-    }
-    .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: var(--color-row-hover); }
-    .data-table th:first-child, .data-table td:first-child { width: 32px; padding: 9px 8px; }
+  /* ── View visibility ── */
+  .app-view{display:none;flex:1;overflow:hidden;flex-direction:column}
+  .app-view.active{display:flex}
 
-    .cell-link {
-      color: var(--color-link); cursor: pointer; font-weight: 500;
-      text-decoration: none;
-    }
-    .cell-link:hover { color: var(--color-link-hover); text-decoration: underline; }
-    .cell-subtle { color: var(--color-text-subtle); font-size: 12px; }
+  /* ══════════ HOME VIEW ══════════ */
+  .home-layout{display:flex;flex:1;overflow:hidden}
+  .home-main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 
-    .tag {
-      display: inline-flex; align-items: center; padding: 2px 6px;
-      background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
-      border-radius: 2px; font-size: 11px; font-weight: 500; color: var(--color-text-subtle);
-    }
-    .tag.green { background:#edf7ed; border-color:#c3e6c3; color:#2e7d2e; }
-    .tag.blue  { background:#e8f4fb; border-color:#b8d9ee; color:#1a5f87; }
-    .tag.amber { background:#fff8e1; border-color:#ffe082; color:#7a5c00; }
-    html[data-theme="dark"] .tag.green { background:#1a2e1a; border-color:#2e4d2e; color:#6dc46d; }
-    html[data-theme="dark"] .tag.blue  { background:#172130; border-color:#1e3a52; color:#7cb9d8; }
-    html[data-theme="dark"] .tag.amber { background:#2a2000; border-color:#4a3800; color:#ffd14a; }
+  /* Panel header */
+  .panel-hd{padding:10px 16px;background:var(--sur);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .panel-title{display:flex;align-items:center;gap:8px}
+  .panel-title h2{font-family:'Inter Tight',Arial,sans-serif;font-size:14px;font-weight:600}
+  .panel-title .sub{font-size:11px;color:var(--tx2)}
+  .toolbar{display:flex;align-items:center;gap:5px}
+  .tb-btn{width:28px;height:28px;background:none;border:1px solid transparent;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:4px}
+  .tb-btn:hover{background:var(--sur2);border-color:var(--bd)}
+  .tb-btn.prim{background:var(--brand);color:#1a1a1a;border-color:var(--brand-b)}
+  .tb-btn.prim:hover{background:var(--brand-h)}
+  .search-wrap{position:relative;display:inline-flex;align-items:center}
+  .search-wrap svg{position:absolute;left:7px;color:var(--tx2);pointer-events:none}
+  .search-inp{padding:5px 8px 5px 26px;border:1px solid var(--bd);background:var(--sur);color:var(--tx);font-size:12px;width:180px;border-radius:4px;outline:none;font-family:'Inter',Arial,sans-serif}
+  .search-inp:focus{border-color:var(--link)}
 
-    .row-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.1s; }
-    .data-table tr:hover .row-actions { opacity: 1; }
-    .action-btn {
-      width: 24px; height: 24px; background: none; border: none; cursor: pointer;
-      color: var(--color-text-subtle);
-      display: flex; align-items: center; justify-content: center; border-radius: 2px;
-    }
-    .action-btn:hover { background: var(--color-tag-bg); color: var(--color-text-default); }
-    .action-btn.danger:hover { background: #fdecea; color: var(--color-danger); }
-    html[data-theme="dark"] .action-btn.danger:hover { background: #2d1515; color: var(--color-danger); }
+  /* ── Data table ── */
+  .table-wrap{padding:14px;flex:1}
+  .data-table{width:100%;border-collapse:collapse;background:var(--sur);border:1px solid var(--bd)}
+  .data-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--bd);background:var(--sur2);white-space:nowrap}
+  .data-table td{padding:8px 12px;border-bottom:1px solid var(--bd);font-size:13px}
+  .data-table tr:last-child td{border-bottom:none}
+  .data-table tr:hover td{background:var(--sur2)}
+  .data-table th:first-child,.data-table td:first-child{width:32px;padding:8px}
+  .cell-link{color:var(--link);cursor:pointer;font-weight:500}
+  .cell-link:hover{color:var(--link-h);text-decoration:underline}
+  .cell-dim{color:var(--tx2);font-size:12px}
+  .tag{display:inline-flex;align-items:center;padding:2px 6px;background:var(--sur2);border:1px solid var(--bd);border-radius:2px;font-size:11px;font-weight:500;color:var(--tx2)}
+  .tag.blue{background:#e8f4fb;border-color:#b8d9ee;color:#1a5f87}
+  .tag.amber{background:#fff8e1;border-color:#ffe082;color:#7a5c00}
+  html[data-theme="dark"] .tag.blue{background:#172130;border-color:#1e3a52;color:#7cb9d8}
+  html[data-theme="dark"] .tag.amber{background:#2a2000;border-color:#4a3800;color:var(--brand)}
+  .row-actions{display:flex;gap:3px;opacity:0;transition:opacity .1s}
+  .data-table tr:hover .row-actions{opacity:1}
+  .act-btn{width:22px;height:22px;background:none;border:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:2px}
+  .act-btn:hover{background:var(--sur2);color:var(--tx)}
+  .act-btn.del:hover{background:#fdecea;color:var(--danger)}
+  html[data-theme="dark"] .act-btn.del:hover{background:#2d1515;color:var(--danger)}
+  input[type=checkbox]{cursor:pointer;accent-color:var(--link)}
 
-    /* ── View Sections ── */
-    .view-section { display: none; flex-direction: column; flex: 1; }
-    .view-section.active { display: flex; }
+  /* ── Right sidebar ── */
+  .right-sidebar{width:290px;flex-shrink:0;border-left:1px solid var(--bd);background:var(--pg);overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:10px}
+  .sb-card{background:var(--sur);border:1px solid var(--bd);border-radius:4px}
+  .sb-card-hd{padding:9px 12px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+  .sb-card-hd h3{font-family:'Inter Tight',Arial,sans-serif;font-size:13px;font-weight:600}
+  .sb-card-hd-actions{display:flex;gap:3px}
+  .sb-btn{width:20px;height:20px;background:none;border:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:2px}
+  .sb-btn:hover{background:var(--sur2)}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .stat-cell{padding:11px 12px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .stat-cell:nth-child(2n){border-right:none}
+  .stat-cell:nth-last-child(-n+2){border-bottom:none}
+  .stat-lbl{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--tx2);margin-bottom:3px}
+  .stat-val{font-family:'Inter Tight',Arial,sans-serif;font-size:24px;font-weight:600;line-height:1}
+  .chart-wrap{padding:10px}
+  .chart-wrap canvas{width:100%!important}
 
-    /* ── Search Input ── */
-    .search-wrap { position: relative; display: inline-flex; align-items: center; }
-    .search-wrap svg { position: absolute; left: 8px; color: var(--color-text-subtle); pointer-events: none; }
-    .search-input {
-      padding: 5px 10px 5px 28px; border: 1px solid var(--color-border);
-      background: var(--color-surface); color: var(--color-text-default);
-      font-family: 'Inter', Arial, sans-serif; font-size: 12px;
-      width: 180px; border-radius: 4px; outline: none;
-    }
-    .search-input:focus { border-color: var(--color-link); }
+  /* ══════════ MODULE DETAIL VIEW ══════════ */
+  .detail-layout{display:flex;flex-direction:column;flex:1;overflow:hidden}
 
-    input[type="checkbox"] { cursor: pointer; accent-color: var(--color-link); }
+  /* Detail top bar */
+  .detail-topbar{background:var(--sur);border-bottom:1px solid var(--bd);padding:10px 20px 0;flex-shrink:0}
+  .detail-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .detail-h1{font-family:'Inter Tight',Arial,sans-serif;font-size:20px;font-weight:600}
+  .detail-meta{display:flex;align-items:center;gap:10px}
+  .detail-enabled{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2)}
+  .toggle{width:32px;height:18px;border-radius:9999px;background:var(--link);cursor:pointer;position:relative;border:none;flex-shrink:0;transition:background .15s}
+  .toggle::after{content:'';position:absolute;top:3px;left:14px;width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .15s}
+  .toggle.off{background:var(--bd2)}
+  .toggle.off::after{transform:translateX(-11px)}
+  .menu-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1px solid var(--bd);background:var(--sur);color:var(--tx);font-size:12px;font-family:'Inter',Arial,sans-serif;cursor:pointer;border-radius:4px}
+  .menu-btn:hover{background:var(--sur2)}
 
-    /* ── Detail Page ── */
-    .detail-page {
-      display: none; flex-direction: column; flex: 1; overflow-y: auto;
-    }
-    .detail-page.active { display: flex; }
+  /* Detail tabs (underline style) */
+  .detail-tabs{display:flex;gap:0}
+  .d-tab{padding:8px 14px;font-size:13px;cursor:pointer;color:var(--tx2);border-bottom:2px solid transparent;white-space:nowrap}
+  .d-tab:hover{color:var(--tx)}
+  .d-tab.active{color:var(--link);border-bottom-color:var(--link);font-weight:500}
 
-    .detail-header {
-      background: var(--color-surface);
-      border-bottom: 1px solid var(--color-border);
-      padding: 14px 20px 0;
-    }
-    .detail-back {
-      display: inline-flex; align-items: center; gap: 6px;
-      color: var(--color-text-subtle); font-size: 12px; cursor: pointer;
-      margin-bottom: 10px; background: none; border: none; padding: 0;
-    }
-    .detail-back:hover { color: var(--color-link); }
-    .detail-title-row {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .detail-title {
-      font-family: 'Inter Tight', Arial, sans-serif;
-      font-size: 20px; font-weight: 600;
-    }
-    .detail-title-meta { display: flex; align-items: center; gap: 10px; }
-    .detail-enabled {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--color-text-subtle);
-    }
-    .toggle-switch {
-      width: 32px; height: 18px; border-radius: 9999px;
-      background: var(--color-link); cursor: pointer; position: relative;
-      flex-shrink: 0; border: none;
-    }
-    .toggle-switch::after {
-      content: ''; position: absolute; top: 3px; left: 3px;
-      width: 12px; height: 12px; border-radius: 50%; background: #fff;
-      transition: transform 0.15s;
-    }
-    .toggle-switch.off { background: var(--color-border-strong); }
-    .toggle-switch.off::after { transform: none; }
-    .toggle-switch:not(.off)::after { transform: translateX(14px); }
+  /* Scrollable detail body */
+  .detail-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 
-    .action-menu-btn {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 10px; border: 1px solid var(--color-border);
-      background: var(--color-surface); color: var(--color-text-default);
-      font-size: 12px; font-family: 'Inter', Arial, sans-serif;
-      cursor: pointer; border-radius: 4px;
-    }
-    .action-menu-btn:hover { background: var(--color-tag-bg); }
+  /* ── General Details form (GD) ── */
+  .gd-section{background:var(--sur);border-bottom:1px solid var(--bd);padding:16px 20px;flex-shrink:0}
+  .gd-label{font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+  .gd-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--bd)}
+  .gd-grid.two-col{grid-template-columns:1fr 1fr}
+  .gd-grid.one-col{grid-template-columns:1fr}
+  .gd-field{padding:10px 12px;position:relative;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--sur);min-height:58px}
+  .gd-field:nth-child(3n),.gd-grid.two-col .gd-field:nth-child(2n),.gd-grid.one-col .gd-field{border-right:none}
+  .gd-field.full{grid-column:1/-1;border-right:none}
+  .gd-field:last-child{border-bottom:none}
+  /* fix: last row of 3-col might have 2 fields — remove bottom from those too */
+  .gd-field.no-bottom{border-bottom:none}
+  .gd-field-label{font-size:11px;color:var(--tx2);margin-bottom:4px;display:block}
+  .gd-input,.gd-textarea,.gd-select{border:none;outline:none;background:transparent;width:100%;font-family:'Inter',Arial,sans-serif;font-size:13px;color:var(--tx);resize:none}
+  .gd-input::placeholder,.gd-textarea::placeholder{color:var(--tx3)}
+  .gd-textarea{min-height:60px}
+  .gd-select{appearance:none;cursor:pointer}
+  .gd-count{position:absolute;top:10px;right:10px;font-size:11px;color:var(--tx2);pointer-events:none}
+  .gd-caret{position:absolute;right:10px;bottom:10px;color:var(--tx2);pointer-events:none}
+  .gd-field:focus-within{z-index:1;outline:1px solid var(--link);outline-offset:-1px}
 
-    /* ── Detail Tabs ── */
-    .detail-tabs { display: flex; gap: 0; }
-    .detail-tab {
-      padding: 8px 14px; font-size: 13px; cursor: pointer;
-      color: var(--color-text-subtle); border-bottom: 2px solid transparent;
-      white-space: nowrap;
-    }
-    .detail-tab:hover { color: var(--color-text-default); }
-    .detail-tab.active {
-      color: var(--color-link); border-bottom-color: var(--color-link); font-weight: 500;
-    }
+  /* Chip select inside GD field */
+  .chip-wrap{display:flex;flex-wrap:wrap;gap:4px;padding-right:24px;min-height:20px;cursor:pointer}
+  .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;background:#3f3e3d;color:#fff;font-size:12px;border-radius:2px}
+  html[data-theme="dark"] .chip{background:#d4d4d5;color:#202026}
+  .chip-x{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:14px;padding:0;line-height:1;display:flex;align-items:center}
+  html[data-theme="dark"] .chip-x{color:rgba(32,32,38,.7)}
+  .chip-x:hover{color:#fff}
 
-    /* ── Detail Tab Content ── */
-    .tab-content { display: none; padding: 20px; flex: 1; }
-    .tab-content.active { display: block; }
+  /* Chip dropdown */
+  .chip-dropdown{position:absolute;top:100%;left:0;right:0;z-index:200;background:var(--sur);border:1px solid var(--bd);border-top:none;box-shadow:0 4px 12px rgba(0,0,0,.1);max-height:160px;overflow-y:auto;display:none}
+  .chip-dropdown.open{display:block}
+  .chip-opt{padding:7px 12px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px}
+  .chip-opt:hover{background:var(--sur2)}
+  .chip-opt.selected{color:var(--link)}
 
-    /* ── Detail Form ── */
-    .detail-form {
-      background: var(--color-surface); border: 1px solid var(--color-border);
-      border-radius: 4px; padding: 20px; max-width: 600px;
-    }
-    .detail-form-row { margin-bottom: 16px; display: flex; align-items: flex-start; gap: 16px; }
-    .detail-form-row:last-child { margin-bottom: 0; }
-    .detail-form-label {
-      width: 160px; flex-shrink: 0; font-size: 13px; font-weight: 500;
-      color: var(--color-text-default); padding-top: 7px;
-    }
-    .detail-form-label .required { color: var(--color-danger); margin-left: 2px; }
-    .detail-form-label .info {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 13px; height: 13px; border-radius: 50%;
-      background: var(--color-border-strong); color: var(--color-surface);
-      font-size: 9px; font-weight: 700; cursor: help; margin-left: 3px;
-    }
-    .detail-form-control { flex: 1; }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; padding: 7px 10px;
-      border: 1px solid var(--color-border);
-      background: var(--color-surface); color: var(--color-text-default);
-      font-family: 'Inter', Arial, sans-serif; font-size: 13px;
-      border-radius: 4px; outline: none;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--color-link);
-      box-shadow: 0 0 0 2px rgba(26,136,183,0.15);
-    }
-    .form-input.readonly { background: var(--color-surface-subtle); color: var(--color-text-subtle); cursor: default; }
-    .form-textarea { resize: vertical; min-height: 72px; }
-    .form-select { appearance: none; cursor: pointer; }
-    .form-hint { font-size: 11px; color: var(--color-text-subtle); margin-top: 4px; }
+  /* ── Tab content area ── */
+  .tab-panel{display:none;padding:16px 20px;flex:1}
+  .tab-panel.active{display:block}
 
-    .toggle-row { display: flex; align-items: center; gap: 10px; padding-top: 4px; }
-    .toggle-label { font-size: 13px; }
+  /* Tab toolbar */
+  .tab-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 
-    .form-actions { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+  /* Inner table (rm-table style) */
+  .inner-table-wrap{background:var(--sur);border:1px solid var(--bd)}
+  .inner-table{width:100%;border-collapse:collapse}
+  .inner-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--bd);background:var(--sur2);white-space:nowrap}
+  .inner-table td{padding:8px 12px;border-bottom:1px solid var(--bd);font-size:13px}
+  .inner-table tr:last-child td{border-bottom:none}
+  .inner-table tr:hover td{background:var(--sur2)}
 
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: 0;
-      font-family: 'Inter', Arial, sans-serif; font-size: 13px; font-weight: 500;
-      cursor: pointer; border: 1px solid transparent; line-height: 1;
-    }
-    .btn:focus-visible { outline: 2px dashed var(--color-link); outline-offset: 2px; border-radius: 2px; }
-    .btn-primary { background: var(--color-brand); color: #1a1a1a; border-color: var(--color-brand-border); }
-    .btn-primary:hover { background: var(--color-brand-hover); }
-    .btn-secondary { background: var(--color-surface); color: var(--color-text-default); border-color: var(--color-border); }
-    .btn-secondary:hover { background: var(--color-tag-bg); }
-    .btn-danger { background: var(--color-danger); color: #fff; border-color: var(--color-danger-hover); }
-    .btn-danger:hover { background: var(--color-danger-hover); }
-    .btn-ghost { background: none; color: var(--color-link); border-color: transparent; }
-    .btn-ghost:hover { text-decoration: underline; }
-    .btn-sm { padding: 5px 10px; font-size: 12px; }
+  /* KV table */
+  .kv-table{width:100%}
+  .kv-table td{padding:5px 0;vertical-align:middle}
+  .kv-table td:first-child{width:45%;padding-right:8px}
+  .kv-table td:nth-child(2){width:45%;padding-right:8px}
+  .kv-table td:last-child{width:32px}
+  .add-row-btn{display:inline-flex;align-items:center;gap:5px;color:var(--link);font-size:12px;background:none;border:none;cursor:pointer;padding:6px 0;margin-top:4px}
+  .add-row-btn:hover{text-decoration:underline}
 
-    /* ── Inline kv attribute table ── */
-    .kv-table { width: 100%; border-collapse: collapse; }
-    .kv-table td { padding: 6px 0; vertical-align: middle; }
-    .kv-table td:first-child { width: 45%; padding-right: 8px; }
-    .kv-table td:last-child { width: 45%; padding-right: 8px; }
-    .kv-table td.kv-action { width: 32px; }
-    .add-attr-link {
-      display: inline-flex; align-items: center; gap: 5px;
-      color: var(--color-link); cursor: pointer; font-size: 12px;
-      background: none; border: none; padding: 0; margin-top: 8px;
-    }
-    .add-attr-link:hover { text-decoration: underline; }
+  /* Permissions */
+  .perm-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
+  .perm-row:last-child{border-bottom:none}
+  .perm-name{font-size:13px;font-weight:500}
+  .perm-desc{font-size:12px;color:var(--tx2);margin-top:2px}
 
-    /* ── Members / users-in-role tab ── */
-    .tab-toolbar {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-    }
-    .tab-toolbar .search-wrap .search-input { width: 220px; }
+  /* ── Sticky bottom bar ── */
+  .sticky-bar{position:sticky;bottom:0;background:var(--sur);border-top:1px solid var(--bd);padding:12px 20px;display:flex;justify-content:flex-end;align-items:center;gap:10px;z-index:50;flex-shrink:0}
 
-    /* ── Role mapping tab ── */
-    .rm-table { width: 100%; border-collapse: collapse; }
-    .rm-table th {
-      text-align: left; padding: 8px 12px;
-      font-size: 11px; font-weight: 600; color: var(--color-text-subtle);
-      text-transform: uppercase; letter-spacing: 0.04em;
-      border-bottom: 1px solid var(--color-border);
-      background: var(--color-surface-subtle);
-    }
-    .rm-table td {
-      padding: 8px 12px; border-bottom: 1px solid var(--color-border);
-      font-size: 13px;
-    }
-    .rm-table tr:last-child td { border-bottom: none; }
-    .rm-table tr:hover td { background: var(--color-row-hover); }
-    .rm-table-wrap { background: var(--color-surface); border: 1px solid var(--color-border); }
+  /* ── Buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;border-radius:0;line-height:1}
+  .btn:focus-visible{outline:2px dashed var(--link);outline-offset:2px;border-radius:2px}
+  .btn-prim{background:var(--brand);color:#1a1a1a;border-color:var(--brand-b)}
+  .btn-prim:hover{background:var(--brand-h)}
+  .btn-sec{background:var(--sur);color:var(--tx);border-color:var(--bd)}
+  .btn-sec:hover{background:var(--sur2)}
+  .btn-ghost{background:none;color:var(--tx2);border-color:transparent}
+  .btn-ghost:hover{color:var(--tx)}
+  .btn-danger{background:var(--danger);color:#fff;border-color:#c9302c}
+  .btn-danger:hover{background:#c9302c}
+  .btn-sm{padding:5px 10px;font-size:12px}
 
-    /* ── Permissions tab ── */
-    .perm-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--color-border); }
-    .perm-row:last-child { border-bottom: none; }
-    .perm-name { font-size: 13px; font-weight: 500; }
-    .perm-desc { font-size: 12px; color: var(--color-text-subtle); margin-top: 2px; }
+  /* ── Form inputs (modal) ── */
+  .form-group{margin-bottom:14px}
+  .form-group:last-child{margin-bottom:0}
+  .f-label{display:block;font-size:12px;font-weight:500;color:var(--tx2);margin-bottom:5px}
+  .f-inp,.f-sel,.f-ta{width:100%;padding:7px 10px;border:1px solid var(--bd);background:var(--sur);color:var(--tx);font-family:'Inter',Arial,sans-serif;font-size:13px;border-radius:4px;outline:none}
+  .f-inp:focus,.f-sel:focus,.f-ta:focus{border-color:var(--link);box-shadow:0 0 0 2px rgba(26,136,183,.12)}
+  .f-inp.ro{background:var(--sur2);color:var(--tx2);cursor:default}
+  .f-ta{resize:vertical;min-height:72px}
 
-    /* ── Checklist ── */
-    .checklist {
-      display: flex; flex-direction: column; gap: 4px;
-      max-height: 220px; overflow-y: auto;
-      border: 1px solid var(--color-border); border-radius: 4px; padding: 8px;
-    }
-    .checklist-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 5px 6px; border-radius: 2px; cursor: pointer;
-    }
-    .checklist-item:hover { background: var(--color-row-hover); }
-    .checklist-item input[type="checkbox"] { cursor: pointer; accent-color: var(--color-link); }
+  /* ── Modals ── */
+  .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;align-items:center;justify-content:center}
+  .modal-ov.open{display:flex}
+  .modal{background:var(--sur);border:1px solid var(--bd);border-radius:4px;width:460px;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .modal-hd{padding:14px 16px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .modal-hd h3{font-family:'Inter Tight',Arial,sans-serif;font-size:14px;font-weight:600}
+  .modal-close{width:28px;height:28px;background:none;border:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:4px}
+  .modal-close:hover{background:var(--sur2)}
+  .modal-body{padding:16px;overflow-y:auto;flex:1}
+  .modal-ft{padding:10px 16px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+  .del-warn{display:flex;gap:10px;padding:12px;background:#fdecea;border:1px solid #f5c6c6;border-radius:4px;color:var(--danger);font-size:13px}
+  html[data-theme="dark"] .del-warn{background:#2d1515;border-color:#5a2020}
 
-    /* ── Modals ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4); z-index: 1000;
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--color-surface); border: 1px solid var(--color-border);
-      border-radius: 4px; width: 460px; max-width: 95vw; max-height: 90vh;
-      display: flex; flex-direction: column;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    }
-    .modal-header {
-      padding: 14px 16px 12px; border-bottom: 1px solid var(--color-border);
-      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-    }
-    .modal-header h3 { font-family: 'Inter Tight', Arial, sans-serif; font-size: 14px; font-weight: 600; }
-    .modal-close {
-      width: 28px; height: 28px; background: none; border: none; cursor: pointer;
-      color: var(--color-text-subtle);
-      display: flex; align-items: center; justify-content: center; border-radius: 4px;
-    }
-    .modal-close:hover { background: var(--color-tag-bg); }
-    .modal-body { padding: 16px; overflow-y: auto; flex: 1; }
-    .modal-footer {
-      padding: 12px 16px; border-top: 1px solid var(--color-border);
-      display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0;
-    }
+  /* ── Empty state ── */
+  .empty{padding:32px;text-align:center;color:var(--tx2);background:var(--sur);border:1px solid var(--bd)}
 
-    .form-group { margin-bottom: 14px; }
-    .form-group:last-child { margin-bottom: 0; }
-    .form-label { display: block; font-size: 12px; font-weight: 500; color: var(--color-text-subtle); margin-bottom: 5px; }
-
-    .delete-warning {
-      display: flex; gap: 12px; padding: 12px;
-      background: #fdecea; border: 1px solid #f5c6c6; border-radius: 4px; margin-bottom: 12px;
-      color: var(--color-danger); font-size: 13px;
-    }
-    html[data-theme="dark"] .delete-warning { background: #2d1515; border-color: #5a2020; }
-
-    /* ── Child groups panel ── */
-    .child-groups-list { display: flex; flex-direction: column; gap: 1px; }
-    .child-group-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 9px 12px; background: var(--color-surface);
-      border: 1px solid var(--color-border); border-top: none;
-    }
-    .child-group-item:first-child { border-top: 1px solid var(--color-border); }
-    .child-group-item:hover { background: var(--color-row-hover); }
-
-    /* ── Sessions table ── */
-    .sessions-empty {
-      padding: 32px; text-align: center; color: var(--color-text-subtle); font-size: 13px;
-      background: var(--color-surface); border: 1px solid var(--color-border);
-    }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
-
-    /* ── Divider ── */
-    .section-divider { border: none; border-top: 1px solid var(--color-border); margin: 16px 0; }
-
-    /* ── Inherited badge ── */
-    .badge-true  { color: var(--color-text-subtle); font-size: 12px; }
-    .badge-false { color: var(--color-text-disabled); font-size: 12px; }
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar{width:5px;height:5px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
   </style>
 </head>
 <body>
 
-<!-- ═══ TOP BAR ═══ -->
+<!-- ═══ TOPBAR ═══ -->
 <header class="topbar">
-  <div class="topbar-breadcrumb" id="breadcrumb">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2l6 4.5V14a.5.5 0 01-.5.5h-4V10H6.5v4.5h-4A.5.5 0 012 14V6.5z" fill="currentColor"/></svg>
-    <span class="sep">›</span>
-    <span class="crumb" id="bc-section" onclick="goBackToList()">User Management</span>
-    <span class="sep bc-detail-sep" style="display:none">›</span>
-    <span class="current bc-detail-name" style="display:none"></span>
+  <div class="tb-breadcrumb">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2l6 4.5V14a.5.5 0 01-.5.5h-4V10H6.5v4.5h-4A.5.5 0 012 14V6.5z" fill="currentColor"/></svg>
+    <span class="tb-sep">›</span>
+    <span class="tb-crumb" id="bc1" onclick="goHome()">User Management</span>
+    <span class="tb-sep bc2-sep" style="display:none">›</span>
+    <span class="tb-crumb bc2-text" style="display:none" id="bc2" onclick="goModule()"></span>
+    <span class="tb-sep bc3-sep" style="display:none">›</span>
+    <span class="tb-current bc3-text" style="display:none" id="bc3"></span>
   </div>
-  <div class="topbar-date">
+  <div class="tb-date">
     <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M1 6h14M5 1v4M11 1v4" stroke="currentColor" stroke-width="1.4"/></svg>
-    <span id="topbar-date"></span>
+    <span id="tb-date-val"></span>
   </div>
-  <div class="topbar-right">
-    <div class="topbar-title">User Management <span>Edge.One</span></div>
-    <button class="topbar-icon-btn" onclick="toggleTheme()" title="Toggle dark mode">
+  <div class="tb-right">
+    <div class="tb-title" id="tb-mod-title">User Management <span>Edge.One</span></div>
+    <button class="ib" onclick="toggleTheme()" title="Toggle dark mode">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="1.4"/></svg>
     </button>
-    <button class="topbar-icon-btn" title="Notifications">
+    <button class="ib" title="Notifications">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5zM6 13a2 2 0 004 0" stroke="currentColor" stroke-width="1.4"/></svg>
     </button>
   </div>
@@ -547,778 +330,500 @@
 <!-- ═══ APP BODY ═══ -->
 <div class="app-body">
 
-  <!-- ── Left Nav ── -->
-  <nav class="left-nav">
-    <div class="left-nav-header">
-      <div class="left-nav-title">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M1 14a5 5 0 0110 0" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M14 12a3 3 0 00-4 0" stroke="currentColor" stroke-width="1.2"/></svg>
+<!-- ── LEFT NAV ── -->
+<nav class="left-nav" id="left-nav">
+
+  <!-- HOME NAV STATE -->
+  <div id="lnav-home">
+    <div style="display:flex;align-items:center;justify-content:center;padding:8px;border-bottom:1px solid var(--bd)">
+      <button class="ib" onclick="goHome()" title="Back to overview" style="width:auto;padding:2px 6px;gap:4px;font-size:12px;color:var(--tx2)">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="lnav-home-header">
+      <div class="lnav-home-title">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M1 14a5 5 0 0110 0" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M14 12a3 3 0 00-4 0" stroke="currentColor" stroke-width="1.2"/></svg>
         User Management
       </div>
-      <div class="left-nav-actions">
-        <button class="nav-icon-btn" title="Filter">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <button class="nav-icon-btn" title="Settings">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 2v1.5M8 12.5V14M2 8h1.5M12.5 8H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        </button>
+      <div class="lnav-home-actions">
+        <button class="lnav-btn"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+        <button class="lnav-btn"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 2v1M8 13v1M2 8h1M13 8h1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
       </div>
     </div>
-    <div class="nav-items">
-      <div class="nav-item active" data-view="groups" onclick="switchView('groups',this)">
-        <div class="nav-item-left">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+    <div class="lnav-items">
+      <div class="lnav-item" id="lnav-groups-btn" onclick="goModule('groups')">
+        <div class="lnav-item-l">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
           Groups
         </div>
-        <span class="nav-badge" id="badge-groups">10</span>
+        <span class="badge" id="badge-groups">10</span>
       </div>
-      <div class="nav-item" data-view="roles" onclick="switchView('roles',this)">
-        <div class="nav-item-left">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
+      <div class="lnav-item" id="lnav-roles-btn" onclick="goModule('roles')">
+        <div class="lnav-item-l">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
           Roles
         </div>
-        <span class="nav-badge" id="badge-roles">6</span>
+        <span class="badge" id="badge-roles">6</span>
       </div>
-      <div class="nav-item" data-view="attributes" onclick="switchView('attributes',this)">
-        <div class="nav-item-left">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <div class="lnav-item" id="lnav-attrs-btn" onclick="goModule('attributes')">
+        <div class="lnav-item-l">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
           Attributes
         </div>
-        <span class="nav-badge" id="badge-attributes">4</span>
+        <span class="badge" id="badge-attrs">4</span>
       </div>
-      <div class="nav-item" data-view="users" onclick="switchView('users',this)">
-        <div class="nav-item-left">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
+      <div class="lnav-item active" id="lnav-users-btn" onclick="goModule('users')">
+        <div class="lnav-item-l">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
           Users
         </div>
-        <span class="nav-badge" id="badge-users">3</span>
+        <span class="badge" id="badge-users">12</span>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <!-- ── Content ── -->
-  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+  <!-- MODULE NAV STATE (hidden by default) -->
+  <div id="lnav-module" style="display:none;flex-direction:column;flex:1">
+    <div class="lnav-module-header">
+      <span id="lnav-mod-title">Groups</span>
+      <button class="lnav-btn" onclick="openModal('modal-add')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="lnav-module-search">
+      <input class="lnav-search-input" type="text" placeholder="Search…" id="lnav-search" oninput="filterModuleNav(this.value)"/>
+    </div>
+    <div class="lnav-module-items" id="lnav-module-items"></div>
+  </div>
 
-    <!-- ══════════ LIST VIEWS ══════════ -->
-    <div id="list-views" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+</nav>
 
-      <!-- GROUPS list -->
-      <section class="view-section active main-panel" id="view-groups">
-        <div class="panel-header">
-          <div class="panel-title-row">
-            <div class="panel-title">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
-              <div><h2>Group Listing</h2><div class="subtitle">Group Details</div></div>
+<!-- ── CONTENT WRAPPER ── -->
+<div class="content-wrap">
+
+  <!-- ══ HOME VIEW ══ -->
+  <div class="app-view active" id="view-home">
+    <div class="home-layout">
+      <div class="home-main">
+        <div class="panel-hd">
+          <div class="panel-title">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
+            <div><h2>User Listing</h2><div class="sub">User Details</div></div>
+          </div>
+          <div class="toolbar">
+            <div class="search-wrap">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input class="search-inp" type="text" placeholder="Search users…" oninput="filterTable('tbl-users',this.value)"/>
             </div>
-            <div class="panel-toolbar">
-              <div class="search-wrap">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input class="search-input" type="text" placeholder="Search groups…" oninput="filterTable('groups-table',this.value)" />
-              </div>
-              <button class="toolbar-btn" title="Filter"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-              <button class="toolbar-btn primary" title="Add Group" onclick="openModal('modal-create-group')">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </button>
-              <button class="toolbar-btn" title="More"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="3" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg></button>
-            </div>
+            <button class="tb-btn" title="Filter"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+            <button class="tb-btn prim" title="Add User" onclick="openAddModal('user')">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 2h5M2 2v5M14 2h-5M14 2v5M2 14h5M2 14v-5M14 14h-5M14 14v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+            <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="3" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg></button>
           </div>
         </div>
         <div class="table-wrap">
-          <table class="data-table" id="groups-table">
+          <table class="data-table" id="tbl-users">
             <thead><tr>
-              <th><input type="checkbox" onclick="toggleAll('groups-table',this)"/></th>
-              <th>Group Name</th><th>Description</th><th>Members</th>
-              <th>Roles Assigned</th><th>Date Created</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="groups-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ROLES list -->
-      <section class="view-section main-panel" id="view-roles">
-        <div class="panel-header">
-          <div class="panel-title-row">
-            <div class="panel-title">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
-              <div><h2>Role Listing</h2><div class="subtitle">Platform &amp; App Roles</div></div>
-            </div>
-            <div class="panel-toolbar">
-              <div class="search-wrap">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input class="search-input" type="text" placeholder="Search roles…" oninput="filterTable('roles-table',this.value)" />
-              </div>
-              <button class="toolbar-btn" title="Filter"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-              <button class="toolbar-btn primary" title="Add Role" onclick="openModal('modal-create-role')">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </button>
-              <button class="toolbar-btn" title="More"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="3" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg></button>
-            </div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="roles-table">
-            <thead><tr>
-              <th><input type="checkbox" onclick="toggleAll('roles-table',this)"/></th>
-              <th>Role Name</th><th>Description</th><th>Type</th>
-              <th>Users Count</th><th>Date Created</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="roles-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ATTRIBUTES list -->
-      <section class="view-section main-panel" id="view-attributes">
-        <div class="panel-header">
-          <div class="panel-title-row">
-            <div class="panel-title">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <div><h2>Attribute Listing</h2><div class="subtitle">User &amp; Group Attributes</div></div>
-            </div>
-            <div class="panel-toolbar">
-              <div class="search-wrap">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input class="search-input" type="text" placeholder="Search attributes…" oninput="filterTable('attributes-table',this.value)" />
-              </div>
-              <button class="toolbar-btn" title="Filter"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-              <button class="toolbar-btn primary" title="Add Attribute" onclick="openModal('modal-create-attribute')">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </button>
-              <button class="toolbar-btn" title="More"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="3" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg></button>
-            </div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="attributes-table">
-            <thead><tr>
-              <th><input type="checkbox" onclick="toggleAll('attributes-table',this)"/></th>
-              <th>Attribute Name</th><th>Type</th><th>Description</th>
-              <th>Assigned To</th><th>Date Created</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="attributes-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- USERS list -->
-      <section class="view-section main-panel" id="view-users">
-        <div class="panel-header">
-          <div class="panel-title-row">
-            <div class="panel-title">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg>
-              <div><h2>User Listing</h2><div class="subtitle">User Details</div></div>
-            </div>
-            <div class="panel-toolbar">
-              <div class="search-wrap">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input class="search-input" type="text" placeholder="Search users…" oninput="filterTable('users-table',this.value)" />
-              </div>
-              <button class="toolbar-btn" title="Filter"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-              <button class="toolbar-btn primary" title="Add User" onclick="openModal('modal-create-user')">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </button>
-              <button class="toolbar-btn" title="More"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="3" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg></button>
-            </div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="users-table">
-            <thead><tr>
-              <th><input type="checkbox" onclick="toggleAll('users-table',this)"/></th>
-              <th>User Name</th><th>Email</th><th>Role</th>
-              <th>Group</th><th>Date Created</th><th>Actions</th>
+              <th><input type="checkbox" onclick="toggleAll('tbl-users',this)"/></th>
+              <th>User Name</th><th>Email</th><th>Role</th><th>Date Created</th><th>Actions</th>
             </tr></thead>
             <tbody id="users-tbody"></tbody>
           </table>
         </div>
-      </section>
-
-    </div><!-- #list-views -->
-
-    <!-- ══════════ DETAIL VIEWS ══════════ -->
-
-    <!-- GROUP DETAIL -->
-    <div class="detail-page" id="detail-group" style="background:var(--color-page-bg);">
-      <div class="detail-header">
-        <button class="detail-back" onclick="goBackToList()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Groups
-        </button>
-        <div class="detail-title-row">
-          <div class="detail-title" id="detail-group-title">Group Name</div>
-          <button class="action-menu-btn">
-            Action
-            <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-        <div class="detail-tabs" id="detail-group-tabs">
-          <div class="detail-tab active" onclick="switchDetailTab('group','child-groups',this)">Child groups</div>
-          <div class="detail-tab" onclick="switchDetailTab('group','members',this)">Members</div>
-          <div class="detail-tab" onclick="switchDetailTab('group','g-attributes',this)">Attributes</div>
-          <div class="detail-tab" onclick="switchDetailTab('group','role-mapping',this)">Role mapping</div>
-          <div class="detail-tab" onclick="switchDetailTab('group','permissions',this)">Permissions</div>
-        </div>
       </div>
-
-      <!-- Child groups -->
-      <div class="tab-content active" id="group-tab-child-groups" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <div class="search-wrap">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input class="search-input" type="text" placeholder="Search group…" style="width:220px"/>
+      <!-- Right sidebar -->
+      <aside class="right-sidebar">
+        <div class="sb-card">
+          <div class="sb-card-hd">
+            <h3>User Overview</h3>
+            <div class="sb-card-hd-actions">
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M2 2h5M2 2v5M14 2h-5M14 2v5M2 14h5M2 14v-5M14 14h-5M14 14v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="4" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/></svg></button>
+            </div>
           </div>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);">
-            <input type="checkbox" /> Exact search
-          </label>
-        </div>
-        <div id="child-groups-list" class="child-groups-list"></div>
-      </div>
-
-      <!-- Members -->
-      <div class="tab-content" id="group-tab-members" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <button class="btn btn-primary btn-sm">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Add member
-          </button>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);">
-            <input type="checkbox" /> Include sub-group users
-          </label>
-          <button class="btn btn-secondary btn-sm">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1112 0 6 6 0 01-12 0zM8 5v3l2 2" stroke="currentColor" stroke-width="1.4"/></svg>
-            Refresh
-          </button>
-        </div>
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="group-members-table">
-            <thead><tr>
-              <th style="width:32px"><input type="checkbox"/></th>
-              <th>Name</th><th>Email</th><th>First name</th><th>Last name</th><th>Membership</th>
-            </tr></thead>
-            <tbody id="group-members-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Attributes (kv) -->
-      <div class="tab-content" id="group-tab-g-attributes" style="background:var(--color-page-bg);">
-        <div class="detail-form" style="max-width:700px">
-          <table class="kv-table" id="group-kv-table">
-            <thead><tr>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Key</td>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Value</td>
-              <td></td>
-            </tr></thead>
-            <tbody id="group-kv-tbody"></tbody>
-          </table>
-          <button class="add-attr-link" onclick="addKvRow('group-kv-tbody')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Add attributes
-          </button>
-          <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-ghost">Revert</button>
+          <div class="stats-grid">
+            <div class="stat-cell"><div class="stat-lbl"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14a6 6 0 0112 0" stroke="currentColor" stroke-width="1.3"/></svg> Total Users</div><div class="stat-val">120</div></div>
+            <div class="stat-cell"><div class="stat-lbl"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/></svg> Total Groups</div><div class="stat-val">10</div></div>
+            <div class="stat-cell"><div class="stat-lbl"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/></svg> Total Roles</div><div class="stat-val">6</div></div>
+            <div class="stat-cell"><div class="stat-lbl"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Total Attributes</div><div class="stat-val">4</div></div>
           </div>
         </div>
-      </div>
-
-      <!-- Role mapping -->
-      <div class="tab-content" id="group-tab-role-mapping" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <div class="search-wrap">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input class="search-input" type="text" placeholder="Search by name…" style="width:200px"/>
+        <div class="sb-card">
+          <div class="sb-card-hd">
+            <h3>User Role Distribution</h3>
+            <div class="sb-card-hd-actions">
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M2 2h5M2 2v5M14 2h-5M14 2v5M2 14h5M2 14v-5M14 14h-5M14 14v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="4" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/></svg></button>
+            </div>
           </div>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);">
-            <input type="checkbox" /> Hide inherited roles
-          </label>
-          <button class="btn btn-primary btn-sm">Assign role</button>
-          <button class="btn btn-secondary btn-sm">Unassign</button>
-          <button class="btn btn-secondary btn-sm">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1112 0 6 6 0 01-12 0zM8 5v3l2 2" stroke="currentColor" stroke-width="1.4"/></svg>
-            Refresh
-          </button>
+          <div class="chart-wrap"><canvas id="chart-role-dist" height="200"></canvas></div>
         </div>
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="group-rm-table">
-            <thead><tr>
-              <th style="width:32px"><input type="checkbox"/></th>
-              <th>Name</th><th>Inherited</th><th>Description</th><th></th>
-            </tr></thead>
-            <tbody id="group-rm-tbody"></tbody>
-          </table>
+        <div class="sb-card">
+          <div class="sb-card-hd">
+            <h3>User Activity Trend</h3>
+            <div class="sb-card-hd-actions">
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M2 2h5M2 2v5M14 2h-5M14 2v5M2 14h5M2 14v-5M14 14h-5M14 14v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+              <button class="sb-btn"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="4" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/></svg></button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-activity" height="160"></canvas></div>
         </div>
-      </div>
-
-      <!-- Permissions -->
-      <div class="tab-content" id="group-tab-permissions" style="background:var(--color-page-bg);">
-        <div class="detail-form" style="max-width:600px">
-          <div id="group-perms-list"></div>
-        </div>
-      </div>
+      </aside>
     </div>
+  </div>
 
-    <!-- USER DETAIL -->
-    <div class="detail-page" id="detail-user" style="background:var(--color-page-bg);">
-      <div class="detail-header">
-        <button class="detail-back" onclick="goBackToList()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Users
-        </button>
+  <!-- ══ USER DETAIL ══ -->
+  <div class="app-view" id="view-user-detail">
+    <div class="detail-layout">
+      <div class="detail-topbar">
         <div class="detail-title-row">
-          <div class="detail-title" id="detail-user-title">Username</div>
-          <div class="detail-title-meta">
+          <div class="detail-h1" id="user-detail-h1">alice.johnson</div>
+          <div class="detail-meta">
             <div class="detail-enabled">
-              <button class="toggle-switch" id="user-enabled-toggle" onclick="this.classList.toggle('off')"></button>
-              <span id="user-enabled-label">Enabled</span>
+              <button class="toggle" id="user-toggle" onclick="this.classList.toggle('off')"></button>
+              <span>Enabled</span>
             </div>
-            <button class="action-menu-btn">
-              Action
-              <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </button>
+            <button class="menu-btn">Action <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
           </div>
         </div>
-        <div class="detail-tabs">
-          <div class="detail-tab active" onclick="switchDetailTab('user','details',this)">Details</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','u-attributes',this)">Attributes</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','credentials',this)">Credentials</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','role-mapping',this)">Role mapping</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','groups',this)">Groups</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','consents',this)">Consents</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','identity-providers',this)">Identity provider links</div>
-          <div class="detail-tab" onclick="switchDetailTab('user','sessions',this)">Sessions</div>
+        <div class="detail-tabs" id="user-tabs">
+          <div class="d-tab active" onclick="switchTab('user','details',this)">Details</div>
+          <div class="d-tab" onclick="switchTab('user','attributes',this)">Attributes</div>
+          <div class="d-tab" onclick="switchTab('user','credentials',this)">Credentials</div>
+          <div class="d-tab" onclick="switchTab('user','rolemapping',this)">Role mapping</div>
+          <div class="d-tab" onclick="switchTab('user','groups',this)">Groups</div>
+          <div class="d-tab" onclick="switchTab('user','sessions',this)">Sessions</div>
         </div>
       </div>
-
-      <!-- Details tab -->
-      <div class="tab-content active" id="user-tab-details" style="background:var(--color-page-bg);">
-        <div style="display:flex;gap:24px;flex-wrap:wrap;">
-          <div class="detail-form" style="flex:1;min-width:420px;">
-            <div class="detail-form-row">
-              <div class="detail-form-label">ID <span class="required">*</span></div>
-              <div class="detail-form-control"><input class="form-input readonly" id="user-detail-id" readonly /></div>
+      <div class="detail-body">
+        <!-- Details tab -->
+        <div class="tab-panel active" id="user-tab-details">
+          <div class="gd-section" style="padding:16px 0 16px 0;background:transparent;border:none">
+            <div class="gd-label" style="padding:0 0 10px 0">General Details</div>
+            <div class="gd-grid two-col" style="max-width:700px">
+              <div class="gd-field"><span class="gd-field-label">Username</span><input class="gd-input" id="u-username"/></div>
+              <div class="gd-field"><span class="gd-field-label">Email</span><input class="gd-input" id="u-email" type="email"/></div>
+              <div class="gd-field"><span class="gd-field-label">First Name</span><input class="gd-input" id="u-fname"/></div>
+              <div class="gd-field no-bottom"><span class="gd-field-label">Last Name</span><input class="gd-input" id="u-lname"/></div>
             </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Created at <span class="required">*</span></div>
-              <div class="detail-form-control"><input class="form-input readonly" id="user-detail-created" readonly /></div>
-            </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Required user actions <span class="info">i</span></div>
-              <div class="detail-form-control">
-                <select class="form-select"><option value="">Select action</option><option>Verify Email</option><option>Update Password</option><option>Update Profile</option></select>
-              </div>
-            </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Email verified <span class="info">i</span></div>
-              <div class="detail-form-control">
-                <div class="toggle-row">
-                  <button class="toggle-switch off" onclick="this.classList.toggle('off')"></button>
-                  <span class="toggle-label">No</span>
+            <div style="margin-top:16px;max-width:700px">
+              <div class="gd-grid one-col">
+                <div class="gd-field no-bottom"><span class="gd-field-label">Required User Actions</span>
+                  <select class="gd-select"><option value="">Select action</option><option>Verify Email</option><option>Update Password</option><option>Update Profile</option></select>
+                  <span class="gd-caret"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 </div>
               </div>
             </div>
-            <hr class="section-divider"/>
-            <div style="font-family:'Inter Tight',Arial,sans-serif;font-size:13px;font-weight:600;margin-bottom:12px;">General</div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Username <span class="required">*</span></div>
-              <div class="detail-form-control"><input class="form-input" id="user-detail-username" type="text" /></div>
-            </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Email</div>
-              <div class="detail-form-control"><input class="form-input" id="user-detail-email" type="email" /></div>
-            </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">First name</div>
-              <div class="detail-form-control"><input class="form-input" id="user-detail-firstname" type="text" /></div>
-            </div>
-            <div class="detail-form-row">
-              <div class="detail-form-label">Last name</div>
-              <div class="detail-form-control"><input class="form-input" id="user-detail-lastname" type="text" /></div>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-primary">Save</button>
-              <button class="btn btn-ghost">Revert</button>
-            </div>
-          </div>
-          <div style="width:160px;padding-top:8px;">
-            <div style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;margin-bottom:8px;">Jump to section</div>
-            <div style="font-size:13px;color:var(--color-link);border-left:2px solid var(--color-link);padding-left:8px;">General</div>
           </div>
         </div>
-      </div>
-
-      <!-- Attributes tab (kv) -->
-      <div class="tab-content" id="user-tab-u-attributes" style="background:var(--color-page-bg);">
-        <div class="detail-form" style="max-width:700px">
-          <table class="kv-table">
-            <thead><tr>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Key</td>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Value</td>
-              <td></td>
-            </tr></thead>
-            <tbody id="user-kv-tbody"></tbody>
-          </table>
-          <button class="add-attr-link" onclick="addKvRow('user-kv-tbody')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Add attributes
-          </button>
-          <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-ghost">Revert</button>
+        <!-- Attributes tab -->
+        <div class="tab-panel" id="user-tab-attributes">
+          <div style="max-width:640px">
+            <table class="kv-table" id="user-kv-table">
+              <thead><tr><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Key</td><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Value</td><td></td></tr></thead>
+              <tbody id="user-kv-tbody"></tbody>
+            </table>
+            <button class="add-row-btn" onclick="addKvRow('user-kv-tbody')">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Add attributes
+            </button>
           </div>
         </div>
-      </div>
-
-      <!-- Credentials tab -->
-      <div class="tab-content" id="user-tab-credentials" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <button class="btn btn-primary btn-sm">Set password</button>
+        <!-- Credentials tab -->
+        <div class="tab-panel" id="user-tab-credentials">
+          <div class="tab-toolbar"><button class="btn btn-prim btn-sm">Set password</button></div>
+          <div class="empty">No credentials configured.</div>
         </div>
-        <div class="rm-table-wrap">
-          <table class="rm-table">
-            <thead><tr><th>Type</th><th>User label</th><th>Created date</th><th>Data</th><th></th></tr></thead>
-            <tbody>
-              <tr><td colspan="5" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No credentials configured.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Role mapping tab -->
-      <div class="tab-content" id="user-tab-role-mapping" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <div class="search-wrap">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input class="search-input" type="text" placeholder="Search by name…" style="width:200px"/>
+        <!-- Role mapping tab -->
+        <div class="tab-panel" id="user-tab-rolemapping">
+          <div class="tab-toolbar">
+            <div class="search-wrap"><svg width="11" height="11" viewBox="0 0 16 16" fill="none" style="position:absolute;left:7px;color:var(--tx2)"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><input class="search-inp" type="text" placeholder="Search by name…"/></div>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--tx2)"><input type="checkbox"/> Hide inherited roles</label>
+            <button class="btn btn-prim btn-sm">Assign role</button>
+            <button class="btn btn-sec btn-sm">Unassign</button>
           </div>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);">
-            <input type="checkbox"/> Hide inherited roles
-          </label>
-          <button class="btn btn-primary btn-sm">Assign role</button>
-          <button class="btn btn-secondary btn-sm">Unassign</button>
-          <button class="btn btn-secondary btn-sm">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1112 0 6 6 0 01-12 0zM8 5v3l2 2" stroke="currentColor" stroke-width="1.4"/></svg>
-            Refresh
-          </button>
-        </div>
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="user-rm-table">
-            <thead><tr>
-              <th style="width:32px"><input type="checkbox"/></th>
-              <th>Name</th><th>Inherited</th><th>Description</th><th></th>
-            </tr></thead>
+          <div class="inner-table-wrap"><table class="inner-table" id="user-rm-table">
+            <thead><tr><th style="width:32px"><input type="checkbox"/></th><th>Name</th><th>Inherited</th><th>Description</th></tr></thead>
             <tbody id="user-rm-tbody"></tbody>
-          </table>
+          </table></div>
         </div>
-      </div>
-
-      <!-- Groups tab -->
-      <div class="tab-content" id="user-tab-groups" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <button class="btn btn-primary btn-sm">Join group</button>
-          <button class="btn btn-secondary btn-sm">Leave group</button>
-        </div>
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="user-groups-table">
-            <thead><tr><th>Group</th><th>Membership type</th><th>Path</th><th></th></tr></thead>
+        <!-- Groups tab -->
+        <div class="tab-panel" id="user-tab-groups">
+          <div class="tab-toolbar">
+            <button class="btn btn-prim btn-sm">Join group</button>
+            <button class="btn btn-sec btn-sm">Leave group</button>
+          </div>
+          <div class="inner-table-wrap"><table class="inner-table">
+            <thead><tr><th>Group</th><th>Membership type</th><th>Path</th></tr></thead>
             <tbody id="user-groups-tbody"></tbody>
-          </table>
+          </table></div>
+        </div>
+        <!-- Sessions tab -->
+        <div class="tab-panel" id="user-tab-sessions">
+          <div class="tab-toolbar"><button class="btn btn-danger btn-sm">Sign out all sessions</button></div>
+          <div class="empty">No active sessions.</div>
         </div>
       </div>
-
-      <!-- Consents tab -->
-      <div class="tab-content" id="user-tab-consents" style="background:var(--color-page-bg);">
-        <div class="sessions-empty">No consents.</div>
-      </div>
-
-      <!-- Identity provider links tab -->
-      <div class="tab-content" id="user-tab-identity-providers" style="background:var(--color-page-bg);">
-        <div class="sessions-empty">No identity provider links.</div>
-      </div>
-
-      <!-- Sessions tab -->
-      <div class="tab-content" id="user-tab-sessions" style="background:var(--color-page-bg);">
-        <div class="tab-toolbar">
-          <button class="btn btn-danger btn-sm">Sign out all sessions</button>
-        </div>
-        <div class="sessions-empty">No active sessions.</div>
+      <div class="sticky-bar">
+        <button class="btn btn-ghost" onclick="goHome()">Cancel</button>
+        <button class="btn btn-prim">Save Changes</button>
       </div>
     </div>
+  </div>
 
-    <!-- ROLE DETAIL -->
-    <div class="detail-page" id="detail-role" style="background:var(--color-page-bg);">
-      <div class="detail-header">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-          <button class="detail-back" style="margin-bottom:0" onclick="goBackToList()">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            Realm roles
-          </button>
-          <span style="color:var(--color-border-strong);font-size:12px;">›</span>
-          <span style="font-size:12px;color:var(--color-text-subtle);">Role details</span>
-        </div>
+  <!-- ══ GROUPS DETAIL ══ -->
+  <div class="app-view" id="view-groups">
+    <div class="detail-layout">
+      <div class="detail-topbar">
         <div class="detail-title-row">
-          <div class="detail-title" id="detail-role-title">Role Name</div>
-          <button class="action-menu-btn">
-            Action
-            <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </button>
+          <div class="detail-h1" id="group-h1">Admin</div>
+          <button class="menu-btn"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="3" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="13" cy="8" r="1.2" fill="currentColor"/></svg></button>
         </div>
         <div class="detail-tabs">
-          <div class="detail-tab active" onclick="switchDetailTab('role','details',this)">Details</div>
-          <div class="detail-tab" onclick="switchDetailTab('role','r-attributes',this)">Attributes</div>
-          <div class="detail-tab" onclick="switchDetailTab('role','users-in-role',this)">Users in role</div>
-          <div class="detail-tab" onclick="switchDetailTab('role','permissions',this)">Permissions</div>
+          <div class="d-tab active" onclick="switchTab('group','members',this)">Members</div>
+          <div class="d-tab" onclick="switchTab('group','roles',this)">Roles</div>
+          <div class="d-tab" onclick="switchTab('group','attributes',this)">Attributes</div>
         </div>
       </div>
+      <div class="detail-body">
+        <!-- General Details always visible -->
+        <div class="gd-section">
+          <div class="gd-label">General Details</div>
+          <div class="gd-grid">
+            <div class="gd-field" style="position:relative">
+              <span class="gd-field-label">Label</span>
+              <input class="gd-input" id="group-label" placeholder="Input Text" maxlength="100" oninput="updateCount(this,'group-label-count',100)"/>
+              <span class="gd-count" id="group-label-count">00</span>
+            </div>
+            <div class="gd-field" id="gf-assign-roles" style="position:relative;cursor:pointer" onclick="toggleChipDropdown('chip-dd-roles',event)">
+              <span class="gd-field-label">Assign Roles</span>
+              <div class="chip-wrap" id="group-chips-roles"></div>
+              <span class="gd-caret"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+              <div class="chip-dropdown" id="chip-dd-roles" onclick="event.stopPropagation()"></div>
+            </div>
+            <div class="gd-field" id="gf-assign-attrs" style="position:relative;cursor:pointer" onclick="toggleChipDropdown('chip-dd-attrs',event)">
+              <span class="gd-field-label">Assign Attributes</span>
+              <div class="chip-wrap" id="group-chips-attrs"></div>
+              <span class="gd-caret"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+              <div class="chip-dropdown" id="chip-dd-attrs" onclick="event.stopPropagation()"></div>
+            </div>
+            <div class="gd-field full" style="position:relative">
+              <span class="gd-field-label">Description</span>
+              <textarea class="gd-textarea" id="group-desc" maxlength="500" oninput="updateCount(this,'group-desc-count',500)"></textarea>
+              <span class="gd-count" id="group-desc-count">00</span>
+            </div>
+          </div>
+        </div>
+        <!-- Members tab -->
+        <div class="tab-panel active" id="group-tab-members" style="padding:16px 20px">
+          <div class="inner-table-wrap"><table class="inner-table" id="group-members-table">
+            <thead><tr>
+              <th style="width:48px">No.</th>
+              <th>Name</th><th>Role</th><th>Department</th><th>Phone</th><th>Fax</th><th>Email</th><th>Deputy</th>
+            </tr></thead>
+            <tbody id="group-members-tbody"></tbody>
+          </table></div>
+        </div>
+        <!-- Roles tab -->
+        <div class="tab-panel" id="group-tab-roles" style="padding:16px 20px">
+          <div class="tab-toolbar">
+            <button class="btn btn-prim btn-sm">Assign role</button>
+            <button class="btn btn-sec btn-sm">Unassign</button>
+          </div>
+          <div class="inner-table-wrap"><table class="inner-table">
+            <thead><tr><th style="width:32px"><input type="checkbox"/></th><th>Role Name</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody id="group-roles-tbody"></tbody>
+          </table></div>
+        </div>
+        <!-- Attributes tab -->
+        <div class="tab-panel" id="group-tab-attributes" style="padding:16px 20px">
+          <div style="max-width:640px">
+            <table class="kv-table">
+              <thead><tr><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Key</td><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Value</td><td></td></tr></thead>
+              <tbody id="group-kv-tbody"></tbody>
+            </table>
+            <button class="add-row-btn" onclick="addKvRow('group-kv-tbody')">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Add attributes
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar">
+        <button class="btn btn-ghost" onclick="cancelDetail()">Cancel</button>
+        <button class="btn btn-prim" onclick="saveGroupDetail()">Save Changes</button>
+      </div>
+    </div>
+  </div>
 
-      <!-- Details -->
-      <div class="tab-content active" id="role-tab-details" style="background:var(--color-page-bg);">
-        <div class="detail-form">
-          <div class="detail-form-row">
-            <div class="detail-form-label">Role name</div>
-            <div class="detail-form-control"><input class="form-input" id="role-detail-name" type="text"/></div>
-          </div>
-          <div class="detail-form-row">
-            <div class="detail-form-label">Description</div>
-            <div class="detail-form-control"><textarea class="form-textarea" id="role-detail-desc"></textarea></div>
-          </div>
-          <div class="detail-form-row">
-            <div class="detail-form-label">Type</div>
-            <div class="detail-form-control">
-              <select class="form-select" id="role-detail-type">
+  <!-- ══ ROLES DETAIL ══ -->
+  <div class="app-view" id="view-roles">
+    <div class="detail-layout">
+      <div class="detail-topbar">
+        <div class="detail-title-row">
+          <div class="detail-h1" id="role-h1">Admin</div>
+          <button class="menu-btn"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="3" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="13" cy="8" r="1.2" fill="currentColor"/></svg></button>
+        </div>
+        <div class="detail-tabs">
+          <div class="d-tab active" onclick="switchTab('role','details',this)">Details</div>
+          <div class="d-tab" onclick="switchTab('role','userinrole',this)">Users in role</div>
+          <div class="d-tab" onclick="switchTab('role','attributes',this)">Attributes</div>
+          <div class="d-tab" onclick="switchTab('role','permissions',this)">Permissions</div>
+        </div>
+      </div>
+      <div class="detail-body">
+        <!-- General Details -->
+        <div class="gd-section">
+          <div class="gd-label">General Details</div>
+          <div class="gd-grid two-col" style="max-width:700px">
+            <div class="gd-field" style="position:relative">
+              <span class="gd-field-label">Role Name</span>
+              <input class="gd-input" id="role-name-inp" maxlength="80" oninput="updateCount(this,'role-name-count',80)"/>
+              <span class="gd-count" id="role-name-count">00</span>
+            </div>
+            <div class="gd-field">
+              <span class="gd-field-label">Type</span>
+              <select class="gd-select" id="role-type-sel">
                 <option value="keycloak">Keycloak Role</option>
                 <option value="backend">Backend Role</option>
               </select>
+              <span class="gd-caret"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="gd-field full no-bottom" style="position:relative">
+              <span class="gd-field-label">Description</span>
+              <textarea class="gd-textarea" id="role-desc-inp" maxlength="300" oninput="updateCount(this,'role-desc-count',300)"></textarea>
+              <span class="gd-count" id="role-desc-count">00</span>
             </div>
           </div>
-          <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-ghost">Cancel</button>
-          </div>
         </div>
-      </div>
-
-      <!-- Attributes (kv) -->
-      <div class="tab-content" id="role-tab-r-attributes" style="background:var(--color-page-bg);">
-        <div class="detail-form" style="max-width:700px">
-          <table class="kv-table">
-            <thead><tr>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Key</td>
-              <td style="font-size:11px;font-weight:600;color:var(--color-text-subtle);text-transform:uppercase;padding-bottom:8px;">Value</td>
-              <td></td>
-            </tr></thead>
-            <tbody id="role-kv-tbody"></tbody>
-          </table>
-          <button class="add-attr-link" onclick="addKvRow('role-kv-tbody')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Add attributes
-          </button>
-          <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-ghost">Revert</button>
-          </div>
+        <!-- Details tab (empty — info in GD) -->
+        <div class="tab-panel active" id="role-tab-details" style="padding:16px 20px">
+          <div class="empty" style="background:transparent;border:none;padding:24px 0;text-align:left;color:var(--tx2);font-size:13px">Edit role details in the General Details section above.</div>
         </div>
-      </div>
-
-      <!-- Users in role -->
-      <div class="tab-content" id="role-tab-users-in-role" style="background:var(--color-page-bg);">
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="role-users-table">
-            <thead><tr>
-              <th style="width:32px"><input type="checkbox"/></th>
-              <th>Name</th><th>Email</th><th>First name</th><th>Last name</th>
-            </tr></thead>
+        <!-- Users in role -->
+        <div class="tab-panel" id="role-tab-userinrole" style="padding:16px 20px">
+          <div class="inner-table-wrap"><table class="inner-table">
+            <thead><tr><th style="width:32px"><input type="checkbox"/></th><th>Name</th><th>Email</th><th>Group</th></tr></thead>
             <tbody id="role-users-tbody"></tbody>
-          </table>
+          </table></div>
+        </div>
+        <!-- Attributes (kv) -->
+        <div class="tab-panel" id="role-tab-attributes" style="padding:16px 20px">
+          <div style="max-width:640px">
+            <table class="kv-table"><thead><tr><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Key</td><td style="font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;padding-bottom:8px">Value</td><td></td></tr></thead><tbody id="role-kv-tbody"></tbody></table>
+            <button class="add-row-btn" onclick="addKvRow('role-kv-tbody')"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Add attributes</button>
+          </div>
+        </div>
+        <!-- Permissions -->
+        <div class="tab-panel" id="role-tab-permissions" style="padding:16px 20px">
+          <div style="max-width:560px" id="role-perms"></div>
         </div>
       </div>
-
-      <!-- Permissions -->
-      <div class="tab-content" id="role-tab-permissions" style="background:var(--color-page-bg);">
-        <div class="detail-form" style="max-width:600px">
-          <div id="role-perms-list"></div>
-        </div>
+      <div class="sticky-bar">
+        <button class="btn btn-ghost" onclick="cancelDetail()">Cancel</button>
+        <button class="btn btn-prim">Save Changes</button>
       </div>
     </div>
+  </div>
 
-    <!-- ATTRIBUTE DETAIL -->
-    <div class="detail-page" id="detail-attribute" style="background:var(--color-page-bg);">
-      <div class="detail-header">
-        <button class="detail-back" onclick="goBackToList()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Attributes
-        </button>
+  <!-- ══ ATTRIBUTES DETAIL ══ -->
+  <div class="app-view" id="view-attributes">
+    <div class="detail-layout">
+      <div class="detail-topbar">
         <div class="detail-title-row">
-          <div class="detail-title" id="detail-attribute-title">Attribute Name</div>
-          <button class="action-menu-btn">
-            Action
-            <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </button>
+          <div class="detail-h1" id="attr-h1">mandator_id</div>
+          <button class="menu-btn"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="3" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="13" cy="8" r="1.2" fill="currentColor"/></svg></button>
         </div>
         <div class="detail-tabs">
-          <div class="detail-tab active" onclick="switchDetailTab('attribute','details',this)">Details</div>
-          <div class="detail-tab" onclick="switchDetailTab('attribute','assigned-users',this)">Assigned Users</div>
-          <div class="detail-tab" onclick="switchDetailTab('attribute','assigned-groups',this)">Assigned Groups</div>
+          <div class="d-tab active" onclick="switchTab('attr','details',this)">Details</div>
+          <div class="d-tab" onclick="switchTab('attr','assignedusers',this)">Assigned Users</div>
+          <div class="d-tab" onclick="switchTab('attr','assignedgroups',this)">Assigned Groups</div>
         </div>
       </div>
-
-      <!-- Details -->
-      <div class="tab-content active" id="attribute-tab-details" style="background:var(--color-page-bg);">
-        <div class="detail-form">
-          <div class="detail-form-row">
-            <div class="detail-form-label">Attribute Name <span class="required">*</span></div>
-            <div class="detail-form-control"><input class="form-input" id="attr-detail-name" type="text"/></div>
-          </div>
-          <div class="detail-form-row">
-            <div class="detail-form-label">Type</div>
-            <div class="detail-form-control">
-              <select class="form-select" id="attr-detail-type">
+      <div class="detail-body">
+        <div class="gd-section">
+          <div class="gd-label">General Details</div>
+          <div class="gd-grid two-col" style="max-width:700px">
+            <div class="gd-field" style="position:relative">
+              <span class="gd-field-label">Attribute Name</span>
+              <input class="gd-input" id="attr-name-inp" maxlength="80" oninput="updateCount(this,'attr-name-count',80)"/>
+              <span class="gd-count" id="attr-name-count">00</span>
+            </div>
+            <div class="gd-field">
+              <span class="gd-field-label">Type</span>
+              <select class="gd-select" id="attr-type-sel">
                 <option value="string">String</option>
                 <option value="number">Number</option>
                 <option value="boolean">Boolean</option>
                 <option value="json">JSON</option>
               </select>
+              <span class="gd-caret"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="gd-field full no-bottom" style="position:relative">
+              <span class="gd-field-label">Description</span>
+              <textarea class="gd-textarea" id="attr-desc-inp" maxlength="300" oninput="updateCount(this,'attr-desc-count',300)"></textarea>
+              <span class="gd-count" id="attr-desc-count">00</span>
             </div>
           </div>
-          <div class="detail-form-row">
-            <div class="detail-form-label">Description</div>
-            <div class="detail-form-control"><textarea class="form-textarea" id="attr-detail-desc"></textarea></div>
-          </div>
-          <div class="detail-form-row">
-            <div class="detail-form-label">Created at</div>
-            <div class="detail-form-control"><input class="form-input readonly" id="attr-detail-created" readonly /></div>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-ghost">Cancel</button>
-          </div>
         </div>
-      </div>
-
-      <!-- Assigned Users -->
-      <div class="tab-content" id="attribute-tab-assigned-users" style="background:var(--color-page-bg);">
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="attr-users-table">
-            <thead><tr><th>User Name</th><th>Email</th><th>Value</th><th></th></tr></thead>
+        <div class="tab-panel active" id="attr-tab-details" style="padding:16px 20px">
+          <div class="empty" style="background:transparent;border:none;padding:24px 0;text-align:left;color:var(--tx2)">Edit attribute details in the General Details section above.</div>
+        </div>
+        <div class="tab-panel" id="attr-tab-assignedusers" style="padding:16px 20px">
+          <div class="inner-table-wrap"><table class="inner-table">
+            <thead><tr><th>User Name</th><th>Email</th><th>Value</th><th style="width:40px"></th></tr></thead>
             <tbody id="attr-users-tbody"></tbody>
-          </table>
+          </table></div>
+        </div>
+        <div class="tab-panel" id="attr-tab-assignedgroups" style="padding:16px 20px">
+          <div class="inner-table-wrap"><table class="inner-table">
+            <thead><tr><th>Group Name</th><th>Members</th><th>Value</th><th style="width:40px"></th></tr></thead>
+            <tbody id="attr-groups-tbody"></tbody>
+          </table></div>
         </div>
       </div>
-
-      <!-- Assigned Groups -->
-      <div class="tab-content" id="attribute-tab-assigned-groups" style="background:var(--color-page-bg);">
-        <div class="rm-table-wrap">
-          <table class="rm-table" id="attr-groups-table">
-            <thead><tr><th>Group Name</th><th>Members</th><th>Value</th><th></th></tr></thead>
-            <tbody id="attr-groups-tbody"></tbody>
-          </table>
-        </div>
+      <div class="sticky-bar">
+        <button class="btn btn-ghost" onclick="cancelDetail()">Cancel</button>
+        <button class="btn btn-prim">Save Changes</button>
       </div>
     </div>
+  </div>
 
-  </div><!-- content wrapper -->
-
+</div><!-- content-wrap -->
 </div><!-- app-body -->
 
 <!-- ═══ MODALS ═══ -->
 
-<!-- Create Group -->
-<div class="modal-overlay" id="modal-create-group">
+<!-- Add modal (generic, populated by JS) -->
+<div class="modal-ov" id="modal-add">
   <div class="modal">
-    <div class="modal-header">
-      <h3 id="create-group-title">Create Group</h3>
-      <button class="modal-close" onclick="closeModal('modal-create-group')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <div class="modal-hd">
+      <h3 id="modal-add-title">Create</h3>
+      <button class="modal-close" onclick="closeModal('modal-add')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Group Name *</label><input class="form-input" id="group-name" type="text" placeholder="e.g. Finance Team"/></div>
-      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="group-desc" placeholder="Brief description…"></textarea></div>
-      <div class="form-group"><label class="form-label">Assign Roles</label><div class="checklist" id="group-roles-list"></div></div>
-      <div class="form-group"><label class="form-label">Assign Attributes</label><div class="checklist" id="group-attrs-list"></div></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-create-group')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveGroup()">Save Group</button>
+    <div class="modal-body" id="modal-add-body"></div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add')">Cancel</button>
+      <button class="btn btn-prim" id="modal-add-save">Save</button>
     </div>
   </div>
 </div>
 
-<!-- Create Role -->
-<div class="modal-overlay" id="modal-create-role">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="create-role-title">Create Role</h3>
-      <button class="modal-close" onclick="closeModal('modal-create-role')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Role Name *</label><input class="form-input" id="role-name" type="text" placeholder="e.g. app-composer-admin"/></div>
-      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="role-desc"></textarea></div>
-      <div class="form-group"><label class="form-label">Role Type</label>
-        <select class="form-select" id="role-type"><option value="keycloak">Keycloak Role</option><option value="backend">Backend Role</option></select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-create-role')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveRole()">Save Role</button>
-    </div>
-  </div>
-</div>
-
-<!-- Create Attribute -->
-<div class="modal-overlay" id="modal-create-attribute">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="create-attr-title">Create Attribute</h3>
-      <button class="modal-close" onclick="closeModal('modal-create-attribute')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Attribute Name *</label><input class="form-input" id="attr-name" type="text" placeholder="e.g. mandator_id"/></div>
-      <div class="form-group"><label class="form-label">Type</label>
-        <select class="form-select" id="attr-type"><option value="string">String</option><option value="number">Number</option><option value="boolean">Boolean</option><option value="json">JSON</option></select>
-      </div>
-      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="attr-desc"></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-create-attribute')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveAttribute()">Save Attribute</button>
-    </div>
-  </div>
-</div>
-
-<!-- Create User -->
-<div class="modal-overlay" id="modal-create-user">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="create-user-title">Create User</h3>
-      <button class="modal-close" onclick="closeModal('modal-create-user')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="user-name" type="text" placeholder="e.g. Alice Johnson"/></div>
-      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="user-email" type="email" placeholder="alice@company.com"/></div>
-      <div class="form-group"><label class="form-label">Role</label><select class="form-select" id="user-role"><option value="">— Select Role —</option></select></div>
-      <div class="form-group"><label class="form-label">Group</label><select class="form-select" id="user-group"><option value="">— Select Group —</option></select></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-create-user')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveUser()">Save User</button>
-    </div>
-  </div>
-</div>
-
-<!-- Delete Confirm -->
-<div class="modal-overlay" id="modal-delete-confirm">
-  <div class="modal" style="width:380px">
-    <div class="modal-header">
+<!-- Delete confirm -->
+<div class="modal-ov" id="modal-delete">
+  <div class="modal" style="width:360px">
+    <div class="modal-hd">
       <h3>Confirm Delete</h3>
-      <button class="modal-close" onclick="closeModal('modal-delete-confirm')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="modal-close" onclick="closeModal('modal-delete')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
-      <div class="delete-warning">
+      <div class="del-warn">
         <svg width="18" height="18" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px"><path d="M8 1L1 14h14L8 1z" stroke="currentColor" stroke-width="1.4"/><path d="M8 6v4M8 11v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <span>This action cannot be undone. Delete <strong id="delete-item-name"></strong>?</span>
+        <span>This cannot be undone. Delete <strong id="del-item-name"></strong>?</span>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-delete-confirm')">Cancel</button>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="closeModal('modal-delete')">Cancel</button>
       <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
     </div>
   </div>
@@ -1327,530 +832,540 @@
 <!-- ═══ JAVASCRIPT ═══ -->
 <script>
 /* ── Date ── */
-document.getElementById('topbar-date').textContent =
+document.getElementById('tb-date-val').textContent =
   new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
 
 /* ── Theme ── */
-function toggleTheme() {
-  const h = document.documentElement;
-  h.dataset.theme = h.dataset.theme === 'dark' ? '' : 'dark';
+function toggleTheme(){
+  const h=document.documentElement;
+  h.dataset.theme=h.dataset.theme==='dark'?'':'dark';
+  renderHomeCharts();
 }
 
-/* ── Mock Data ── */
-const groupsData = [
-  {id:1,  name:'ADMIN',             desc:'Platform administrators',           members:10, roles:['Admin'],          created:'Jan 10, 2024'},
-  {id:2,  name:'APB_MWB',           desc:'APB mobile web branch',             members:8,  roles:['Editor'],         created:'Jan 15, 2024'},
-  {id:3,  name:'AppComposerAdmins', desc:'App composer administration',       members:5,  roles:['app-composer-admin'],created:'Feb 5, 2024'},
-  {id:4,  name:'DFS',               desc:'Digital field service group',       members:12, roles:['View Only'],      created:'Mar 1, 2024'},
-  {id:5,  name:'DSFM',              desc:'DSFM operations group',             members:7,  roles:['Editor','Admin'], created:'Mar 22, 2024'},
-  {id:6,  name:'Impersonable',      desc:'Users that can be impersonated',    members:3,  roles:['impersonate'],   created:'Apr 10, 2024'},
-  {id:7,  name:'InventoryOptimization',desc:'Inventory ops',                  members:9,  roles:['Editor'],         created:'May 8, 2024'},
-  {id:8,  name:'PlatformAdmins',    desc:'Platform-level admins',             members:6,  roles:['Admin'],          created:'Jun 14, 2024'},
-  {id:9,  name:'REALM-ADMIN',       desc:'Realm admin group',                 members:2,  roles:['Admin'],          created:'Jul 25, 2024'},
-  {id:10, name:'Viewers',           desc:'Read-only access group',            members:65, roles:['View Only'],      created:'Aug 30, 2024'},
+/* ══ DATA ══ */
+const groups=[
+  {id:1,name:'ADMIN',           label:'ADMIN',          desc:'Platform administrators',                roles:['Admin'],               attrs:['mandator_id'],       members:10,created:'Jan 10, 2024'},
+  {id:2,name:'APB_MWB',         label:'APB_MWB',        desc:'APB mobile web branch',                  roles:['Editor'],              attrs:['app_config'],        members:8, created:'Jan 15, 2024'},
+  {id:3,name:'AppComposerAdmins',label:'AppComposerAdmins',desc:'App composer administration',          roles:['app-composer-admin'],  attrs:['mandator_id'],       members:5, created:'Feb 5, 2024'},
+  {id:4,name:'DFS',             label:'DFS',             desc:'Digital field service group',            roles:['View Only'],           attrs:['locale'],            members:12,created:'Mar 1, 2024'},
+  {id:5,name:'DSFM',            label:'DSFM',            desc:'DSFM operations group',                  roles:['Editor','Admin'],      attrs:['mandator_id','locale'],members:7,created:'Mar 22, 2024'},
+  {id:6,name:'Impersonable',    label:'Impersonable',    desc:'Users that can be impersonated',         roles:['impersonate'],         attrs:[],                    members:3, created:'Apr 10, 2024'},
+  {id:7,name:'InventoryOptimization',label:'InventoryOptimization',desc:'Inventory optimisation ops',  roles:['Editor'],              attrs:['app_config'],        members:9, created:'May 8, 2024'},
+  {id:8,name:'PlatformAdmins',  label:'PlatformAdmins',  desc:'Platform-level admins',                  roles:['Admin'],               attrs:['mandator_id'],       members:6, created:'Jun 14, 2024'},
+  {id:9,name:'REALM-ADMIN',     label:'REALM-ADMIN',     desc:'Realm admin group',                      roles:['Admin'],               attrs:[],                    members:2, created:'Jul 25, 2024'},
+  {id:10,name:'Viewers',        label:'Viewers',         desc:'Read-only access group',                 roles:['View Only'],           attrs:['locale'],            members:65,created:'Aug 30, 2024'},
+];
+const roles=[
+  {id:1,name:'Admin',             desc:'Full platform access',                   type:'keycloak',users:18,created:'Jan 1, 2024'},
+  {id:2,name:'Editor',            desc:'Create and edit content',                type:'keycloak',users:34,created:'Jan 1, 2024'},
+  {id:3,name:'View Only',         desc:'Read-only access',                       type:'keycloak',users:65,created:'Jan 1, 2024'},
+  {id:4,name:'app-composer-admin',desc:'Manage app composer resources',          type:'backend', users:7, created:'Feb 10, 2024'},
+  {id:5,name:'offline_access',    desc:'Allows token refresh while offline',     type:'keycloak',users:42,created:'Mar 5, 2024'},
+  {id:6,name:'impersonate',       desc:'Impersonate other users',                type:'keycloak',users:3, created:'Apr 18, 2024'},
+];
+const attributes=[
+  {id:1,name:'mandator_id',     type:'String', desc:'Mandator assignment for multi-tenancy',  assignedUsers:85,assignedGroups:6, created:'Jan 5, 2024'},
+  {id:2,name:'app_config',      type:'JSON',   desc:'App-specific configuration object',      assignedUsers:40,assignedGroups:3, created:'Feb 11, 2024'},
+  {id:3,name:'locale',          type:'String', desc:'User preferred locale (e.g. de-DE)',     assignedUsers:120,assignedGroups:4,created:'Mar 2, 2024'},
+  {id:4,name:'dashboard_layout',type:'JSON',   desc:'Saved dashboard layout preferences',     assignedUsers:55,assignedGroups:0, created:'May 20, 2024'},
+];
+const users=[
+  {id:1, name:'Alice Johnson',   email:'alice.johnson@company.com',   role:'Admin',         group:'ADMIN',             phone:'+49 30 12345-100',fax:'+49 30 12345-199',dept:'Management', created:'Jan 15, 2024'},
+  {id:2, name:'Bob Smith',       email:'bob.smith@company.com',       role:'Editor',        group:'APB_MWB',           phone:'+49 30 12345-200',fax:'+49 30 12345-199',dept:'Sales',      created:'Feb 3, 2024'},
+  {id:3, name:'Carol White',     email:'carol.white@company.com',     role:'View Only',     group:'Viewers',           phone:'+49 30 12345-300',fax:'+49 30 12345-199',dept:'Purchasing', created:'Mar 22, 2024'},
+  {id:4, name:'David Brown',     email:'david.brown@company.com',     role:'Admin, Editor', group:'ADMIN',             phone:'+49 30 12345-400',fax:'+49 30 12345-199',dept:'Projects',   created:'Apr 10, 2024'},
+  {id:5, name:'Emma Davis',      email:'emma.davis@company.com',      role:'View Only',     group:'Viewers',           phone:'+49 30 12345-500',fax:'+49 30 12345-199',dept:'IT',         created:'May 8, 2024'},
+  {id:6, name:'Frank Miller',    email:'frank.miller@company.com',    role:'View Only',     group:'Viewers',           phone:'+49 30 12345-600',fax:'+49 30 12345-199',dept:'Marketing',  created:'Jun 14, 2024'},
+  {id:7, name:'Grace Wilson',    email:'grace.wilson@company.com',    role:'Admin',         group:'PlatformAdmins',    phone:'+49 30 12345-700',fax:'+49 30 12345-199',dept:'Management', created:'Jul 25, 2024'},
+  {id:8, name:'Henry Moore',     email:'henry.moore@company.com',     role:'Editor',        group:'DFS',               phone:'+49 30 12345-800',fax:'+49 30 12345-199',dept:'Operations', created:'Aug 30, 2024'},
+  {id:9, name:'Isabella Taylor', email:'isabella.taylor@company.com', role:'View Only',     group:'Viewers',           phone:'+49 30 12345-900',fax:'+49 30 12345-199',dept:'Legal',      created:'Sep 11, 2024'},
+  {id:10,name:'James Anderson',  email:'james.anderson@company.com',  role:'Admin',         group:'REALM-ADMIN',       phone:'+49 30 12346-100',fax:'+49 30 12345-199',dept:'Management', created:'Oct 7, 2024'},
+  {id:11,name:'Karen Thomas',    email:'karen.thomas@company.com',    role:'Editor',        group:'AppComposerAdmins', phone:'+49 30 12346-200',fax:'+49 30 12345-199',dept:'Engineering',created:'Nov 19, 2024'},
+  {id:12,name:'Liam Jackson',    email:'liam.jackson@company.com',    role:'View Only',     group:'Viewers',           phone:'+49 30 12346-300',fax:'+49 30 12345-199',dept:'Support',    created:'Dec 1, 2024'},
 ];
 
-const rolesData = [
-  {id:1, name:'Admin',              desc:'Full platform access',                        type:'keycloak', users:18, created:'Jan 1, 2024'},
-  {id:2, name:'Editor',             desc:'Create and edit content',                     type:'keycloak', users:34, created:'Jan 1, 2024'},
-  {id:3, name:'View Only',          desc:'Read-only access',                            type:'keycloak', users:65, created:'Jan 1, 2024'},
-  {id:4, name:'app-composer-admin', desc:'Manage app composer resources',               type:'backend',  users:7,  created:'Feb 10, 2024'},
-  {id:5, name:'offline_access',     desc:'Allows token refresh while offline',          type:'keycloak', users:42, created:'Mar 5, 2024'},
-  {id:6, name:'impersonate',        desc:'Impersonate other users',                     type:'keycloak', users:3,  created:'Apr 18, 2024'},
-];
+/* ── Icons ── */
+const EDIT_IC=`<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3L11 2z" stroke="currentColor" stroke-width="1.4"/></svg>`;
+const DEL_IC=`<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M5 4V2h6v2M6 7v5M10 7v5M3 4l1 10h8L13 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
 
-const attributesData = [
-  {id:1, name:'mandator_id',      type:'String',  desc:'Mandator assignment for multi-tenancy',  assignedUsers:85, assignedGroups:6,  created:'Jan 5, 2024'},
-  {id:2, name:'app_config',       type:'JSON',    desc:'App-specific configuration object',      assignedUsers:40, assignedGroups:3,  created:'Feb 11, 2024'},
-  {id:3, name:'locale',           type:'String',  desc:'User preferred locale (e.g. de-DE)',     assignedUsers:120,assignedGroups:10, created:'Mar 2, 2024'},
-  {id:4, name:'dashboard_layout', type:'JSON',    desc:'Saved dashboard layout preferences',     assignedUsers:55, assignedGroups:0,  created:'May 20, 2024'},
-];
-
-const usersData = [
-  {id:1,  name:'Alice Johnson',   email:'alice.johnson@company.com',   role:'Admin',         group:'ADMIN',             created:'Jan 15, 2024'},
-  {id:2,  name:'Bob Smith',       email:'bob.smith@company.com',       role:'Editor',        group:'APB_MWB',           created:'Feb 3, 2024'},
-  {id:3,  name:'Carol White',     email:'carol.white@company.com',     role:'View Only',     group:'Viewers',           created:'Mar 22, 2024'},
-  {id:4,  name:'David Brown',     email:'david.brown@company.com',     role:'Admin, Editor', group:'ADMIN',             created:'Apr 10, 2024'},
-  {id:5,  name:'Emma Davis',      email:'emma.davis@company.com',      role:'View Only',     group:'Viewers',           created:'May 8, 2024'},
-  {id:6,  name:'Frank Miller',    email:'frank.miller@company.com',    role:'View Only',     group:'Viewers',           created:'Jun 14, 2024'},
-  {id:7,  name:'Grace Wilson',    email:'grace.wilson@company.com',    role:'Admin',         group:'PlatformAdmins',    created:'Jul 25, 2024'},
-  {id:8,  name:'Henry Moore',     email:'henry.moore@company.com',     role:'Editor',        group:'DFS',               created:'Aug 30, 2024'},
-  {id:9,  name:'Isabella Taylor', email:'isabella.taylor@company.com', role:'View Only',     group:'Viewers',           created:'Sep 11, 2024'},
-  {id:10, name:'James Anderson',  email:'james.anderson@company.com',  role:'Admin',         group:'REALM-ADMIN',       created:'Oct 7, 2024'},
-  {id:11, name:'Karen Thomas',    email:'karen.thomas@company.com',    role:'Editor',        group:'AppComposerAdmins', created:'Nov 19, 2024'},
-  {id:12, name:'Liam Jackson',    email:'liam.jackson@company.com',    role:'View Only',     group:'Viewers',           created:'Dec 1, 2024'},
-];
-
-/* ── SVG icons ── */
-const editIcon   = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3L11 2z" stroke="currentColor" stroke-width="1.4"/></svg>`;
-const deleteIcon = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M5 4V2h6v2M6 7v5M10 7v5M3 4l1 10h8L13 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
-const moreIcon   = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="4" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>`;
-
-/* ── Render Tables ── */
-function renderGroups() {
-  document.getElementById('groups-tbody').innerHTML = groupsData.map(g => `
-    <tr data-id="${g.id}">
+/* ══ RENDER HOME TABLE ══ */
+function renderUsers(){
+  document.getElementById('users-tbody').innerHTML=users.map(u=>`
+    <tr>
       <td><input type="checkbox"/></td>
-      <td><span class="cell-link" onclick="openDetail('group',${g.id})">${g.name}</span></td>
-      <td class="cell-subtle">${g.desc}</td>
-      <td>${g.members}</td>
-      <td>${g.roles.map(r=>`<span class="tag blue">${r}</span>`).join(' ')}</td>
-      <td class="cell-subtle">${g.created}</td>
-      <td><div class="row-actions">
-        <button class="action-btn" title="Edit" onclick="editGroupModal(${g.id})">${editIcon}</button>
-        <button class="action-btn danger" title="Delete" onclick="requestDelete('group',${g.id},'${g.name}')">${deleteIcon}</button>
-      </div></td>
-    </tr>`).join('');
-  document.getElementById('badge-groups').textContent = groupsData.length;
-}
-
-function renderRoles() {
-  document.getElementById('roles-tbody').innerHTML = rolesData.map(r => `
-    <tr data-id="${r.id}">
-      <td><input type="checkbox"/></td>
-      <td><span class="cell-link" onclick="openDetail('role',${r.id})">${r.name}</span></td>
-      <td class="cell-subtle">${r.desc}</td>
-      <td><span class="tag ${r.type==='keycloak'?'blue':'amber'}">${r.type==='keycloak'?'Keycloak':'Backend'}</span></td>
-      <td>${r.users}</td>
-      <td class="cell-subtle">${r.created}</td>
-      <td><div class="row-actions">
-        <button class="action-btn" title="Edit" onclick="openDetail('role',${r.id})">${editIcon}</button>
-        <button class="action-btn danger" title="Delete" onclick="requestDelete('role',${r.id},'${r.name}')">${deleteIcon}</button>
-      </div></td>
-    </tr>`).join('');
-  document.getElementById('badge-roles').textContent = rolesData.length;
-}
-
-function renderAttributes() {
-  document.getElementById('attributes-tbody').innerHTML = attributesData.map(a => `
-    <tr data-id="${a.id}">
-      <td><input type="checkbox"/></td>
-      <td><span class="cell-link" onclick="openDetail('attribute',${a.id})">${a.name}</span></td>
-      <td><span class="tag">${a.type}</span></td>
-      <td class="cell-subtle">${a.desc}</td>
-      <td class="cell-subtle">${a.assignedUsers} users · ${a.assignedGroups} groups</td>
-      <td class="cell-subtle">${a.created}</td>
-      <td><div class="row-actions">
-        <button class="action-btn" title="Edit" onclick="openDetail('attribute',${a.id})">${editIcon}</button>
-        <button class="action-btn danger" title="Delete" onclick="requestDelete('attribute',${a.id},'${a.name}')">${deleteIcon}</button>
-      </div></td>
-    </tr>`).join('');
-  document.getElementById('badge-attributes').textContent = attributesData.length;
-}
-
-function renderUsers() {
-  document.getElementById('users-tbody').innerHTML = usersData.map(u => `
-    <tr data-id="${u.id}">
-      <td><input type="checkbox"/></td>
-      <td><span class="cell-link" onclick="openDetail('user',${u.id})">${u.name}</span></td>
-      <td class="cell-subtle">${u.email}</td>
+      <td><span class="cell-link" onclick="openUserDetail(${u.id})">${u.name}</span></td>
+      <td class="cell-dim">${u.email}</td>
       <td>${u.role}</td>
-      <td>${u.group}</td>
-      <td class="cell-subtle">${u.created}</td>
+      <td class="cell-dim">${u.created}</td>
       <td><div class="row-actions">
-        <button class="action-btn" title="Edit" onclick="openDetail('user',${u.id})">${editIcon}</button>
-        <button class="action-btn danger" title="Delete" onclick="requestDelete('user',${u.id},'${u.name}')">${deleteIcon}</button>
+        <button class="act-btn" onclick="openUserDetail(${u.id})">${EDIT_IC}</button>
+        <button class="act-btn del" onclick="reqDelete('user',${u.id},'${u.name}')">${DEL_IC}</button>
       </div></td>
     </tr>`).join('');
-  document.getElementById('badge-users').textContent = usersData.length;
+  document.getElementById('badge-users').textContent=users.length;
 }
 
-/* ── View switching ── */
-let currentView = 'groups';
+/* ══ NAVIGATION ══ */
+let currentModule=null;
+let currentItemId=null;
 
-function switchView(view, navEl) {
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  navEl.classList.add('active');
-  currentView = view;
+function goHome(){
+  currentModule=null; currentItemId=null;
+  showView('home');
+  showLnav('home');
+  setBreadcrumb('home');
+  document.getElementById('tb-mod-title').innerHTML='User Management <span>Edge.One</span>';
+  // reset lnav active
+  document.querySelectorAll('.lnav-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('lnav-users-btn').classList.add('active');
+}
 
-  // hide any open detail
-  goBackToList(false);
+function goModule(mod, selectId){
+  currentModule=mod;
+  showLnav('module');
+  const titles={groups:'Groups',roles:'Roles',attributes:'Attributes',users:'Users'};
+  document.getElementById('lnav-mod-title').textContent=titles[mod];
+  document.getElementById('tb-mod-title').innerHTML=titles[mod]+' <span>Edge.One</span>';
+  buildModuleNav(mod);
+  // Select first item or given id
+  const data={groups,roles,attributes,users};
+  const arr=data[mod];
+  if(!arr||!arr.length) return;
+  const id=selectId||arr[0].id;
+  openDetail(mod,id);
+}
 
-  document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('view-' + view).classList.add('active');
+function openDetail(mod,id){
+  currentModule=mod; currentItemId=id;
+  const data={groups,roles,attributes,users};
+  const arr=data[mod]; const item=arr.find(x=>x.id===id);
+  if(!item) return;
 
-  setBreadcrumb(view.charAt(0).toUpperCase()+view.slice(1), null);
+  // Highlight in module nav
+  document.querySelectorAll('.lnav-module-item').forEach(i=>i.classList.toggle('active',+i.dataset.id===id));
+
+  // Show view
+  showView(mod==='users'?'user-detail':mod);
+
+  // Breadcrumb
+  const titles={groups:'Groups',roles:'Roles',attributes:'Attributes',users:'Users'};
+  setBreadcrumb('detail',titles[mod],item.name);
+
+  // Populate
+  if(mod==='groups') populateGroupDetail(item);
+  if(mod==='roles')  populateRoleDetail(item);
+  if(mod==='attributes') populateAttrDetail(item);
+  if(mod==='users')  populateUserDetail(item);
+}
+
+function cancelDetail(){
+  if(currentModule) goModule(currentModule, currentItemId);
+  else goHome();
+}
+
+function goModule_breadcrumb(){
+  if(currentModule) goModule(currentModule, currentItemId);
+}
+
+/* ── Views ── */
+function showView(id){
+  document.querySelectorAll('.app-view').forEach(v=>v.classList.remove('active'));
+  const target=document.getElementById('view-'+id);
+  if(target) target.classList.add('active');
+}
+
+function showLnav(state){
+  document.getElementById('lnav-home').style.display=state==='home'?'':'none';
+  const mod=document.getElementById('lnav-module');
+  mod.style.display=state==='module'?'flex':'none';
 }
 
 /* ── Breadcrumb ── */
-function setBreadcrumb(section, detail) {
-  document.getElementById('bc-section').textContent = section;
-  const sep = document.querySelector('.bc-detail-sep');
-  const name = document.querySelector('.bc-detail-name');
-  if (detail) {
-    sep.style.display = '';
-    name.style.display = '';
-    name.textContent = detail;
+function setBreadcrumb(state, module, item){
+  const s2=document.querySelector('.bc2-sep'),t2=document.getElementById('bc2');
+  const s3=document.querySelector('.bc3-sep'),t3=document.getElementById('bc3');
+  if(state==='home'){s2.style.display=s3.style.display='none';}
+  else if(state==='module'){
+    s2.style.display='';t2.textContent=module;t2.style.display='';
+    s3.style.display=s3.style.display='none';
   } else {
-    sep.style.display = 'none';
-    name.style.display = 'none';
+    s2.style.display='';t2.textContent=module;t2.style.display='';
+    s3.style.display='';t3.textContent=item;t3.style.display='';
   }
 }
 
-/* ── Detail pages ── */
-let activeDetailType = null;
-let activeDetailId   = null;
-
-function openDetail(type, id) {
-  activeDetailType = type;
-  activeDetailId   = id;
-
-  // hide list views, show detail
-  document.getElementById('list-views').style.display = 'none';
-  document.querySelectorAll('.detail-page').forEach(d => d.classList.remove('active'));
-  document.getElementById('detail-' + type).classList.add('active');
-
-  if (type === 'group')     populateGroupDetail(id);
-  if (type === 'user')      populateUserDetail(id);
-  if (type === 'role')      populateRoleDetail(id);
-  if (type === 'attribute') populateAttributeDetail(id);
+/* ── Module nav ── */
+function buildModuleNav(mod){
+  const data={groups,roles,attributes,users};
+  const arr=data[mod];
+  document.getElementById('lnav-module-items').innerHTML=arr.map(item=>`
+    <div class="lnav-module-item" data-id="${item.id}" onclick="openDetail('${mod}',${item.id})">${item.name}</div>`).join('');
 }
 
-function goBackToList(render = true) {
-  document.getElementById('list-views').style.display = '';
-  document.querySelectorAll('.detail-page').forEach(d => d.classList.remove('active'));
-  setBreadcrumb(currentView.charAt(0).toUpperCase()+currentView.slice(1), null);
-  activeDetailType = null;
-  activeDetailId   = null;
+function filterModuleNav(q){
+  const Q=q.toLowerCase();
+  document.querySelectorAll('.lnav-module-item').forEach(i=>{
+    i.style.display=i.textContent.toLowerCase().includes(Q)?'':'none';
+  });
 }
 
-/* ── Tab switching inside detail ── */
-function switchDetailTab(entity, tabId, el) {
-  const prefix = entity + '-tab-';
-  document.querySelectorAll(`[id^="${prefix}"]`).forEach(t => t.classList.remove('active'));
-  document.getElementById(prefix + tabId).classList.add('active');
-  el.closest('.detail-tabs').querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+/* ══ POPULATE DETAIL VIEWS ══ */
+
+function populateGroupDetail(g){
+  document.getElementById('group-h1').textContent=g.name;
+  document.getElementById('group-label').value=g.label||g.name;
+  document.getElementById('group-desc').value=g.desc||'';
+  updateCount(document.getElementById('group-label'),'group-label-count',100);
+  updateCount(document.getElementById('group-desc'),'group-desc-count',500);
+
+  // Reset to members tab
+  switchTab('group','members',document.querySelector('#view-groups .d-tab'));
+
+  // Chips
+  buildChips('group-chips-roles','chip-dd-roles',roles.map(r=>r.name),g.roles||[]);
+  buildChips('group-chips-attrs','chip-dd-attrs',attributes.map(a=>a.name),g.attrs||[]);
+
+  // Members table
+  const members=users.filter(u=>u.group===g.name);
+  document.getElementById('group-members-tbody').innerHTML=members.length
+    ? members.map((u,i)=>`<tr>
+        <td style="color:var(--tx2);font-size:12px">${String(i+1).padStart(3,'0')}</td>
+        <td><span class="cell-link">${u.name}</span></td>
+        <td>${u.role}</td>
+        <td class="cell-dim">${u.dept}</td>
+        <td class="cell-dim">${u.phone}</td>
+        <td class="cell-dim">${u.fax}</td>
+        <td><span class="cell-link">${u.email}</span></td>
+        <td class="cell-dim">${users[Math.floor(Math.random()*users.length)].name}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--tx2)">No members in this group.</td></tr>`;
+
+  // Roles table
+  const assignedRoles=roles.filter(r=>g.roles&&g.roles.includes(r.name));
+  document.getElementById('group-roles-tbody').innerHTML=assignedRoles.length
+    ? assignedRoles.map(r=>`<tr>
+        <td><input type="checkbox"/></td>
+        <td>${r.name}</td>
+        <td><span class="tag ${r.type==='keycloak'?'blue':'amber'}">${r.type==='keycloak'?'Keycloak':'Backend'}</span></td>
+        <td class="cell-dim">${r.desc}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--tx2)">No roles assigned.</td></tr>`;
+
+  // KV attrs
+  document.getElementById('group-kv-tbody').innerHTML='';
 }
 
-/* ── Populate Group Detail ── */
-function populateGroupDetail(id) {
-  const g = groupsData.find(x=>x.id===id);
-  document.getElementById('detail-group-title').textContent = g.name;
-  setBreadcrumb('Groups', g.name);
-
-  // reset to first tab
-  switchDetailTab('group','child-groups', document.querySelector('#detail-group .detail-tab'));
-
-  // Child groups (stub)
-  document.getElementById('child-groups-list').innerHTML = `
-    <div style="padding:32px;text-align:center;color:var(--color-text-subtle);background:var(--color-surface);border:1px solid var(--color-border);">No child groups.</div>
-  `;
-
-  // Members
-  const members = usersData.filter(u => u.group === g.name);
-  document.getElementById('group-members-tbody').innerHTML = members.length
-    ? members.map(u=>`
-        <tr>
-          <td><input type="checkbox"/></td>
-          <td><span class="cell-link">${u.name}</span></td>
-          <td class="cell-subtle">${u.email}</td>
-          <td>${u.name.split(' ')[0]}</td>
-          <td>${u.name.split(' ')[1]||''}</td>
-          <td class="cell-subtle">${g.name}</td>
-        </tr>`).join('')
-    : `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No members.</td></tr>`;
-
-  // Role mapping
-  document.getElementById('group-rm-tbody').innerHTML = g.roles.map(r=>`
-    <tr>
-      <td><input type="checkbox"/></td>
-      <td>${r}</td>
-      <td class="badge-false">False</td>
-      <td class="cell-subtle">—</td>
-      <td><button class="action-btn">${moreIcon}</button></td>
-    </tr>`).join('') || `<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No roles assigned.</td></tr>`;
-
-  // Permissions
-  document.getElementById('group-perms-list').innerHTML = buildPermsHTML();
-
-  // KV attrs (empty by default)
-  document.getElementById('group-kv-tbody').innerHTML = '';
+function saveGroupDetail(){
+  const g=groups.find(x=>x.id===currentItemId);
+  if(!g) return;
+  g.name=document.getElementById('group-label').value||g.name;
+  g.label=document.getElementById('group-label').value;
+  g.desc=document.getElementById('group-desc').value;
+  g.roles=getChipValues('group-chips-roles');
+  g.attrs=getChipValues('group-chips-attrs');
+  document.getElementById('group-h1').textContent=g.name;
+  buildModuleNav('groups');
+  document.querySelectorAll('.lnav-module-item').forEach(i=>i.classList.toggle('active',+i.dataset.id===currentItemId));
 }
 
-/* ── Populate User Detail ── */
-function populateUserDetail(id) {
-  const u = usersData.find(x=>x.id===id);
-  document.getElementById('detail-user-title').textContent = u.name.toLowerCase().replace(' ','.');
-  setBreadcrumb('Users', u.name);
+function populateRoleDetail(r){
+  document.getElementById('role-h1').textContent=r.name;
+  document.getElementById('role-name-inp').value=r.name;
+  document.getElementById('role-desc-inp').value=r.desc||'';
+  document.getElementById('role-type-sel').value=r.type;
+  updateCount(document.getElementById('role-name-inp'),'role-name-count',80);
+  updateCount(document.getElementById('role-desc-inp'),'role-desc-count',300);
+  switchTab('role','details',document.querySelector('#view-roles .d-tab'));
 
-  switchDetailTab('user','details', document.querySelector('#detail-user .detail-tab'));
+  const inRole=users.filter(u=>u.role.includes(r.name));
+  document.getElementById('role-users-tbody').innerHTML=inRole.length
+    ? inRole.map(u=>`<tr><td><input type="checkbox"/></td><td><span class="cell-link">${u.name}</span></td><td class="cell-dim">${u.email}</td><td class="cell-dim">${u.group}</td></tr>`).join('')
+    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--tx2)">No users assigned this role.</td></tr>`;
 
-  document.getElementById('user-detail-id').value = 'usr-' + Math.random().toString(36).substr(2,8).toUpperCase();
-  document.getElementById('user-detail-created').value = u.created + ', 12:00 PM';
-  document.getElementById('user-detail-username').value = u.name.toLowerCase().replace(' ','.');
-  document.getElementById('user-detail-email').value = u.email;
-  document.getElementById('user-detail-firstname').value = u.name.split(' ')[0];
-  document.getElementById('user-detail-lastname').value = u.name.split(' ')[1]||'';
+  document.getElementById('role-kv-tbody').innerHTML='';
+  document.getElementById('role-perms').innerHTML=buildPerms();
+}
 
-  // Role mapping
-  const userRoles = u.role.split(',').map(r=>r.trim());
-  document.getElementById('user-rm-tbody').innerHTML = [
-    ...userRoles.map(r=>`<tr><td><input type="checkbox"/></td><td>${r}</td><td class="badge-false">False</td><td class="cell-subtle">—</td><td><button class="action-btn">${moreIcon}</button></td></tr>`),
-    `<tr><td><input type="checkbox"/></td><td>offline_access</td><td class="badge-true">True</td><td class="cell-subtle">\${role_offline_access}</td><td><button class="action-btn">${moreIcon}</button></td></tr>`,
-    `<tr><td><input type="checkbox"/></td><td>default-roles-germanedge</td><td class="badge-true">True</td><td class="cell-subtle">\${role_default_roles}</td><td><button class="action-btn">${moreIcon}</button></td></tr>`,
+function populateAttrDetail(a){
+  document.getElementById('attr-h1').textContent=a.name;
+  document.getElementById('attr-name-inp').value=a.name;
+  document.getElementById('attr-type-sel').value=a.type.toLowerCase();
+  document.getElementById('attr-desc-inp').value=a.desc||'';
+  updateCount(document.getElementById('attr-name-inp'),'attr-name-count',80);
+  updateCount(document.getElementById('attr-desc-inp'),'attr-desc-count',300);
+  switchTab('attr','details',document.querySelector('#view-attributes .d-tab'));
+
+  const au=users.slice(0,Math.min(a.assignedUsers,users.length));
+  document.getElementById('attr-users-tbody').innerHTML=au.length
+    ? au.map(u=>`<tr><td><span class="cell-link">${u.name}</span></td><td class="cell-dim">${u.email}</td><td class="cell-dim">value_${u.id}</td><td><button class="act-btn del">${DEL_IC}</button></td></tr>`).join('')
+    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--tx2)">No users assigned.</td></tr>`;
+
+  const ag=groups.slice(0,a.assignedGroups);
+  document.getElementById('attr-groups-tbody').innerHTML=ag.length
+    ? ag.map(g=>`<tr><td><span class="cell-link">${g.name}</span></td><td>${g.members}</td><td class="cell-dim">—</td><td><button class="act-btn del">${DEL_IC}</button></td></tr>`).join('')
+    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--tx2)">No groups assigned.</td></tr>`;
+}
+
+function populateUserDetail(u){
+  document.getElementById('user-detail-h1').textContent=u.name.toLowerCase().replace(' ','.');
+  document.getElementById('u-username').value=u.name.toLowerCase().replace(' ','.');
+  document.getElementById('u-email').value=u.email;
+  document.getElementById('u-fname').value=u.name.split(' ')[0];
+  document.getElementById('u-lname').value=u.name.split(' ')[1]||'';
+  switchTab('user','details',document.querySelector('#view-user-detail .d-tab'));
+
+  const uroles=u.role.split(',').map(r=>r.trim());
+  document.getElementById('user-rm-tbody').innerHTML=[
+    ...uroles.map(r=>`<tr><td><input type="checkbox"/></td><td>${r}</td><td style="color:var(--tx2);font-size:12px">False</td><td class="cell-dim">—</td></tr>`),
+    `<tr><td><input type="checkbox"/></td><td>offline_access</td><td style="color:var(--link);font-size:12px">True</td><td class="cell-dim">\${role_offline_access}</td></tr>`,
+    `<tr><td><input type="checkbox"/></td><td>default-roles-germanedge</td><td style="color:var(--link);font-size:12px">True</td><td class="cell-dim">\${role_default_roles}</td></tr>`,
   ].join('');
 
-  // Groups
-  document.getElementById('user-groups-tbody').innerHTML = `
-    <tr>
-      <td><span class="cell-link">${u.group}</span></td>
-      <td><span class="tag green">Direct</span></td>
-      <td class="cell-subtle">/${u.group}</td>
-      <td><button class="action-btn danger">${deleteIcon}</button></td>
-    </tr>`;
+  document.getElementById('user-groups-tbody').innerHTML=`
+    <tr><td><span class="cell-link">${u.group}</span></td><td><span class="tag" style="background:#edf7ed;border-color:#c3e6c3;color:#2e7d2e">Direct</span></td><td class="cell-dim">/${u.group}</td></tr>`;
 
-  // kv attrs — show existing attribute if user has mandator
-  document.getElementById('user-kv-tbody').innerHTML = `
+  document.getElementById('user-kv-tbody').innerHTML=`
     <tr>
-      <td><input class="form-input" value="mandator_id"/></td>
-      <td><input class="form-input" value="germanedge-${u.id}"/></td>
-      <td class="kv-action"><button class="action-btn danger" onclick="this.closest('tr').remove()">${deleteIcon}</button></td>
+      <td><input class="f-inp" value="mandator_id" style="font-size:12px;padding:4px 8px"/></td>
+      <td><input class="f-inp" value="germanedge-${u.id}" style="font-size:12px;padding:4px 8px"/></td>
+      <td><button class="act-btn del" onclick="this.closest('tr').remove()">${DEL_IC}</button></td>
     </tr>`;
 }
 
-/* ── Populate Role Detail ── */
-function populateRoleDetail(id) {
-  const r = rolesData.find(x=>x.id===id);
-  document.getElementById('detail-role-title').textContent = r.name;
-  setBreadcrumb('Roles', r.name);
-
-  switchDetailTab('role','details', document.querySelector('#detail-role .detail-tab'));
-
-  document.getElementById('role-detail-name').value = r.name;
-  document.getElementById('role-detail-desc').value = r.desc;
-  document.getElementById('role-detail-type').value = r.type;
-
-  // Users in role
-  const inRole = usersData.filter(u => u.role.includes(r.name));
-  document.getElementById('role-users-tbody').innerHTML = inRole.length
-    ? inRole.map(u=>`
-        <tr>
-          <td><input type="checkbox"/></td>
-          <td><span class="cell-link">${u.name}</span></td>
-          <td class="cell-subtle">${u.email}</td>
-          <td>${u.name.split(' ')[0]}</td>
-          <td>${u.name.split(' ')[1]||''}</td>
-        </tr>`).join('')
-    : `<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No users assigned this role.</td></tr>`;
-
-  document.getElementById('role-kv-tbody').innerHTML = '';
-  document.getElementById('role-perms-list').innerHTML = buildPermsHTML();
-}
-
-/* ── Populate Attribute Detail ── */
-function populateAttributeDetail(id) {
-  const a = attributesData.find(x=>x.id===id);
-  document.getElementById('detail-attribute-title').textContent = a.name;
-  setBreadcrumb('Attributes', a.name);
-
-  switchDetailTab('attribute','details', document.querySelector('#detail-attribute .detail-tab'));
-
-  document.getElementById('attr-detail-name').value = a.name;
-  document.getElementById('attr-detail-type').value = a.type.toLowerCase();
-  document.getElementById('attr-detail-desc').value = a.desc;
-  document.getElementById('attr-detail-created').value = a.created;
-
-  // Assigned users
-  const assignedUsers = usersData.slice(0, a.assignedUsers > usersData.length ? usersData.length : Math.min(a.assignedUsers, usersData.length));
-  document.getElementById('attr-users-tbody').innerHTML = assignedUsers.length
-    ? assignedUsers.map(u=>`
-        <tr>
-          <td><span class="cell-link">${u.name}</span></td>
-          <td class="cell-subtle">${u.email}</td>
-          <td class="cell-subtle">germanedge-${u.id}</td>
-          <td><button class="action-btn danger">${deleteIcon}</button></td>
-        </tr>`).join('')
-    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No users assigned.</td></tr>`;
-
-  // Assigned groups
-  const assignedGroups = groupsData.slice(0, a.assignedGroups);
-  document.getElementById('attr-groups-tbody').innerHTML = assignedGroups.length
-    ? assignedGroups.map(g=>`
-        <tr>
-          <td><span class="cell-link">${g.name}</span></td>
-          <td>${g.members}</td>
-          <td class="cell-subtle">—</td>
-          <td><button class="action-btn danger">${deleteIcon}</button></td>
-        </tr>`).join('')
-    : `<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--color-text-subtle);">No groups assigned.</td></tr>`;
+/* ── Open user detail from home ── */
+function openUserDetail(id){
+  const u=users.find(x=>x.id===id);
+  if(!u) return;
+  currentModule='users'; currentItemId=id;
+  showView('user-detail');
+  showLnav('home');
+  setBreadcrumb('detail','Users',u.name);
+  document.getElementById('tb-mod-title').innerHTML='Users <span>Edge.One</span>';
+  populateUserDetail(u);
+  // mark active nav
+  document.querySelectorAll('.lnav-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('lnav-users-btn').classList.add('active');
 }
 
 /* ── Permissions builder ── */
-function buildPermsHTML() {
-  const perms = [
-    {name:'view',        desc:'Ability to view this resource'},
-    {name:'manage',      desc:'Ability to manage this resource'},
-    {name:'view-members',desc:'Ability to view members of this group'},
-    {name:'manage-members',desc:'Ability to manage members of this group'},
-  ];
-  return perms.map(p=>`
+function buildPerms(){
+  return ['view','manage','view-members','manage-members'].map(p=>`
     <div class="perm-row">
-      <div>
-        <div class="perm-name">${p.name}</div>
-        <div class="perm-desc">${p.desc}</div>
-      </div>
-      <div class="toggle-row">
-        <button class="toggle-switch off" onclick="this.classList.toggle('off');this.nextElementSibling.textContent=this.classList.contains('off')?'Disabled':'Enabled'"></button>
-        <span style="font-size:12px;color:var(--color-text-subtle);">Disabled</span>
+      <div><div class="perm-name">${p}</div><div class="perm-desc">Ability to ${p.replace('-',' ')} this resource</div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="toggle off" onclick="this.classList.toggle('off')"></button>
+        <span style="font-size:12px;color:var(--tx2)">Disabled</span>
       </div>
     </div>`).join('');
 }
 
-/* ── KV row helper ── */
-function addKvRow(tbodyId) {
-  const tbody = document.getElementById(tbodyId);
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><input class="form-input" placeholder="Key"/></td>
-    <td><input class="form-input" placeholder="Value"/></td>
-    <td class="kv-action"><button class="action-btn danger" onclick="this.closest('tr').remove()">${deleteIcon}</button></td>`;
-  tbody.appendChild(tr);
-}
+/* ══ CHIP SELECT ══ */
+function buildChips(wrapId,ddId,allOptions,selected){
+  const wrap=document.getElementById(wrapId);
+  const dd=document.getElementById(ddId);
+  const sel=new Set(selected);
 
-/* ── Filter ── */
-function filterTable(tableId, query) {
-  const tbody = document.querySelector('#'+tableId+' tbody');
-  const q = query.toLowerCase();
-  tbody.querySelectorAll('tr').forEach(r => {
-    r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-  });
-}
-
-function toggleAll(tableId, master) {
-  document.querySelectorAll('#'+tableId+' tbody input[type=checkbox]').forEach(b => b.checked = master.checked);
-}
-
-/* ── Modals ── */
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => {
-  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
-});
-
-/* ── Delete ── */
-let pendingDelete = null;
-function requestDelete(type,id,name) {
-  pendingDelete = {type,id};
-  document.getElementById('delete-item-name').textContent = name;
-  openModal('modal-delete-confirm');
-}
-function confirmDelete() {
-  if (!pendingDelete) return;
-  const {type, id} = pendingDelete;
-  const map = {group:groupsData, role:rolesData, attribute:attributesData, user:usersData};
-  const arr = map[type];
-  const i = arr.findIndex(x=>x.id===id);
-  if (i>-1) arr.splice(i,1);
-  const renders = {group:renderGroups, role:renderRoles, attribute:renderAttributes, user:renderUsers};
-  renders[type]();
-  closeModal('modal-delete-confirm');
-  pendingDelete = null;
-}
-
-/* ── Create / Edit Group modal ── */
-let editGroupId = null;
-function editGroupModal(id) {
-  editGroupId = id;
-  const g = groupsData.find(x=>x.id===id);
-  document.getElementById('create-group-title').textContent = 'Edit Group';
-  document.getElementById('group-name').value = g.name;
-  document.getElementById('group-desc').value = g.desc;
-  populateChecklist('group-roles-list', rolesData.map(r=>r.name));
-  populateChecklist('group-attrs-list', attributesData.map(a=>a.name));
-  g.roles.forEach(r => {
-    const cb = document.querySelector('#group-roles-list input[value="'+r+'"]');
-    if(cb) cb.checked = true;
-  });
-  openModal('modal-create-group');
-}
-function saveGroup() {
-  const name = document.getElementById('group-name').value.trim();
-  if (!name) { alert('Group name is required.'); return; }
-  const desc = document.getElementById('group-desc').value.trim();
-  const roles = [...document.querySelectorAll('#group-roles-list input:checked')].map(c=>c.value);
-  if (editGroupId) {
-    const g = groupsData.find(x=>x.id===editGroupId);
-    g.name=name; g.desc=desc; g.roles=roles; editGroupId=null;
-  } else {
-    groupsData.push({id:Date.now(),name,desc,members:0,roles,created:fmtDate()});
+  function render(){
+    wrap.innerHTML=[...sel].map(s=>`<span class="chip">${s}<button class="chip-x" onclick="event.stopPropagation();removeChip('${wrapId}','${ddId}','${s}')">×</button></span>`).join('');
+    dd.innerHTML=allOptions.map(o=>`<div class="chip-opt ${sel.has(o)?'selected':''}" onclick="toggleChip('${wrapId}','${ddId}','${o}')">${sel.has(o)?'✓ ':''} ${o}</div>`).join('');
   }
-  renderGroups();
-  document.getElementById('create-group-title').textContent='Create Group';
-  document.getElementById('group-name').value='';
-  document.getElementById('group-desc').value='';
-  closeModal('modal-create-group');
+  render();
+  wrap._sel=sel; wrap._render=render; wrap._all=allOptions;
 }
 
-/* ── Create Role ── */
-function saveRole() {
-  const name = document.getElementById('role-name').value.trim();
-  if (!name) { alert('Role name is required.'); return; }
-  rolesData.push({id:Date.now(),name,desc:document.getElementById('role-desc').value.trim(),type:document.getElementById('role-type').value,users:0,created:fmtDate()});
-  renderRoles();
-  document.getElementById('role-name').value='';
-  document.getElementById('role-desc').value='';
-  closeModal('modal-create-role');
+function toggleChip(wrapId,ddId,val){
+  const wrap=document.getElementById(wrapId);
+  if(wrap._sel.has(val)) wrap._sel.delete(val); else wrap._sel.add(val);
+  wrap._render();
 }
 
-/* ── Create Attribute ── */
-function saveAttribute() {
-  const name = document.getElementById('attr-name').value.trim();
-  if (!name) { alert('Attribute name is required.'); return; }
-  const type = document.getElementById('attr-type').value;
-  attributesData.push({id:Date.now(),name,type:type.charAt(0).toUpperCase()+type.slice(1),desc:document.getElementById('attr-desc').value.trim(),assignedUsers:0,assignedGroups:0,created:fmtDate()});
-  renderAttributes();
-  document.getElementById('attr-name').value='';
-  document.getElementById('attr-desc').value='';
-  closeModal('modal-create-attribute');
+function removeChip(wrapId,ddId,val){
+  const wrap=document.getElementById(wrapId);
+  wrap._sel.delete(val); wrap._render();
 }
 
-/* ── Create User ── */
-function saveUser() {
-  const name = document.getElementById('user-name').value.trim();
-  const email = document.getElementById('user-email').value.trim();
-  if (!name||!email) { alert('Name and email required.'); return; }
-  usersData.push({id:Date.now(),name,email,role:document.getElementById('user-role').value||'User',group:document.getElementById('user-group').value||'—',created:fmtDate()});
-  renderUsers();
-  document.getElementById('user-name').value='';
-  document.getElementById('user-email').value='';
-  closeModal('modal-create-user');
+function getChipValues(wrapId){
+  const wrap=document.getElementById(wrapId);
+  return wrap._sel?[...wrap._sel]:[];
 }
 
-/* ── Helpers ── */
-function populateChecklist(elId, items) {
-  const el = document.getElementById(elId);
-  if (!el) return;
-  el.innerHTML = items.map(item=>`<label class="checklist-item"><input type="checkbox" value="${item}"/> ${item}</label>`).join('');
+function toggleChipDropdown(ddId,e){
+  e.stopPropagation();
+  const dd=document.getElementById(ddId);
+  dd.classList.toggle('open');
 }
-
-function fmtDate() {
-  return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-}
-
-function populateUserDropdowns() {
-  document.getElementById('user-role').innerHTML = '<option value="">— Select Role —</option>' +
-    rolesData.map(r=>`<option value="${r.name}">${r.name}</option>`).join('');
-  document.getElementById('user-group').innerHTML = '<option value="">— Select Group —</option>' +
-    groupsData.map(g=>`<option value="${g.name}">${g.name}</option>`).join('');
-}
-
-/* ── Wire up "Add Group" button to pre-populate checklists ── */
-document.querySelector('[onclick="openModal(\'modal-create-group\')"]').addEventListener('click', () => {
-  editGroupId = null;
-  document.getElementById('create-group-title').textContent = 'Create Group';
-  document.getElementById('group-name').value = '';
-  document.getElementById('group-desc').value = '';
-  populateChecklist('group-roles-list', rolesData.map(r=>r.name));
-  populateChecklist('group-attrs-list', attributesData.map(a=>a.name));
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.chip-dropdown.open').forEach(d=>d.classList.remove('open'));
 });
 
-/* ── Init ── */
-renderGroups();
-renderRoles();
-renderAttributes();
+/* ══ TABS ══ */
+function switchTab(entity,tabId,el){
+  const prefix=entity+'-tab-';
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(t=>t.classList.remove('active'));
+  const target=document.getElementById(prefix+tabId);
+  if(target) target.classList.add('active');
+  if(el){
+    el.closest('.detail-tabs').querySelectorAll('.d-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+/* ══ TABLE UTILITIES ══ */
+function filterTable(id,q){
+  const tbody=document.querySelector('#'+id+' tbody');
+  const Q=q.toLowerCase();
+  if(tbody) tbody.querySelectorAll('tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(Q)?'':'none'});
+}
+function toggleAll(id,master){
+  document.querySelectorAll('#'+id+' tbody input[type=checkbox]').forEach(b=>b.checked=master.checked);
+}
+
+/* ══ ADD MODAL ══ */
+const addForms={
+  groups:`<div class="form-group"><label class="f-label">Group Name *</label><input class="f-inp" id="new-name" placeholder="e.g. Finance Team"/></div>
+          <div class="form-group"><label class="f-label">Description</label><textarea class="f-ta" id="new-desc" placeholder="Brief description…"></textarea></div>`,
+  roles:`<div class="form-group"><label class="f-label">Role Name *</label><input class="f-inp" id="new-name" placeholder="e.g. app-composer-admin"/></div>
+         <div class="form-group"><label class="f-label">Type</label><select class="f-sel" id="new-type"><option value="keycloak">Keycloak Role</option><option value="backend">Backend Role</option></select></div>
+         <div class="form-group"><label class="f-label">Description</label><textarea class="f-ta" id="new-desc"></textarea></div>`,
+  attributes:`<div class="form-group"><label class="f-label">Attribute Name *</label><input class="f-inp" id="new-name" placeholder="e.g. mandator_id"/></div>
+              <div class="form-group"><label class="f-label">Type</label><select class="f-sel" id="new-type"><option value="string">String</option><option value="number">Number</option><option value="boolean">Boolean</option><option value="json">JSON</option></select></div>
+              <div class="form-group"><label class="f-label">Description</label><textarea class="f-ta" id="new-desc"></textarea></div>`,
+  users:`<div class="form-group"><label class="f-label">Full Name *</label><input class="f-inp" id="new-name" placeholder="e.g. Alice Johnson"/></div>
+         <div class="form-group"><label class="f-label">Email *</label><input class="f-inp" id="new-email" type="email" placeholder="alice@company.com"/></div>
+         <div class="form-group"><label class="f-label">Role</label><select class="f-sel" id="new-role">${roles.map(r=>`<option>${r.name}</option>`).join('')}</select></div>
+         <div class="form-group"><label class="f-label">Group</label><select class="f-sel" id="new-group">${groups.map(g=>`<option>${g.name}</option>`).join('')}</select></div>`,
+};
+const addTitles={groups:'Create Group',roles:'Create Role',attributes:'Create Attribute',users:'Create User'};
+
+function openAddModal(mod){
+  const m=mod||currentModule||'groups';
+  document.getElementById('modal-add-title').textContent=addTitles[m]||'Create';
+  document.getElementById('modal-add-body').innerHTML=addForms[m]||'';
+  document.getElementById('modal-add-save').onclick=()=>saveNew(m);
+  openModal('modal-add');
+}
+
+function saveNew(mod){
+  const name=(document.getElementById('new-name')||{}).value?.trim();
+  if(!name){alert('Name is required.');return;}
+  const desc=(document.getElementById('new-desc')||{}).value?.trim()||'';
+  const id=Date.now();
+  const d=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  if(mod==='groups') groups.push({id,name,label:name,desc,roles:[],attrs:[],members:0,created:d});
+  if(mod==='roles'){const t=(document.getElementById('new-type')||{}).value||'keycloak';roles.push({id,name,desc,type:t,users:0,created:d});}
+  if(mod==='attributes'){const t=(document.getElementById('new-type')||{}).value||'string';attributes.push({id,name,type:t.charAt(0).toUpperCase()+t.slice(1),desc,assignedUsers:0,assignedGroups:0,created:d});}
+  if(mod==='users'){
+    const email=(document.getElementById('new-email')||{}).value?.trim()||name.toLowerCase()+'@company.com';
+    const role=(document.getElementById('new-role')||{}).value||'View Only';
+    const group=(document.getElementById('new-group')||{}).value||'Viewers';
+    users.push({id,name,email,role,group,phone:'—',fax:'—',dept:'—',created:d});
+    renderUsers();
+  }
+  updateBadges();
+  buildModuleNav(mod);
+  closeModal('modal-add');
+  setTimeout(()=>openDetail(mod,id),50);
+}
+
+/* ══ DELETE ══ */
+let pendingDel=null;
+function reqDelete(type,id,name){
+  pendingDel={type,id};
+  document.getElementById('del-item-name').textContent=name;
+  openModal('modal-delete');
+}
+function confirmDelete(){
+  if(!pendingDel) return;
+  const{type,id}=pendingDel;
+  const map={group:groups,role:roles,attribute:attributes,user:users};
+  const arr=map[type]||map[type+'s'];
+  // handle plural/singular
+  const keys={group:'groups',role:'roles',attribute:'attributes',user:'users'};
+  const a={groups,roles,attributes,users}[keys[type]||type];
+  const i=a.findIndex(x=>x.id===id);
+  if(i>-1) a.splice(i,1);
+  if(type==='user') renderUsers();
+  updateBadges();
+  if(currentModule===keys[type]||currentModule===type){
+    buildModuleNav(currentModule);
+    const data2={groups,roles,attributes,users}[currentModule];
+    if(data2.length) openDetail(currentModule,data2[0].id);
+  }
+  closeModal('modal-delete');
+  pendingDel=null;
+}
+
+/* ══ MODALS ══ */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+
+/* ══ KV ROWS ══ */
+function addKvRow(tbodyId){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input class="f-inp" placeholder="Key" style="font-size:12px;padding:4px 8px"/></td><td><input class="f-inp" placeholder="Value" style="font-size:12px;padding:4px 8px"/></td><td><button class="act-btn del" onclick="this.closest('tr').remove()">${DEL_IC}</button></td>`;
+  document.getElementById(tbodyId).appendChild(tr);
+}
+
+/* ══ CHAR COUNTER ══ */
+function updateCount(inp,countId,max){
+  const remaining=max-inp.value.length;
+  const el=document.getElementById(countId);
+  if(el) el.textContent=String(remaining).padStart(2,'0');
+}
+
+/* ══ BADGES ══ */
+function updateBadges(){
+  document.getElementById('badge-groups').textContent=groups.length;
+  document.getElementById('badge-roles').textContent=roles.length;
+  document.getElementById('badge-attrs').textContent=attributes.length;
+  document.getElementById('badge-users').textContent=users.length;
+}
+
+/* ══ CHARTS ══ */
+const charts={};
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function chartColors(){
+  const dark=document.documentElement.dataset.theme==='dark';
+  return{green:dark?'#5aad5a':'#6dc46d',blue:dark?'#7cb9d8':'#4a9cc0',text:dark?'#a9a9ac':'#6f6e6d',grid:dark?'#3c3c44':'#e7e6e6',line:dark?'#7cb9d8':'#4a9cc0'};
+}
+
+function renderHomeCharts(){
+  const c=chartColors();
+  destroyChart('role-dist'); destroyChart('activity');
+
+  const roleEl=document.getElementById('chart-role-dist');
+  if(roleEl){
+    charts['role-dist']=new Chart(roleEl,{
+      type:'bar',
+      data:{labels:roles.map(r=>r.name),datasets:[{data:roles.map(r=>r.users),backgroundColor:c.green,borderWidth:0,barThickness:10}]},
+      options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10}}},y:{grid:{display:false},ticks:{color:c.text,font:{size:10}}}},responsive:true,maintainAspectRatio:false}
+    });
+  }
+
+  const actEl=document.getElementById('chart-activity');
+  if(actEl){
+    charts['activity']=new Chart(actEl,{
+      type:'line',
+      data:{
+        labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets:[{data:[2,5,8,15,22,35,50,62,75,88,100,120],borderColor:c.line,backgroundColor:'transparent',pointBackgroundColor:c.line,pointRadius:3,tension:.35,borderWidth:2}]
+      },
+      options:{plugins:{legend:{display:false}},scales:{x:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10}}},y:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10}},beginAtZero:true}},responsive:true,maintainAspectRatio:false}
+    });
+  }
+}
+
+/* ══ BREADCRUMB CLICK ══ */
+document.getElementById('bc2').addEventListener('click',()=>{
+  if(currentModule) goModule(currentModule);
+});
+
+/* ══ INIT ══ */
 renderUsers();
-populateUserDropdowns();
+updateBadges();
+setTimeout(renderHomeCharts,100);
 </script>
 </body>
 </html>
